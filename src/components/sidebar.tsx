@@ -45,10 +45,10 @@ export function Sidebar() {
       w={sidebarOpen ? '15.625rem' : '4.5rem'}
       h="100vh"
       gap="1.75rem"
-      transition="width 0.2s ease-out"
+      transition="all 0.2s ease-out"
     >
       <Box
-        p={sidebarOpen ? '1.75rem' : '1.75rem 0'}
+        p={sidebarOpen ? '1rem' : '1rem 0'}
         margin={sidebarOpen ? '0' : '0 auto'}
       >
         <HStack justify="space-between">
@@ -109,7 +109,15 @@ export function Sidebar() {
             borderRadius={12}
           />
           <VStack ml="0.5rem" align="start" sx={{ lineHeight: 0.75 }}>
-            <Text fontSize="1rem">José Alemeida</Text>
+            <Text
+              fontSize="1rem"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+              mr="0.5rem"
+            >
+              José Almeida
+            </Text>
             <Text fontSize="0.875rem">Gerente Geral</Text>
           </VStack>
         </Box>
