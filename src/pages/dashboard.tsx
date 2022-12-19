@@ -9,12 +9,15 @@ import {
   Text,
   useBreakpointValue,
   Image as ChakraImage,
+  Center,
 } from '@chakra-ui/react'
 import { Card } from '../components/dashboard/Card'
-import { Sidebar } from '../components/sidebar'
+import { Sidebar } from '../components/nav/Sidebar'
 import * as img from '../assets/assets'
 import Image from 'next/image'
 import { FiBell } from 'react-icons/fi'
+import { DrawerBar } from '../components/nav/DrawerBar'
+import { NotificationBar } from '../components/notifications/NotificationBar'
 
 export default function Dashboard() {
   const isWideVersion = useBreakpointValue({
@@ -22,27 +25,17 @@ export default function Dashboard() {
     md: true,
   })
   return (
-    <Flex>
+    <Flex m={0} p={0}>
       {isWideVersion && <Sidebar />}
       <Box w="100%" p={isWideVersion ? '0.5rem 1.5rem 1rem 3rem' : '0 1rem'}>
-        <HStack w="100%" mb="1rem" justify="space-between">
+        <HStack w="100%" m={0} p={0} mb="1rem" justify="space-between">
           {!isWideVersion && (
-            <>
+            <Box w="100%" m="0 auto" display="flex">
               <Box mt="0.5rem">
-                <Image alt="logo VET" src={img.logoDarkImg} />
+                <DrawerBar />
               </Box>
-              <Box
-                textAlign="center"
-                p="0.125rem"
-                w="100%"
-                bg="green.600"
-                borderBottomRadius={12}
-              >
-                <Text color="white" fontWeight={600}>
-                  REUNIÃO ÁS 10:00
-                </Text>
-              </Box>
-            </>
+              <NotificationBar />
+            </Box>
           )}
           <Box ml="auto">
             <Icon as={FiBell} boxSize="1rem" />

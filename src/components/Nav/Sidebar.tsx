@@ -13,7 +13,7 @@ import {
   Box,
 } from '@chakra-ui/react'
 import Image from 'next/image'
-import * as img from '../assets/assets'
+import * as img from '../../assets/assets'
 import {
   FiCalendar,
   FiGrid,
@@ -27,9 +27,9 @@ import {
 } from 'react-icons/fi'
 import { FaUserMd } from 'react-icons/fa'
 import { TbPaw } from 'react-icons/tb'
-import { NavItem } from './Nav/NavItem'
 import { CgLogOut } from 'react-icons/cg'
 import { useState } from 'react'
+import { NavItem } from './NavItem'
 
 export function Sidebar() {
   const [sidebarOpen, setSidebarOpen] = useState(false)

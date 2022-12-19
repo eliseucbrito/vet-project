@@ -15,6 +15,7 @@ interface NavItemProps extends ChakraLinkProps {
   children: ReactNode
   href: string
   isOpen: boolean
+  newBg?: string
 }
 
 export function NavItem({
@@ -22,6 +23,7 @@ export function NavItem({
   href,
   icon,
   isOpen,
+  newBg,
   ...rest
 }: NavItemProps) {
   return (
@@ -35,6 +37,7 @@ export function NavItem({
           alignItems="center"
           gap="0.5rem"
           p="0.5rem"
+          bg={newBg}
         >
           <Icon as={icon} boxSize="24px" />
           <Text
