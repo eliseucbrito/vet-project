@@ -27,6 +27,7 @@ export const defaultTheme = extendTheme({
 
     green: {
       '300': '#8ED7C6',
+      '500': '#27A853',
       '600': '#18C29C',
       '700': '#217463',
       '900': '#084236',

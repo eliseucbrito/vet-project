@@ -51,7 +51,13 @@ export function DrawerBar() {
 
           <DrawerBody display="flex" flexDirection="column" gap="0.75rem">
             <NavItem isOpen={isOpen} href="" icon={FiSearch}>
-              Search
+              <Input
+                p="0"
+                variant="unstyled"
+                placeholder="Search"
+                color="gray.700"
+                _placeholder={{ color: 'gray.700' }}
+              />
             </NavItem>
             <NavItem isOpen={isOpen} href="/dashboard" icon={FiGrid}>
               Dashboard

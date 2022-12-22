@@ -1,13 +1,10 @@
 import {
   HStack,
-  IconButton,
   Stack,
   Text,
   VStack,
-  Image as ChakraImage,
   Icon,
   Input,
-  Button,
   Flex,
   Avatar,
   Box,
@@ -17,22 +14,22 @@ import * as img from '../../assets/assets'
 import {
   FiCalendar,
   FiGrid,
-  FiLogIn,
   FiMenu,
   FiPieChart,
   FiSearch,
   FiSettings,
   FiUser,
-  FiUsers,
 } from 'react-icons/fi'
 import { FaUserMd } from 'react-icons/fa'
 import { TbPaw } from 'react-icons/tb'
 import { CgLogOut } from 'react-icons/cg'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { NavItem } from './NavItem'
+import { VetContext } from '../../context/VetContext'
 
 export function Sidebar() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const { user } = useContext(VetContext)
 
   function handleSidebarState() {
     setSidebarOpen(!sidebarOpen)
@@ -61,64 +58,60 @@ export function Sidebar() {
             margin={sidebarOpen ? '0' : '0 auto'}
           />
         </HStack>
-        <VStack
-          w="100%"
-          h="100%"
-          align="flex-start"
-          marginTop="1.75rem"
-          gap="0.75rem"
-        >
-          <Button variant="unstyled" w="100%">
-            <NavItem isOpen={sidebarOpen} href="" icon={FiSearch}>
-              Search
-            </NavItem>
-          </Button>
+        <VStack w="100%" h="100%" align="flex-start" marginTop="4" gap="2">
+          <NavItem isOpen={sidebarOpen} href="" icon={FiSearch}>
+            <Input
+              p="0"
+              variant="unstyled"
+              placeholder="Search"
+              color="gray.700"
+              _placeholder={{ color: 'gray.700' }}
+            />
+          </NavItem>
           <NavItem isOpen={sidebarOpen} href="/dashboard" icon={FiGrid}>
             Dashboard
           </NavItem>
-          <NavItem isOpen={sidebarOpen} href="/dashboard" icon={FiUser}>
+          <NavItem isOpen={sidebarOpen} href="/user" icon={FiUser}>
             Clientes
           </NavItem>
-          <NavItem isOpen={sidebarOpen} href="/dashboard" icon={FaUserMd}>
+          <NavItem isOpen={sidebarOpen} href="/vets" icon={FaUserMd}>
             Vets
           </NavItem>
-          <NavItem isOpen={sidebarOpen} href="/dashboard" icon={FiSettings}>
+          <NavItem isOpen={sidebarOpen} href="/settings" icon={FiSettings}>
             Ajustes
           </NavItem>
-          <NavItem isOpen={sidebarOpen} href="/dashboard" icon={TbPaw}>
+          <NavItem isOpen={sidebarOpen} href="/animals" icon={TbPaw}>
             Animais
           </NavItem>
-          <NavItem isOpen={sidebarOpen} href="/dashboard" icon={FiPieChart}>
+          <NavItem isOpen={sidebarOpen} href="/reports" icon={FiPieChart}>
             Relatórios
           </NavItem>
-          <NavItem isOpen={sidebarOpen} href="/dashboard" icon={FiCalendar}>
+          <NavItem isOpen={sidebarOpen} href="/calendar" icon={FiCalendar}>
             Calendário
           </NavItem>
         </VStack>
       </Box>
       <Flex
-        p="0.875rem"
+        p="2"
         bg="green.300"
         align="center"
         w="100%"
+        h="4.5rem"
         justify="space-between"
       >
         <Box alignItems="center" display={sidebarOpen ? 'flex' : 'none'}>
-          <Avatar
-            src="https://github.com/eliseubrito7z.png"
-            borderRadius={12}
-          />
-          <VStack ml="0.5rem" align="start" sx={{ lineHeight: 0.75 }}>
+          <Avatar src={user.avatar} borderRadius={12} />
+          <VStack ml="2" align="start" sx={{ lineHeight: 0.75 }}>
             <Text
               fontSize="1rem"
               overflow="hidden"
               textOverflow="ellipsis"
               whiteSpace="nowrap"
-              mr="0.5rem"
+              mr="2"
             >
-              José Almeida
+              {user.firstName + '' + user.lastName}
             </Text>
-            <Text fontSize="0.875rem">Gerente Geral</Text>
+            <Text fontSize="0.875rem">{user.role}</Text>
           </VStack>
         </Box>
         <Icon

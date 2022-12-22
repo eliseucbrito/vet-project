@@ -8,6 +8,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { ElementType, ReactNode } from 'react'
 
 interface NavItemProps extends ChakraLinkProps {
@@ -15,7 +16,6 @@ interface NavItemProps extends ChakraLinkProps {
   children: ReactNode
   href: string
   isOpen: boolean
-  newBg?: string
 }
 
 export function NavItem({
@@ -23,21 +23,23 @@ export function NavItem({
   href,
   icon,
   isOpen,
-  newBg,
   ...rest
 }: NavItemProps) {
+  const { asPath } = useRouter()
+  const isActive = asPath === href
+
   return (
     <Flex w="100%">
-      <Link href={href} style={{ width: '100%' }} passHref>
+      <ChakraLink as={Link} href={href} w="100%" passHref>
         <Box
+          bg={isActive ? 'green.300' : ''}
           borderRadius="12px"
           _hover={{ textDecor: 'none', background: 'green.300' }}
           w="100%"
           display="flex"
           alignItems="center"
           gap="0.5rem"
-          p="0.5rem"
-          bg={newBg}
+          p="0.75rem 0.5rem"
         >
           <Icon as={icon} boxSize="24px" />
           <Text
@@ -49,7 +51,7 @@ export function NavItem({
             {children}
           </Text>
         </Box>
-      </Link>
+      </ChakraLink>
     </Flex>
   )
 }

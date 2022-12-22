@@ -13,11 +13,9 @@ export function NotificationBar() {
       <Box
         textAlign="center"
         p="0.125rem"
-        w="80%"
-        h={isOpen ? '80vh' : 'auto'}
+        w="100%"
         bg="green.600"
         borderBottomRadius={12}
-        onClick={handleIsOpen}
         m="0 auto"
       >
         <Text color="white" fontWeight={600} fontSize="1rem">

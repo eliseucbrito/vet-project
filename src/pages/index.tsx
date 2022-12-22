@@ -1,7 +1,5 @@
 import {
   Box,
-  Center,
-  Container,
   Flex,
   Heading,
   Text,
@@ -12,9 +10,9 @@ import {
   FormLabel,
   Input,
   Checkbox,
-  HStack,
   Button,
   Stack,
+  Link as ChakraLink,
 } from '@chakra-ui/react'
 import Image from 'next/image'
 import * as img from '../assets/assets'
@@ -99,7 +97,7 @@ export default function Login() {
                 marginY="1rem"
               >
                 <Checkbox colorScheme="green">Lembrar-me</Checkbox>
-                <Link href={'/recover'}>
+                <ChakraLink as={Link} href="/recover">
                   <Text
                     // display="block"
                     as="span"
@@ -110,14 +108,14 @@ export default function Login() {
                   >
                     Esqueci minha senha
                   </Text>
-                </Link>
+                </ChakraLink>
               </Stack>
 
-              <Link href="/dashboard">
+              <ChakraLink as={Link} href="/dashboard">
                 <Button type="submit" variant="loginButton">
                   ENTRAR
                 </Button>
-              </Link>
+              </ChakraLink>
             </form>
           </Box>
         </VStack>

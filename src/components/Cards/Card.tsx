@@ -84,6 +84,7 @@ export function Card({
             fontSize="0.75rem"
             color="gray.200"
             minW="max-content"
+            pt="0.5rem"
           >
             {label}
           </Text>
@@ -98,7 +99,6 @@ export function Card({
         </VStack>
       </Flex>
       <VStack w="100px">
-        {/* <Chart options={options} series={series} type="area" height="160" /> */}
         <Image alt="" src={chartImg} />
         <HStack>
           <Text as="span" color="gray.200" fontSize="0.75rem" fontWeight={400}>
