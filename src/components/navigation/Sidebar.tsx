@@ -40,7 +40,8 @@ export function Sidebar() {
       justify="space-between"
       bg="green.600"
       w={sidebarOpen ? '15.625rem' : '4.5rem'}
-      h="100vh"
+      h="100%"
+      minH="100vh"
       gap="1.75rem"
       transition="all 0.2s ease-out"
     >
@@ -58,7 +59,7 @@ export function Sidebar() {
             margin={sidebarOpen ? '0' : '0 auto'}
           />
         </HStack>
-        <VStack w="100%" h="100%" align="flex-start" marginTop="4" gap="2">
+        <VStack w="100%" h="100%" align="flex-start" marginTop="4">
           <NavItem isOpen={sidebarOpen} href="" icon={FiSearch}>
             <Input
               p="0"

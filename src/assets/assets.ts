@@ -14,7 +14,7 @@ import coverMobile from '../assets/coverMobile.svg'
 import chart from '../assets/chart.svg'
 
 export const avatarImg = avatar
-export const dogiconImg = dogicon
+export const dogAvatar = dogicon
 export const greenArrowImg = greenArrow
 export const redArrowImg = redArrow
 export const logoImg = logo

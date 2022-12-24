@@ -1,7 +1,5 @@
 import {
-  Badge,
   Box,
-  Container,
   Flex,
   HStack,
   Icon,
@@ -9,10 +7,7 @@ import {
   Text,
   useBreakpointValue,
   Image as ChakraImage,
-  Center,
   VStack,
-  Grid,
-  GridItem,
 } from '@chakra-ui/react'
 import { Card } from '../components/Cards/Card'
 import { Sidebar } from '../components/navigation/Sidebar'
@@ -20,13 +15,14 @@ import * as img from '../assets/assets'
 import Image from 'next/image'
 import { FiBell, FiPlus } from 'react-icons/fi'
 import { DrawerBar } from '../components/navigation/DrawerBar'
-import { NotificationBar } from '../components/notifications/NotificationBar'
 import { DrawerTodo } from '../components/navigation/DrawerTodo'
 import { useContext, useState } from 'react'
 import { VetContext } from '../context/VetContext'
 import { SearchBarPatients } from '../components/navigation/SearchBarPatients'
 import { TodoBlock } from '../components/Cards/Todo'
 import { Report } from '../components/Cards/Report'
+import { LastPatients } from '../components/Cards/LastPatients'
+import { BillingStatics } from '../components/Cards/BillingStatistics'
 
 export default function Dashboard() {
   const isWideVersion = useBreakpointValue({
@@ -109,18 +105,43 @@ export default function Dashboard() {
               today={32}
               total={1352}
             >
-              <Image alt="" src={img.dogImg} width={60} />
+              <ChakraImage
+                as={Image}
+                alt=""
+                src={img.dogImg}
+                objectFit="scale-down"
+              />
             </Card>
             <Card label="Staff" graphData="Hoje" today={32} total={1352}>
-              <Image alt="" src={img.staffImg} width={40} />
+              <ChakraImage
+                as={Image}
+                alt=""
+                src={img.staffImg}
+                objectFit="scale-down"
+              />
             </Card>
             <Card label="Quartos" graphData="Hoje" today={32} total={1352}>
-              <Image alt="" src={img.roomsImg} width={80} />
+              <ChakraImage
+                as={Image}
+                alt=""
+                src={img.roomsImg}
+                objectFit="scale-down"
+              />
             </Card>
           </Stack>
           <Flex gap="1rem" mt="1rem">
-            <VStack w={isWideVersion ? '70%' : '100%'}>
-              <SearchBarPatients />
+            <VStack
+              w={isWideVersion ? '70%' : '100%'}
+              h="100%"
+              justify="space-between"
+            >
+              <Box w="100%">
+                <SearchBarPatients />
+                <Box overflowX="scroll" overflowY="visible">
+                  <LastPatients />
+                </Box>
+              </Box>
+              <BillingStatics />
             </VStack>
             <VStack flex={1}>
               {isWideVersion && (
@@ -137,7 +158,9 @@ export default function Dashboard() {
                   justify="space-between"
                   align="center"
                 >
-                  <Text>Relatórios</Text>
+                  <Text fontSize="0.875rem" fontWeight="600" color="black">
+                    Relatórios
+                  </Text>
                   <Icon
                     bg="green.600"
                     borderRadius="full"
