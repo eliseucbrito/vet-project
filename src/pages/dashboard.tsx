@@ -35,11 +35,7 @@ export default function Dashboard() {
   return (
     <Flex m={0} p={0}>
       {isWideVersion && <Sidebar />}
-      <Box
-        h="100vh"
-        w="100%"
-        p={isWideVersion ? '0.5rem 1.5rem 1rem 3rem' : '0 1rem'}
-      >
+      <Box h="100vh" w="100%" p={['0 1rem', '0.5rem 1.5rem 1rem 3rem']}>
         <HStack w="100%" m={0} p={0} mb="1rem" justify="space-between">
           {!isWideVersion && (
             <HStack mt="-0.4%" justify="space-between" w="100%">
@@ -70,7 +66,7 @@ export default function Dashboard() {
                 color="green.900"
                 lineHeight={1}
               >
-                Bem-vind{user.sex.includes('m') ? 'o' : 'a'} novamente,{' '}
+                Bem-vind{user.sex.includes('m') ? 'o' : 'a'} novamente,
                 {user.firstName}
               </Text>
             </HStack>
@@ -80,24 +76,17 @@ export default function Dashboard() {
                 fontSize="0.75rem"
                 color="gray.200"
                 lineHeight={1}
+                sx={{ span: { color: 'green.600' } }}
               >
-                Sua clinica está trabalhando no modo:{' '}
-              </Text>
-              <Text
-                fontWeight={600}
-                fontSize="0.75rem"
-                color="green.600"
-                lineHeight={1}
-              >
-                Normal
+                Sua clinica está trabalhando no modo: <span>Normal</span>
               </Text>
             </HStack>
           </VStack>
           <Stack
-            direction={isWideVersion ? 'row' : 'column'}
+            direction={['column', 'row']}
             w="100%"
             justify="space-between"
-            gap={isWideVersion ? '4rem' : '0.75rem'}
+            gap={['0.75rem', '4rem']}
           >
             <Card
               label="Clientes Totais"
@@ -143,7 +132,7 @@ export default function Dashboard() {
               </Box>
               <BillingStatics />
             </VStack>
-            <VStack flex={1}>
+            <VStack>
               {isWideVersion && (
                 <VStack w="100%">
                   <TodoBlock />
