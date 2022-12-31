@@ -69,7 +69,7 @@ export function Card({
 }: CardDashProps) {
   return (
     <HStack
-      w="100%"
+      w={['100%', '30%']}
       h="5.5rem"
       bg="white.100"
       borderRadius={12}

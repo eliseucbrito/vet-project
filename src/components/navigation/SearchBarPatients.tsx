@@ -12,7 +12,11 @@ export function SearchBarPatients() {
       gap="0.5rem"
     >
       <Icon as={FiSearch} boxSize="1.5rem" />
-      <Input fontSize="1.125rem" variant="unstyled" />
+      <Input
+        fontSize="1.125rem"
+        variant="unstyled"
+        placeholder="Pesquisar pacientes"
+      />
     </Flex>
   )
 }

@@ -8,6 +8,8 @@ import {
   useBreakpointValue,
   Image as ChakraImage,
   VStack,
+  Grid,
+  GridItem,
 } from '@chakra-ui/react'
 import { Card } from '../components/Cards/Card'
 import { Sidebar } from '../components/navigation/Sidebar'
@@ -35,7 +37,7 @@ export default function Dashboard() {
   return (
     <Flex m={0} p={0}>
       {isWideVersion && <Sidebar />}
-      <Box h="100vh" w="100%" p={['0 1rem', '0.5rem 1.5rem 1rem 3rem']}>
+      <Box h="100vh" w="100%" p={['0 1rem', '0 1.5rem 1rem 3rem']}>
         <HStack w="100%" m={0} p={0} mb="1rem" justify="space-between">
           {!isWideVersion && (
             <HStack mt="-0.4%" justify="space-between" w="100%">
@@ -86,7 +88,7 @@ export default function Dashboard() {
             direction={['column', 'row']}
             w="100%"
             justify="space-between"
-            gap={['0.75rem', '4rem']}
+            gap={['1rem', '4rem']}
           >
             <Card
               label="Clientes Totais"
@@ -118,64 +120,91 @@ export default function Dashboard() {
               />
             </Card>
           </Stack>
-          <Flex gap="1rem" mt="1rem">
-            <VStack
-              w={isWideVersion ? '70%' : '100%'}
-              h="100%"
-              justify="space-between"
-            >
-              <Box w="100%">
-                <SearchBarPatients />
-                <Box overflowX="scroll" overflowY="visible">
-                  <LastPatients />
+          <Grid
+            display={['flex', 'grid']}
+            flexDir="column"
+            gap="1rem"
+            mt="1rem"
+            templateColumns={'70% 30%'}
+          >
+            <GridItem>
+              <VStack w="100%" h="100%" justify="space-between">
+                <Box w="100%">
+                  <SearchBarPatients />
+                  <Box
+                    overflowX="scroll"
+                    overflowY="visible"
+                    sx={{
+                      '&::-webkit-scrollbar': {
+                        width: '16px',
+                        borderRadius: '8px',
+                        backgroundColor: `rgba(0, 0, 0, 0.05)`,
+                      },
+                      '&::-webkit-scrollbar-thumb': {
+                        backgroundColor: `rgba(0, 0, 0, 0.05)`,
+                      },
+                    }}
+                  >
+                    <LastPatients />
+                  </Box>
                 </Box>
-              </Box>
-              <BillingStatics />
-            </VStack>
-            <VStack>
-              {isWideVersion && (
-                <VStack w="100%">
-                  <TodoBlock />
-                </VStack>
-              )}
-              <VStack w="100%">
-                <Flex
-                  bg="white"
+                <Box
+                  display="flex"
+                  gap="0.5rem"
                   w="100%"
-                  p="0.75rem"
-                  borderRadius={12}
-                  justify="space-between"
-                  align="center"
+                  justifyContent="space-between"
                 >
-                  <Text fontSize="0.875rem" fontWeight="600" color="black">
-                    Relatórios
-                  </Text>
-                  <Icon
-                    bg="green.600"
-                    borderRadius="full"
-                    p={1}
-                    alignItems="center"
-                    display="flex"
-                    as={FiPlus}
-                    boxSize={6}
-                    color="white"
-                    onClick={() => alert('Novo relatorio')}
-                    cursor="pointer"
-                  />
-                </Flex>
-                <Report
-                  createdAt="4 minutos atrás"
-                  title="Pagamento de um lote de vacinas para cachorro"
-                  type="payment"
-                />
-                <Report
-                  createdAt="19 minutos atrás"
-                  title="Novo pedido de cosméticos"
-                  type="request"
-                />
+                  <BillingStatics type="incomes" />
+                  <BillingStatics type="outcomes" />
+                </Box>
               </VStack>
-            </VStack>
-          </Flex>
+            </GridItem>
+            <GridItem>
+              <VStack>
+                {isWideVersion && (
+                  <VStack w="100%">
+                    <TodoBlock />
+                  </VStack>
+                )}
+                <VStack w="100%">
+                  <Flex
+                    bg="white"
+                    w="100%"
+                    p="0.75rem"
+                    borderRadius={12}
+                    justify="space-between"
+                    align="center"
+                  >
+                    <Text fontSize="0.875rem" fontWeight="600" color="black">
+                      Relatórios
+                    </Text>
+                    <Icon
+                      bg="green.600"
+                      borderRadius="full"
+                      p={1}
+                      alignItems="center"
+                      display="flex"
+                      as={FiPlus}
+                      boxSize={6}
+                      color="white"
+                      onClick={() => alert('Novo relatório')}
+                      cursor="pointer"
+                    />
+                  </Flex>
+                  <Report
+                    createdAt="4 minutos atrás"
+                    title="Pagamento de um lote de vacinas para cachorro"
+                    type="payment"
+                  />
+                  <Report
+                    createdAt="19 minutos atrás"
+                    title="Novo pedido de cosméticos"
+                    type="request"
+                  />
+                </VStack>
+              </VStack>
+            </GridItem>
+          </Grid>
         </main>
       </Box>
     </Flex>

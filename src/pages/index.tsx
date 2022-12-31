@@ -9,7 +9,6 @@ import {
   FormLabel,
   Input,
   Checkbox,
-  Button,
   Stack,
   Image as ChakraImage,
   Link as ChakraLink,
@@ -18,6 +17,7 @@ import Image from 'next/image'
 import * as img from '../assets/assets'
 import { MdOutlineLogin } from 'react-icons/md'
 import Link from 'next/link'
+import { Button } from '../components/defaults/Button'
 
 export default function Login() {
   const isWideVersion = useBreakpointValue({
@@ -97,7 +97,6 @@ export default function Login() {
                   <Checkbox colorScheme="green">Lembrar-me</Checkbox>
                   <ChakraLink as={Link} href="/recover">
                     <Text
-                      // display="block"
                       as="span"
                       color="green.600"
                       fontWeight={600}
@@ -110,7 +109,7 @@ export default function Login() {
                 </Stack>
 
                 <ChakraLink as={Link} href="/dashboard">
-                  <Button type="submit" variant="loginButton">
+                  <Button type="submit" variant="DefaultButton" bg="green.600">
                     ENTRAR
                   </Button>
                 </ChakraLink>

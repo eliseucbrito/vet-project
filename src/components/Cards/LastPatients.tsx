@@ -65,10 +65,10 @@ export function LastPatients() {
             td: {
               background: 'white',
               whiteSpace: 'nowrap',
-              '&:first-child': {
+              '&:first-of-type': {
                 borderLeftRadius: '12px',
               },
-              '&:last-child': {
+              '&:last-of-type': {
                 borderRightRadius: '12px',
               },
             },

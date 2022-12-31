@@ -9,6 +9,7 @@ export const defaultTheme = extendTheme({
         bg: '#DCE4E3',
         fontFamily: "'Poppins', sans-serif",
         WebkitFontSmoothing: 'antialiased',
+        boxSizing: 'border-box',
       },
     }),
   },
@@ -44,8 +45,7 @@ export const defaultTheme = extendTheme({
       variants: {
         sidebarButton: {
           width: '100%',
-          paddingY: '1rem',
-          paddingX: '1rem',
+          padding: '1rem',
           borderRadius: '12px',
 
           display: 'flex',
@@ -66,19 +66,6 @@ export const defaultTheme = extendTheme({
         menuButton: {
           background: 'transparent',
           cursor: 'pointer',
-        },
-        loginButton: {
-          w: '100%',
-          p: '1.5rem',
-          bg: '#18C29C',
-          color: '#FFFFFF',
-          fontSize: '1.125rem',
-          borderRadius: 4,
-          opacity: 1,
-
-          '&:hover': {
-            opacity: 0.8,
-          },
         },
       },
     },
