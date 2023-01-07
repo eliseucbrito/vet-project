@@ -43,12 +43,9 @@ export function Sidebar() {
       h="100%"
       minH="100vh"
       gap="1.75rem"
-      transition="all 0.2s ease-out"
+      transition="width 0.2s"
     >
-      <Box
-        p={sidebarOpen ? '1rem' : '1rem 0'}
-        margin={sidebarOpen ? '0' : '0 auto'}
-      >
+      <Box p="1rem">
         <HStack justify="space-between">
           {sidebarOpen && <Image alt="logo VET" src={img.logoDarkImg} />}
           <Icon
@@ -72,8 +69,8 @@ export function Sidebar() {
           <NavItem isOpen={sidebarOpen} href="/dashboard" icon={FiGrid}>
             Dashboard
           </NavItem>
-          <NavItem isOpen={sidebarOpen} href="/user" icon={FiUser}>
-            Clientes
+          <NavItem isOpen={sidebarOpen} href="/patients" icon={FiUser}>
+            Pacientes
           </NavItem>
           <NavItem isOpen={sidebarOpen} href="/vets" icon={FaUserMd}>
             Vets

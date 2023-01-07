@@ -47,6 +47,7 @@ export function NavItem({
             fontSize="1rem"
             color="green.900"
             display={isOpen ? 'block' : 'none'}
+            transition="all 0.2s"
           >
             {children}
           </Text>

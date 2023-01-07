@@ -19,12 +19,14 @@ import { FiBell, FiPlus } from 'react-icons/fi'
 import { DrawerBar } from '../components/navigation/DrawerBar'
 import { DrawerTodo } from '../components/navigation/DrawerTodo'
 import { useContext, useState } from 'react'
-import { VetContext } from '../context/VetContext'
+import { Service, VetContext } from '../context/VetContext'
 import { SearchBarPatients } from '../components/navigation/SearchBarPatients'
 import { TodoBlock } from '../components/Cards/Todo'
 import { Report } from '../components/Cards/Report'
 import { LastPatients } from '../components/Cards/LastPatients'
 import { BillingStatics } from '../components/Cards/BillingStatistics'
+import { useQuery } from '@tanstack/react-query'
+import { api } from '../services/api'
 
 export default function Dashboard() {
   const isWideVersion = useBreakpointValue({
@@ -34,10 +36,18 @@ export default function Dashboard() {
   const [hasNotification, setHasNotification] = useState(true)
   const { user } = useContext(VetContext)
 
+  const { data: services } = useQuery<Service[]>(['service'], async () => {
+    const response = await api.get('/service')
+
+    return response.data
+  })
+
+  console.log(services)
+
   return (
     <Flex m={0} p={0}>
       {isWideVersion && <Sidebar />}
-      <Box h="100vh" w="100%" p={['0 1rem', '0 1.5rem 1rem 3rem']}>
+      <Box h="100vh" w="100%" p={['0 1rem', '0.25rem 1.5rem 1rem 3rem']}>
         <HStack w="100%" m={0} p={0} mb="1rem" justify="space-between">
           {!isWideVersion && (
             <HStack mt="-0.4%" justify="space-between" w="100%">
@@ -90,12 +100,7 @@ export default function Dashboard() {
             justify="space-between"
             gap={['1rem', '4rem']}
           >
-            <Card
-              label="Clientes Totais"
-              graphData="Hoje"
-              today={32}
-              total={1352}
-            >
+            <Card label="Clientes Totais" graphData="Hoje" today={32} total={2}>
               <ChakraImage
                 as={Image}
                 alt=""
@@ -103,7 +108,7 @@ export default function Dashboard() {
                 objectFit="scale-down"
               />
             </Card>
-            <Card label="Staff" graphData="Hoje" today={32} total={1352}>
+            <Card label="Staff" graphData="Plantão" today={32} total={1352}>
               <ChakraImage
                 as={Image}
                 alt=""
@@ -111,7 +116,7 @@ export default function Dashboard() {
                 objectFit="scale-down"
               />
             </Card>
-            <Card label="Quartos" graphData="Hoje" today={32} total={1352}>
+            <Card label="Quartos" graphData="Livres" today={32} total={1352}>
               <ChakraImage
                 as={Image}
                 alt=""
@@ -132,8 +137,10 @@ export default function Dashboard() {
                 <Box w="100%">
                   <SearchBarPatients />
                   <Box
+                    marginTop="1rem"
+                    h="40vh"
                     overflowX="scroll"
-                    overflowY="visible"
+                    overflowY="scroll"
                     sx={{
                       '&::-webkit-scrollbar': {
                         width: '16px',
