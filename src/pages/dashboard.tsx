@@ -36,14 +36,6 @@ export default function Dashboard() {
   const [hasNotification, setHasNotification] = useState(true)
   const { user } = useContext(VetContext)
 
-  const { data: services } = useQuery<Service[]>(['service'], async () => {
-    const response = await api.get('/service')
-
-    return response.data
-  })
-
-  console.log(services)
-
   return (
     <Flex m={0} p={0}>
       {isWideVersion && <Sidebar />}
@@ -134,27 +126,27 @@ export default function Dashboard() {
           >
             <GridItem>
               <VStack w="100%" h="100%" justify="space-between">
-                <Box w="100%">
-                  <SearchBarPatients />
-                  <Box
-                    marginTop="1rem"
-                    h="40vh"
-                    overflowX="scroll"
-                    overflowY="scroll"
-                    sx={{
-                      '&::-webkit-scrollbar': {
-                        width: '16px',
-                        borderRadius: '8px',
-                        backgroundColor: `rgba(0, 0, 0, 0.05)`,
-                      },
-                      '&::-webkit-scrollbar-thumb': {
-                        backgroundColor: `rgba(0, 0, 0, 0.05)`,
-                      },
-                    }}
-                  >
-                    <LastPatients />
-                  </Box>
+                <SearchBarPatients />
+                <Box
+                  marginTop="1rem"
+                  w="100%"
+                  h="40vh"
+                  overflowX="scroll"
+                  overflowY="scroll"
+                  sx={{
+                    '&::-webkit-scrollbar': {
+                      width: '16px',
+                      borderRadius: '8px',
+                      backgroundColor: `rgba(0, 0, 0, 0.05)`,
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                      backgroundColor: `rgba(0, 0, 0, 0.05)`,
+                    },
+                  }}
+                >
+                  <LastPatients />
                 </Box>
+
                 <Box
                   display="flex"
                   gap="0.5rem"

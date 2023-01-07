@@ -4,25 +4,25 @@ import { api } from '../services/api'
 
 export interface Patient {
   id: number
-  avatar_url: string
-  birth_date: string
+  avatarUrl: string
+  birthDate: string
   kind: string
   name: string
   owner: string
-  owner_contact: string
+  ownerContact: string
   sity: 'TRINDADE_PE' | 'ARARIPINA_PE' | 'OURICURI_PE'
 }
 
 export interface StaffUser {
   id: number
-  avatar_url: string
+  avatarUrl: string
   email: string
   password: string
-  base_salary: number
-  created_at: Date
+  baseSalary: number
+  createdAt: Date
   cpf: string
-  full_name: string
-  staff_role:
+  fullName: string
+  staffRole:
     | 'CEO'
     | 'GENERAL_MANAGER'
     | 'MANAGER'
@@ -33,8 +33,8 @@ export interface StaffUser {
 
 export interface Service {
   id: number
-  avatar_url: string
-  created_at: string
+  avatarUrl: string
+  createdAt: string
   description: string
   price: number
   patient: Patient
@@ -59,32 +59,6 @@ interface User {
   sex: string
 }
 
-interface PatientsProps {
-  id: string
-  patientImage: string
-  species: string
-  owner: string
-  phoneNumber: string
-  city: string
-  lastService: Date
-  status: 'Not Initialized' | 'In Progress' | 'Completed'
-}
-
-interface ClinicData {
-  clients: {
-    total: number
-    today: number
-  }
-  staff: {
-    total: number
-    in_work: number
-  }
-  rooms: {
-    total: number
-    available: number
-  }
-}
-
 interface VetContextData {
   user: User
 }
@@ -104,14 +78,6 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
     sex: 'm',
     avatar: 'https://github.com/eliseubrito7z.png',
   })
-
-  const [clinicData, setClinicData] = useState<ClinicData>()
-
-  // const { data: services } = useQuery<Service[]>(['service'], async () => {
-  //   const response = await api.get('/service')
-
-  //   return response.data
-  // })
 
   return <VetContext.Provider value={{ user }}>{children}</VetContext.Provider>
 }

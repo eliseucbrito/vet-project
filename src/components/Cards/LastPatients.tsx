@@ -17,7 +17,9 @@ import { useContext, useEffect } from 'react'
 import * as img from '../../assets/assets'
 import { api } from '../../services/api'
 import { faker } from '@faker-js/faker'
-import { Service, VetContext } from '../../context/VetContext'
+import { getServices, useServices } from '../../hooks/useServices'
+import { statusFormatter } from '../../utils/statusFormatter'
+import { sityFormatter } from '../../utils/sityFormatter'
 
 export function LastPatients() {
   const isWideVersion = useBreakpointValue({
@@ -29,13 +31,16 @@ export function LastPatients() {
     dateStyle: 'medium',
   })
 
-  const { data: services } = useQuery<Service[]>(['service'], async () => {
-    const response = await api.get('/service')
+  const { data: services } = useServices()
+  console.log(services)
+
+  const { data: servicesOLD } = useQuery(['service'], async () => {
+    const response = await api.get('/services')
 
     return response.data
   })
 
-  console.log('RESPONSE ', services)
+  console.log('RESPONSE ', servicesOLD)
 
   return (
     <Table
@@ -73,7 +78,7 @@ export function LastPatients() {
         </Tr>
       </Thead>
       <Tbody>
-        {services?.slice(0, 10).map((service) => {
+        {services?.map((service) => {
           return (
             <Tr
               key={service.id}
@@ -109,10 +114,10 @@ export function LastPatients() {
                 <Text>{service.patient.owner}</Text>
               </Td>
               <Td>
-                <Text>{new Date(service.created_at).toLocaleDateString()}</Text>
+                <Text>{new Date(service.createdAt).toLocaleDateString()}</Text>
               </Td>
               <Td>
-                <Text>{service.patient.sity}</Text>
+                <Text>{sityFormatter(service.patient.sity)}</Text>
               </Td>
               <Td>
                 <Text
@@ -133,7 +138,7 @@ export function LastPatients() {
                   //   borderRadius: '100%',
                   // }}
                 >
-                  {service.status}
+                  {statusFormatter(service.status)}
                 </Text>
               </Td>
             </Tr>
