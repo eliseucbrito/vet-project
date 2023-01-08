@@ -163,27 +163,15 @@ const seriesOutcomes = [
 
 export function BillingStatics({ type }: BillingStaticsProps) {
   return (
-    <Flex
-      direction={['column', 'row']}
-      // w="100%"
-      justify="space-between"
-      // gap={['1rem', '3rem']}
-    >
+    <Flex direction={['column', 'row']} justify="space-between">
       <HStack
         bg="white"
         w="100%"
-        // p="1.5rem 1rem"
         gap="0.5rem"
         align="end"
         borderRadius={12}
         justify="space-between"
       >
-        {/* {type === 'incomes' ? (
-          <Icon as={FcBullish} boxSize="4rem" />
-        ) : (
-          <Icon as={FcBearish} boxSize="4rem" />
-        )} */}
-
         <Chart
           options={type === 'incomes' ? chartIncomes : chartOutcomes}
           series={type === 'incomes' ? seriesIncomes : seriesOutcomes}

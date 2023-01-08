@@ -10,6 +10,7 @@ export const defaultTheme = extendTheme({
         fontFamily: "'Poppins', sans-serif",
         WebkitFontSmoothing: 'antialiased',
         boxSizing: 'border-box',
+        // overflow: 'hidden',
       },
     }),
   },
@@ -31,6 +32,7 @@ export const defaultTheme = extendTheme({
       '500': '#27A853',
       '600': '#18C29C',
       '700': '#217463',
+      '800': '#3DA68E',
       '900': '#084236',
     },
 

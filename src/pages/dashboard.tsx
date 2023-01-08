@@ -27,6 +27,12 @@ import { LastPatients } from '../components/Cards/LastPatients'
 import { BillingStatics } from '../components/Cards/BillingStatistics'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '../services/api'
+import { BillingsLastPatient } from '../components/BillingsAndLastPatients'
+import { NewPatientButton } from '../components/Modals/NewPatientButtom'
+import { NewPatientModal } from '../components/Modals/NewPatientModal'
+import { Header } from '../components/dashboard/Header/Header'
+import { ClinicDataCards } from '../components/dashboard/ClinicDataCards/ClinicDataCards'
+import { NewReportModal } from '../components/Modals/NewReportModal'
 
 export default function Dashboard() {
   const isWideVersion = useBreakpointValue({
@@ -34,7 +40,6 @@ export default function Dashboard() {
     md: true,
   })
   const [hasNotification, setHasNotification] = useState(true)
-  const { user } = useContext(VetContext)
 
   return (
     <Flex m={0} p={0}>
@@ -62,61 +67,8 @@ export default function Dashboard() {
           )}
         </HStack>
         <main>
-          <VStack w="100%" align="start" mb="1.75rem">
-            <HStack>
-              <Text
-                fontWeight={600}
-                fontSize="1.5rem"
-                color="green.900"
-                lineHeight={1}
-              >
-                Bem-vind{user.sex.includes('m') ? 'o' : 'a'} novamente,
-                {user.firstName}
-              </Text>
-            </HStack>
-            <HStack>
-              <Text
-                fontWeight={600}
-                fontSize="0.75rem"
-                color="gray.200"
-                lineHeight={1}
-                sx={{ span: { color: 'green.600' } }}
-              >
-                Sua clinica está trabalhando no modo: <span>Normal</span>
-              </Text>
-            </HStack>
-          </VStack>
-          <Stack
-            direction={['column', 'row']}
-            w="100%"
-            justify="space-between"
-            gap={['1rem', '4rem']}
-          >
-            <Card label="Clientes Totais" graphData="Hoje" today={32} total={2}>
-              <ChakraImage
-                as={Image}
-                alt=""
-                src={img.dogImg}
-                objectFit="scale-down"
-              />
-            </Card>
-            <Card label="Staff" graphData="Plantão" today={32} total={1352}>
-              <ChakraImage
-                as={Image}
-                alt=""
-                src={img.staffImg}
-                objectFit="scale-down"
-              />
-            </Card>
-            <Card label="Quartos" graphData="Livres" today={32} total={1352}>
-              <ChakraImage
-                as={Image}
-                alt=""
-                src={img.roomsImg}
-                objectFit="scale-down"
-              />
-            </Card>
-          </Stack>
+          <Header />
+          <ClinicDataCards />
           <Grid
             display={['flex', 'grid']}
             flexDir="column"
@@ -124,47 +76,19 @@ export default function Dashboard() {
             mt="1rem"
             templateColumns={'70% 30%'}
           >
-            <GridItem>
-              <VStack w="100%" h="100%" justify="space-between">
+            <GridItem w="100%">
+              <VStack>
                 <SearchBarPatients />
-                <Box
-                  marginTop="1rem"
-                  w="100%"
-                  h="40vh"
-                  overflowX="scroll"
-                  overflowY="scroll"
-                  sx={{
-                    '&::-webkit-scrollbar': {
-                      width: '16px',
-                      borderRadius: '8px',
-                      backgroundColor: `rgba(0, 0, 0, 0.05)`,
-                    },
-                    '&::-webkit-scrollbar-thumb': {
-                      backgroundColor: `rgba(0, 0, 0, 0.05)`,
-                    },
-                  }}
-                >
-                  <LastPatients />
-                </Box>
-
-                <Box
-                  display="flex"
-                  gap="0.5rem"
-                  w="100%"
-                  justifyContent="space-between"
-                >
+                <LastPatients />
+                <HStack justify="space-between" w="100%">
                   <BillingStatics type="incomes" />
                   <BillingStatics type="outcomes" />
-                </Box>
+                </HStack>
               </VStack>
             </GridItem>
-            <GridItem>
+            <GridItem w="100%">
               <VStack>
-                {isWideVersion && (
-                  <VStack w="100%">
-                    <TodoBlock />
-                  </VStack>
-                )}
+                {isWideVersion && <TodoBlock />}
                 <VStack w="100%">
                   <Flex
                     bg="white"
@@ -177,18 +101,7 @@ export default function Dashboard() {
                     <Text fontSize="0.875rem" fontWeight="600" color="black">
                       Relatórios
                     </Text>
-                    <Icon
-                      bg="green.600"
-                      borderRadius="full"
-                      p={1}
-                      alignItems="center"
-                      display="flex"
-                      as={FiPlus}
-                      boxSize={6}
-                      color="white"
-                      onClick={() => alert('Novo relatório')}
-                      cursor="pointer"
-                    />
+                    <NewReportModal />
                   </Flex>
                   <Report
                     createdAt="4 minutos atrás"
