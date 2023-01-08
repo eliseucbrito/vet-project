@@ -2,9 +2,14 @@ import { Stack, Image as ChakraImage } from '@chakra-ui/react'
 import Image from 'next/image'
 
 import * as img from '../../../assets/assets'
+import { useClinicData } from '../../../hooks/useClinicData'
 import { Card } from '../../Cards/Card'
 
 export function ClinicDataCards() {
+  const { data: clinicData } = useClinicData()
+
+  console.log('CLINICDATA', clinicData)
+
   return (
     <Stack
       direction={['column', 'row']}
@@ -12,7 +17,12 @@ export function ClinicDataCards() {
       justify="space-between"
       gap={['1rem', '4rem']}
     >
-      <Card label="Clientes Totais" graphData="Hoje" today={32} total={2}>
+      <Card
+        label="Clientes Totais"
+        graphData="Hoje"
+        today={clinicData?.clients.today}
+        total={clinicData?.clients.total}
+      >
         <ChakraImage
           as={Image}
           alt=""

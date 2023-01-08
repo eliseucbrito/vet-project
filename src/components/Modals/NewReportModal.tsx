@@ -17,7 +17,6 @@ import {
   Textarea,
 } from '@chakra-ui/react'
 import { FiPlus } from 'react-icons/fi'
-import { FileInput } from '../defaults/FileInput'
 
 export function NewReportModal() {
   const { isOpen, onOpen, onClose } = useDisclosure()
