@@ -6,9 +6,7 @@ import { useClinicData } from '../../../hooks/useClinicData'
 import { Card } from '../../Cards/Card'
 
 export function ClinicDataCards() {
-  const { data: clinicData } = useClinicData()
-
-  console.log('CLINICDATA', clinicData)
+  const { data: clinicData, error, isLoading, isLoadingError } = useClinicData()
 
   return (
     <Stack
@@ -18,6 +16,8 @@ export function ClinicDataCards() {
       gap={['1rem', '4rem']}
     >
       <Card
+        isLoading={isLoading}
+        error={isLoadingError}
         label="Clientes Totais"
         graphData="Hoje"
         today={clinicData?.clients.today}
@@ -30,7 +30,14 @@ export function ClinicDataCards() {
           objectFit="scale-down"
         />
       </Card>
-      <Card label="Staff" graphData="Plantão" today={32} total={1352}>
+      <Card
+        isLoading={isLoading}
+        error={isLoadingError}
+        label="Staff"
+        graphData="Plantão"
+        today={32}
+        total={1352}
+      >
         <ChakraImage
           as={Image}
           alt=""
@@ -38,7 +45,14 @@ export function ClinicDataCards() {
           objectFit="scale-down"
         />
       </Card>
-      <Card label="Quartos" graphData="Livres" today={32} total={1352}>
+      <Card
+        isLoading={isLoading}
+        error={isLoadingError}
+        label="Quartos"
+        graphData="Livres"
+        today={32}
+        total={1352}
+      >
         <ChakraImage
           as={Image}
           alt=""

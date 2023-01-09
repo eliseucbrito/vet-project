@@ -11,17 +11,15 @@ import {
   Image as ChakraImage,
   Avatar,
   Box,
+  Stack,
+  Skeleton,
+  VStack,
 } from '@chakra-ui/react'
-import { useQuery } from '@tanstack/react-query'
-import Image from 'next/image'
-import { useContext, useEffect } from 'react'
-import * as img from '../../assets/assets'
-import { api } from '../../services/api'
-import { faker } from '@faker-js/faker'
 import { getServices, useServices } from '../../hooks/useServices'
 import { statusFormatter } from '../../utils/statusFormatter'
 import { sityFormatter } from '../../utils/sityFormatter'
 import { BillingStatics } from './BillingStatistics'
+import { statusColor } from '../../utils/statusColor'
 
 export function LastPatients() {
   const isWideVersion = useBreakpointValue({
@@ -33,7 +31,9 @@ export function LastPatients() {
     dateStyle: 'medium',
   })
 
-  const { data: services } = useServices()
+  const skeletonArray = Array.from(Array(10))
+
+  const { data: services, isLoading, isLoadingError } = useServices()
   console.log(services)
 
   return (
@@ -98,74 +98,76 @@ export function LastPatients() {
           </Tr>
         </Thead>
         <Tbody>
-          {services?.slice(0, 10).map((service) => {
-            return (
-              <Tr
-                key={service.id}
-                sx={{
-                  td: {
-                    background: 'white',
-                    whiteSpace: 'nowrap',
-                    '&:first-of-type': {
-                      borderLeftRadius: '12px',
-                    },
-                    '&:last-of-type': {
-                      borderRightRadius: '12px',
-                    },
-                  },
-                }}
-              >
-                <Td>
-                  <Checkbox />
-                </Td>
-                <Td>
-                  <Text>{service.id}</Text>
-                </Td>
-                <Td>
-                  <ChakraImage
-                    w="40px"
-                    h="40px"
-                    borderRadius="full"
-                    alt=""
-                    src="https://loremflickr.com/640/480/animals"
-                  />
-                </Td>
-                <Td>
-                  <Text>{service.patient.owner}</Text>
-                </Td>
-                <Td>
-                  <Text>
-                    {new Date(service.createdAt).toLocaleDateString()}
-                  </Text>
-                </Td>
-                <Td>
-                  <Text>{sityFormatter(service.patient.sity)}</Text>
-                </Td>
-                <Td>
-                  <Text
-                    display="flex"
-                    alignItems="center"
-                    gap={1}
-                    // _before={{
-                    //   content: '""',
-                    //   width: '0.5rem',
-                    //   height: '0.5rem',
-                    //   backgroundColor: `${
-                    //     status === 'In Progress'
-                    //       ? 'yellow.base'
-                    //       : status === 'Completed'
-                    //       ? 'green.600'
-                    //       : 'red'
-                    //   }`,
-                    //   borderRadius: '100%',
-                    // }}
+          {isLoading
+            ? skeletonArray.map((position, index) => {
+                return (
+                  <Tr key={index}>
+                    <Skeleton h="3rem" w="1000%" borderRadius={12} />
+                  </Tr>
+                )
+              })
+            : services?.slice(0, 10).map((service) => {
+                return (
+                  <Tr
+                    key={service.id}
+                    sx={{
+                      td: {
+                        background: 'white',
+                        whiteSpace: 'nowrap',
+                        '&:first-of-type': {
+                          borderLeftRadius: '12px',
+                        },
+                        '&:last-of-type': {
+                          borderRightRadius: '12px',
+                        },
+                      },
+                    }}
                   >
-                    {statusFormatter(service.status)}
-                  </Text>
-                </Td>
-              </Tr>
-            )
-          })}
+                    <Td>
+                      <Checkbox />
+                    </Td>
+                    <Td>
+                      <Text>{service.id}</Text>
+                    </Td>
+                    <Td>
+                      <ChakraImage
+                        w="40px"
+                        h="40px"
+                        borderRadius="full"
+                        alt=""
+                        src="https://loremflickr.com/640/480/animals"
+                      />
+                    </Td>
+                    <Td>
+                      <Text>{service.patient.owner}</Text>
+                    </Td>
+                    <Td>
+                      <Text>
+                        {new Date(service.created_at).toLocaleDateString()}
+                      </Text>
+                    </Td>
+                    <Td>
+                      <Text>{sityFormatter(service.patient.sity)}</Text>
+                    </Td>
+                    <Td>
+                      <Text
+                        display="flex"
+                        alignItems="center"
+                        gap={1}
+                        _before={{
+                          content: '""',
+                          width: '0.5rem',
+                          height: '0.5rem',
+                          backgroundColor: `${statusColor(service.status)}`,
+                          borderRadius: '100%',
+                        }}
+                      >
+                        {statusFormatter(service.status)}
+                      </Text>
+                    </Td>
+                  </Tr>
+                )
+              })}
         </Tbody>
       </Table>
     </Box>

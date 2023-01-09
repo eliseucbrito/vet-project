@@ -19,7 +19,11 @@ export const defaultTheme = extendTheme({
       base: '#FBA94C',
     },
 
-    red: '#AB222E',
+    red: {
+      '100': '#AB222E',
+      '300': '#FC8181',
+      '500': '#E53E3E',
+    },
 
     gray: {
       '50': '#AAAAAA',

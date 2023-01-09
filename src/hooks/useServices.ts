@@ -60,8 +60,8 @@ export async function getServices(): Promise<Service[]> {
   const services = data.map((service: Service) => {
     return {
       id: service.id,
-      avatarUrl: service.patient.avatar_url,
-      createdAt: service.created_at,
+      avatar_url: service.patient.avatar_url,
+      created_at: service.created_at,
       patient: service.patient,
       price: service.price,
       description: service.description,

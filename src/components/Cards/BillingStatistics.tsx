@@ -180,10 +180,15 @@ export function BillingStatics({ type }: BillingStaticsProps) {
           width="70%"
         />
         <Box p="1rem 1rem 1rem 0">
-          <Text fontSize="0.75rem" color="gray.200">
+          <Text fontSize="0.75rem" color="gray.200" minW="max-content">
             Faturamento da semana
           </Text>
-          <Text fontSize="1.5rem" fontWeight={700} color="black">
+          <Text
+            fontSize="1.5rem"
+            fontWeight={700}
+            color="black"
+            minW="max-content"
+          >
             R$ 12.198,00
           </Text>
         </Box>

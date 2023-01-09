@@ -1,4 +1,12 @@
-import { Box, Flex, HStack, Stack, Text, VStack } from '@chakra-ui/react'
+import {
+  Box,
+  Flex,
+  HStack,
+  Spinner,
+  Stack,
+  Text,
+  VStack,
+} from '@chakra-ui/react'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { ReactNode } from 'react'
@@ -54,9 +62,11 @@ const series = [
 
 interface CardDashProps {
   label: string
-  total: number
-  today: number
+  total: number | undefined
+  today: number | undefined
   graphData: string
+  isLoading: boolean
+  error: boolean
   children: ReactNode
 }
 
@@ -64,10 +74,42 @@ export function Card({
   label,
   today,
   total,
+  isLoading,
+  error,
   children,
   graphData,
 }: CardDashProps) {
-  return (
+  return isLoading ? (
+    <HStack
+      w={['100%', '30%']}
+      h="5.5rem"
+      bg="white.100"
+      borderRadius={12}
+      p="1rem 1rem 0.5rem 1rem"
+      justify="center"
+    >
+      <Flex w="25%" position="absolute" justify="flex-start">
+        {children}
+      </Flex>
+      <Spinner />
+    </HStack>
+  ) : error ? (
+    <HStack
+      w={['100%', '30%']}
+      h="5.5rem"
+      bg="white.100"
+      borderRadius={12}
+      p="1rem 1rem 0.5rem 1rem"
+      justify="center"
+    >
+      <Flex w="25%" position="absolute" justify="flex-start">
+        {children}
+      </Flex>
+      <Text fontWeight={700} fontSize="1rem" color="black">
+        Error! <br /> Contact the support
+      </Text>
+    </HStack>
+  ) : (
     <HStack
       w={['100%', '30%']}
       h="5.5rem"

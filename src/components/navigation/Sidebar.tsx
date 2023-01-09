@@ -42,7 +42,7 @@ export function Sidebar() {
       w={sidebarOpen ? '15.625rem' : '4.5rem'}
       h="100%"
       minH="100vh"
-      gap="1.75rem"
+      gap="1.5rem"
       transition="width 0.2s"
     >
       <Box p="1rem">

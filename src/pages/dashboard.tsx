@@ -10,8 +10,8 @@ import {
   VStack,
   Grid,
   GridItem,
+  Show,
 } from '@chakra-ui/react'
-import { Card } from '../components/Cards/Card'
 import { Sidebar } from '../components/navigation/Sidebar'
 import * as img from '../assets/assets'
 import Image from 'next/image'
@@ -22,7 +22,7 @@ import { useContext, useState } from 'react'
 import { Service, VetContext } from '../context/VetContext'
 import { SearchBarPatients } from '../components/navigation/SearchBarPatients'
 import { TodoBlock } from '../components/Cards/Todo'
-import { Report } from '../components/Cards/Report'
+import { Reports } from '../components/Cards/Reports'
 import { LastPatients } from '../components/Cards/LastPatients'
 import { BillingStatics } from '../components/Cards/BillingStatistics'
 import { useQuery } from '@tanstack/react-query'
@@ -42,7 +42,7 @@ export default function Dashboard() {
   return (
     <Flex m={0} p={0}>
       {isWideVersion && <Sidebar />}
-      <Box h="100vh" w="100%" p={['0 1rem', '0.25rem 1.5rem 1rem 3rem']}>
+      <Box h="100vh" w="100%" p={['0 1rem', '0.25rem 1.5rem 1rem 2rem']}>
         <HStack w="100%" m={0} p={0} mb="1rem" justify="space-between">
           {!isWideVersion && (
             <HStack mt="-0.4%" justify="space-between" w="100%">
@@ -72,6 +72,7 @@ export default function Dashboard() {
             flexDir="column"
             gap="1rem"
             mt="1rem"
+            mr="1rem"
             templateColumns={'70% 30%'}
           >
             <GridItem w="100%">
@@ -85,8 +86,10 @@ export default function Dashboard() {
               </VStack>
             </GridItem>
             <GridItem w="100%">
-              <VStack>
-                {isWideVersion && <TodoBlock />}
+              <VStack h="100%" justify="space-between">
+                <Show breakpoint="(min-height: 700px)">
+                  <TodoBlock />
+                </Show>
                 <VStack w="100%">
                   <Flex
                     bg="white"
@@ -101,16 +104,7 @@ export default function Dashboard() {
                     </Text>
                     <NewReportModal />
                   </Flex>
-                  <Report
-                    createdAt="4 minutos atrás"
-                    title="Pagamento de um lote de vacinas para cachorro"
-                    type="payment"
-                  />
-                  <Report
-                    createdAt="19 minutos atrás"
-                    title="Novo pedido de cosméticos"
-                    type="request"
-                  />
+                  <Reports />
                 </VStack>
               </VStack>
             </GridItem>

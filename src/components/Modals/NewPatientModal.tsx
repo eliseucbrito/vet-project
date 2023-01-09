@@ -12,11 +12,59 @@ import {
   ModalOverlay,
   Select,
   useDisclosure,
+  useToast,
   VStack,
 } from '@chakra-ui/react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { api } from '../../services/api'
+
+const newPatientModalSchema = z.object({
+  name: z
+    .string()
+    .min(3, { message: 'O nome deve conter no mínimo 3 caracteres' }),
+  kind: z.string(),
+  owner: z
+    .string()
+    .min(3, { message: 'O nome deve conter no mínimo 3 caracteres' }),
+  ownerContact: z
+    .string()
+    .min(3, { message: 'O número deve conter 11 caracteres' }),
+  birthDate: z.string().transform((date) => date.replaceAll('-', '/')),
+})
+
+type newPatientModalData = z.infer<typeof newPatientModalSchema>
 
 export function NewPatientModal() {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
+  } = useForm<newPatientModalData>({
+    resolver: zodResolver(newPatientModalSchema),
+  })
+
+  const toast = useToast()
+
+  async function handleCreateNewPatient(data: newPatientModalData) {
+    console.log('PATIENT', data)
+
+    await api.post('/patients/create', {
+      owner: data.owner,
+      kind: data.kind,
+      avatar_url: 'https://source.unsplash.com/random',
+      name: data.name,
+      birth_date: data.birthDate,
+      owner_contact: data.ownerContact,
+    })
+
+    if (isSubmitSuccessful) {
+      reset()
+    }
+  }
 
   return (
     <>
@@ -38,28 +86,31 @@ export function NewPatientModal() {
         <ModalContent>
           <ModalHeader>Adicionar novo paciente</ModalHeader>
           <ModalCloseButton />
-          <form>
+          <form onSubmit={handleSubmit(handleCreateNewPatient)}>
             <ModalBody>
               <VStack align="center" justify="center">
                 <Avatar />
-                <Input placeholder="Nome do paciente" required />
-                <Select placeholder="Tipo do paciente" required>
+                <Input placeholder="Nome do paciente" {...register('name')} />
+                <Select placeholder="Tipo do paciente" {...register('kind')}>
                   <option value="CAT">Gato</option>
                   <option value="DOG">Cachorro</option>
                   <option value="PARROT">Papagaio</option>
                 </Select>
-                <Input placeholder="Nome do responsável" required />
+                <Input
+                  placeholder="Nome do responsável"
+                  {...register('owner')}
+                />
                 <HStack>
                   <Input
                     placeholder="87999999999"
                     type="tel"
                     pattern="[0-9]{11}"
-                    required
+                    {...register('ownerContact')}
                   />
                   <Input
                     placeholder="Data de nascimento"
                     type="date"
-                    required
+                    {...register('birthDate')}
                   />
                 </HStack>
               </VStack>
@@ -74,6 +125,25 @@ export function NewPatientModal() {
                 _hover={{ background: 'green.800' }}
                 color="white"
                 type="submit"
+                isLoading={isSubmitting}
+                onClick={() => {
+                  isSubmitSuccessful
+                    ? toast({
+                        title: 'Paciente adicionado',
+                        description:
+                          'Paciente foi criado e adicionado ao sistema!',
+                        status: 'success',
+                        duration: 1500,
+                        isClosable: true,
+                      })
+                    : toast({
+                        title: 'Paciente não adicionado',
+                        description: 'Ocorreu um erro no envio do formulário!',
+                        status: 'error',
+                        duration: 1500,
+                        isClosable: true,
+                      })
+                }}
               >
                 Concluir
               </Button>
