@@ -16,18 +16,15 @@ import {
   Icon,
 } from '@chakra-ui/react'
 import { Sidebar } from '../../components/navigation/Sidebar'
-import Image from 'next/image'
-import { useEffect, useState } from 'react'
-import { api } from '../../services/api'
 import { usePatients } from '../../hooks/usePatients'
-import { sityFormatter } from '../../utils/sityFormatter'
 import { Router, useRouter } from 'next/router'
 import { kindFormatter } from '../../utils/kindFormatter'
 import Link from 'next/link'
+import { useStaff } from '../../hooks/useStaff'
 
 export default function Patients() {
-  const { data: patients, isLoading } = usePatients()
-  console.log(patients)
+  const { data: staff, isLoading } = useStaff()
+  console.log(staff)
 
   const router = useRouter()
 
@@ -85,7 +82,7 @@ export default function Patients() {
               </Tr>
             </Thead>
             <Tbody>
-              {isLoading
+              {/* {isLoading
                 ? skeletonArray.map((position, index) => {
                     return (
                       <Tr key={index}>
@@ -137,7 +134,7 @@ export default function Patients() {
                         </Td>
                       </Tr>
                     )
-                  })}
+                  })} */}
             </Tbody>
           </Table>
         </TableContainer>

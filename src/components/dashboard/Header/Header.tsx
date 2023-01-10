@@ -2,6 +2,7 @@ import { HStack, Text, VStack } from '@chakra-ui/react'
 import { useContext } from 'react'
 import { VetContext } from '../../../context/VetContext'
 import { NewPatientModal } from '../../Modals/NewPatientModal'
+import { NewServiceModal } from '../../Modals/NewServiceModal'
 
 export function Header() {
   const { user } = useContext(VetContext)
@@ -29,7 +30,10 @@ export function Header() {
           Sua clinica está trabalhando no modo: <span>Normal</span>
         </Text>
       </VStack>
-      <NewPatientModal />
+      <HStack>
+        <NewServiceModal />
+        <NewPatientModal />
+      </HStack>
     </HStack>
   )
 }

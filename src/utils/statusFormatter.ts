@@ -1,7 +1,7 @@
 export function statusFormatter(status: String) {
   switch (status) {
     case 'NOT_INITIALIZED':
-      return 'Não inicializado'
+      return 'Não iniciado'
 
     case 'IN_PROGRESS':
       return 'Em progresso'

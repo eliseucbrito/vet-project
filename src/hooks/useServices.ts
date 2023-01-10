@@ -9,7 +9,7 @@ type Patient = {
   name: string
   owner: string
   owner_contact: string
-  sity: 'TRINDADE_PE' | 'ARARIPINA_PE' | 'OURICURI_PE'
+  breed: string
 }
 
 type StaffUser = {
@@ -38,6 +38,7 @@ type Service = {
   price: number
   patient: Patient
   staff: StaffUser
+  city: 'TRINDADE_PE' | 'ARARIPINA_PE' | 'OURICURI_PE'
   type: 'EXAM' | 'MEDICAL_CARE' | 'HOME_CARE' | 'SURGERY' | 'EMERGENCY'
   status:
     | 'NOT_INITIALIZED'
@@ -68,6 +69,7 @@ export async function getServices(): Promise<Service[]> {
       staff: service.staff,
       status: service.status,
       type: service.type,
+      city: service.city,
     }
   })
 
@@ -75,5 +77,7 @@ export async function getServices(): Promise<Service[]> {
 }
 
 export function useServices() {
-  return useQuery(['services'], getServices)
+  return useQuery(['services'], getServices, {
+    staleTime: 1000 * 2,
+  })
 }

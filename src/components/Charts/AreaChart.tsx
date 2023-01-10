@@ -1,34 +1,36 @@
-import React from 'react'
-import ReactApexChart from 'react-apexcharts'
+export function Ignore() {}
 
-class LineChart extends React.Component {
-  constructor(props) {
-    super(props)
+// import React from 'react'
+// import ReactApexChart from 'react-apexcharts'
 
-    this.state = {
-      chartData: [],
-      chartOptions: {},
-    }
-  }
+// class LineChart extends React.Component {
+//   constructor(props: any) {
+//     super(props)
 
-  componentDidMount() {
-    this.setState({
-      chartData: this.props.chartData,
-      chartOptions: this.props.chartOptions,
-    })
-  }
+//     this.state = {
+//       chartData: [],
+//       chartOptions: {},
+//     }
+//   }
 
-  render() {
-    return (
-      <ReactApexChart
-        options={this.state.chartOptions}
-        series={this.state.chartData}
-        type="area"
-        width="100%"
-        height="100%"
-      />
-    )
-  }
-}
+//   componentDidMount() {
+//     this.setState({
+//       chartData: this.props.chartData,
+//       chartOptions: this.props.chartOptions,
+//     })
+//   }
 
-export default LineChart
+//   render() {
+//     return (
+//       <ReactApexChart
+//         options={this.state.chartOptions}
+//         series={this.state.chartData}
+//         type="area"
+//         width="100%"
+//         height="100%"
+//       />
+//     )
+//   }
+// }
+
+// export default LineChart

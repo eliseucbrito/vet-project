@@ -25,6 +25,7 @@ const newPatientModalSchema = z.object({
     .string()
     .min(3, { message: 'O nome deve conter no mínimo 3 caracteres' }),
   kind: z.string(),
+  breed: z.string().min(3),
   owner: z
     .string()
     .min(3, { message: 'O nome deve conter no mínimo 3 caracteres' }),
@@ -42,28 +43,34 @@ export function NewPatientModal() {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
   } = useForm<newPatientModalData>({
     resolver: zodResolver(newPatientModalSchema),
   })
 
   const toast = useToast()
+  let patientCreated = false
 
   async function handleCreateNewPatient(data: newPatientModalData) {
     console.log('PATIENT', data)
 
-    await api.post('/patients/create', {
+    const response = await api.post('/patients/create', {
       owner: data.owner,
       kind: data.kind,
       avatar_url: 'https://source.unsplash.com/random',
       name: data.name,
       birth_date: data.birthDate,
       owner_contact: data.ownerContact,
+      breed: data.breed,
     })
 
-    if (isSubmitSuccessful) {
+    patientCreated = response.status === 201
+
+    if (patientCreated) {
       reset()
     }
+
+    return patientCreated
   }
 
   return (
@@ -81,7 +88,12 @@ export function NewPatientModal() {
         Adicionar paciente
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
+      <Modal
+        size="2xl"
+        isOpen={isOpen}
+        onClose={onClose}
+        closeOnOverlayClick={false}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Adicionar novo paciente</ModalHeader>
@@ -91,11 +103,18 @@ export function NewPatientModal() {
               <VStack align="center" justify="center">
                 <Avatar />
                 <Input placeholder="Nome do paciente" {...register('name')} />
-                <Select placeholder="Tipo do paciente" {...register('kind')}>
-                  <option value="CAT">Gato</option>
-                  <option value="DOG">Cachorro</option>
-                  <option value="PARROT">Papagaio</option>
-                </Select>
+                <HStack w="100%">
+                  <Select placeholder="Tipo do paciente" {...register('kind')}>
+                    <option value="CAT">Gato</option>
+                    <option value="DOG">Cachorro</option>
+                    <option value="PARROT">Papagaio</option>
+                  </Select>
+                  <Input
+                    placeholder="Raça"
+                    type="text"
+                    {...register('breed')}
+                  />
+                </HStack>
                 <Input
                   placeholder="Nome do responsável"
                   {...register('owner')}
@@ -127,7 +146,7 @@ export function NewPatientModal() {
                 type="submit"
                 isLoading={isSubmitting}
                 onClick={() => {
-                  isSubmitSuccessful
+                  patientCreated
                     ? toast({
                         title: 'Paciente adicionado',
                         description:

@@ -27,10 +27,6 @@ export function LastPatients() {
     lg: true,
   })
 
-  const format = new Intl.DateTimeFormat('br', {
-    dateStyle: 'medium',
-  })
-
   const skeletonArray = Array.from(Array(10))
 
   const { data: services, isLoading, isLoadingError } = useServices()
@@ -147,7 +143,7 @@ export function LastPatients() {
                       </Text>
                     </Td>
                     <Td>
-                      <Text>{sityFormatter(service.patient.sity)}</Text>
+                      <Text>{sityFormatter(service.city)}</Text>
                     </Td>
                     <Td>
                       <Text

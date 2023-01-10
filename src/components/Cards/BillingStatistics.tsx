@@ -7,7 +7,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import AreaChart from '../Charts/AreaChart'
+// import AreaChart from '../Charts/AreaChart'
 import Image from 'next/image'
 import * as img from '../../assets/assets'
 import { FcBearish, FcBullish } from 'react-icons/fc'
@@ -24,7 +24,6 @@ interface BillingStaticsProps {
 const chartIncomes = {
   chart: {
     height: 110,
-    type: 'area',
     toolbar: {
       show: false,
     },
@@ -42,10 +41,6 @@ const chartIncomes = {
   },
   dataLabels: {
     enabled: false,
-  },
-  stroke: {
-    show: false,
-    curve: 'smooth',
   },
   xaxis: {
     // type: 'numeric',

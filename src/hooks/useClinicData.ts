@@ -10,7 +10,7 @@ type Patient = {
   name: string
   owner: string
   owner_contact: string
-  sity: 'TRINDADE_PE' | 'ARARIPINA_PE' | 'OURICURI_PE'
+  breed: string
 }
 
 type StaffUser = {
@@ -48,6 +48,7 @@ type ServiceRequest = {
     | 'WAITING_PAYMENT'
     | 'PAID'
     | 'CANCELED'
+  city: 'TRINDADE_PE' | 'ARARIPINA_PE' | 'OURICURI_PE'
 }
 
 type Service = {
@@ -67,6 +68,7 @@ type Service = {
     | 'WAITING_PAYMENT'
     | 'PAID'
     | 'CANCELED'
+  city: 'TRINDADE_PE' | 'ARARIPINA_PE' | 'OURICURI_PE'
 }
 
 type ClinicData = {

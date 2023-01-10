@@ -72,8 +72,8 @@ export function Sidebar() {
           <NavItem isOpen={sidebarOpen} href="/patients" icon={FiUser}>
             Pacientes
           </NavItem>
-          <NavItem isOpen={sidebarOpen} href="/vets" icon={FaUserMd}>
-            Vets
+          <NavItem isOpen={sidebarOpen} href="/staff" icon={FaUserMd}>
+            Staff
           </NavItem>
           <NavItem isOpen={sidebarOpen} href="/settings" icon={FiSettings}>
             Ajustes
