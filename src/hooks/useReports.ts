@@ -1,49 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { api } from '../services/api'
-
-type Patient = {
-  id: number
-  avatar_url: string
-  birth_date: string
-  kind: string
-  name: string
-  owner: string
-  owner_contact: string
-  sity: 'TRINDADE_PE' | 'ARARIPINA_PE' | 'OURICURI_PE'
-}
-
-type StaffUser = {
-  id: number
-  avatar_url: string
-  email: string
-  password: string
-  base_salary: number
-  created_at: Date
-  cpf: string
-  full_name: string
-  staff_role:
-    | 'CEO'
-    | 'GENERAL_MANAGER'
-    | 'MANAGER'
-    | 'VETERINARY'
-    | 'ASSISTANT'
-    | 'INTERN'
-}
-
-type Report = {
-  id: number
-  approved: boolean
-  created_at: Date
-  description: string
-  title: string
-  type: 'PAYMENT' | 'REQUEST' | 'REPORT' | 'APPROVED' | 'REJECTED'
-  staff: StaffUser
-}
+import { Report, ReportRequest } from './useClinicData'
 
 export async function getReports(): Promise<Report[]> {
   const { data } = await api.get('/reports')
 
-  const reports = data.map((report: Report) => {
+  const reports = data.map((report: ReportRequest) => {
     return {
       id: report.id,
       approved: report.approved,
@@ -59,5 +21,7 @@ export async function getReports(): Promise<Report[]> {
 }
 
 export function useReports() {
-  return useQuery(['reports'], getReports)
+  return useQuery(['reports'], getReports, {
+    staleTime: 1000,
+  })
 }

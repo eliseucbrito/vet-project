@@ -4,6 +4,7 @@ import {
   HStack,
   Icon,
   Image as ChakraImage,
+  Spinner,
   Text,
   VStack,
 } from '@chakra-ui/react'
@@ -12,6 +13,8 @@ import Image from 'next/image'
 import * as img from '../../assets/assets'
 import { FcBearish, FcBullish } from 'react-icons/fc'
 import dynamic from 'next/dynamic'
+import { useBillingStatics } from '../../hooks/useBillingStatistics'
+import { FormattedNumber } from 'react-intl'
 
 const Chart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -142,21 +145,33 @@ const chartOutcomes = {
   },
 }
 
-const seriesIncomes = [
-  {
-    name: 'series1',
-    data: [41, 50, 38, 61, 42, 70, 100],
-  },
-]
-
-const seriesOutcomes = [
-  {
-    name: 'series1',
-    data: [11, 55, 38, 41, 48, 22, 35],
-  },
-]
-
 export function BillingStatics({ type }: BillingStaticsProps) {
+  const { data: statics } = useBillingStatics()
+  console.log('STATICS DATA', statics)
+
+  const seriesIncomes = [
+    {
+      name: 'series1',
+      data: [41, 50, 38, 61, 42, 70, 100],
+    },
+  ]
+
+  const seriesOutcomes = [
+    {
+      name: 'series1',
+      data: [11, 55, 38, 41, 48, 22, 35],
+    },
+  ]
+
+  const formattedPrice = (
+    <FormattedNumber
+      value={type === 'incomes' ? statics?.billing : statics?.expenses}
+      minimumFractionDigits={2}
+      maximumFractionDigits={2}
+      currency="BRL"
+    />
+  )
+
   return (
     <Flex direction={['column', 'row']} justify="space-between">
       <HStack
@@ -176,7 +191,9 @@ export function BillingStatics({ type }: BillingStaticsProps) {
         />
         <Box p="1rem 1rem 1rem 0">
           <Text fontSize="0.75rem" color="gray.200" minW="max-content">
-            Faturamento da semana
+            {type === 'incomes'
+              ? 'Faturamento da semana'
+              : 'Despesas da semana'}
           </Text>
           <Text
             fontSize="1.5rem"
@@ -184,7 +201,7 @@ export function BillingStatics({ type }: BillingStaticsProps) {
             color="black"
             minW="max-content"
           >
-            R$ 12.198,00
+            R$ {formattedPrice === undefined ? <Spinner /> : formattedPrice}
           </Text>
         </Box>
       </HStack>

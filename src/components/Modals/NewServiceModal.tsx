@@ -52,6 +52,7 @@ type newServiceModalData = z.infer<typeof newServiceModalSchema>
 
 export function NewServiceModal() {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [createdSuccess, setCreatedSuccess] = useState<Boolean>()
   const {
     register,
     handleSubmit,
@@ -69,7 +70,7 @@ export function NewServiceModal() {
   async function handleCreateNewService(data: newServiceModalData) {
     console.log('SERVICE', data)
 
-    await api.post('/services/create', {
+    const response = await api.post('/services/create', {
       description: data.description,
       price: data.price,
       status: data.status,
@@ -79,7 +80,9 @@ export function NewServiceModal() {
       city: data.city,
     })
 
-    if (isSubmitSuccessful) {
+    const createdSuccess = response.status === 201
+    if (createdSuccess) {
+      setCreatedSuccess(createdSuccess)
       reset()
     }
   }
@@ -209,7 +212,7 @@ export function NewServiceModal() {
                 type="submit"
                 isLoading={isSubmitting}
                 onClick={() => {
-                  isSubmitSuccessful
+                  createdSuccess
                     ? toast({
                         title: 'Paciente adicionado',
                         description:

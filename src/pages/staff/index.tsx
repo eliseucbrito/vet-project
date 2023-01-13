@@ -14,9 +14,14 @@ import {
   Image as ChakraImage,
   Skeleton,
   Icon,
+  Avatar,
 } from '@chakra-ui/react'
 import { Sidebar } from '../../components/navigation/Sidebar'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import { api } from '../../services/api'
 import { usePatients } from '../../hooks/usePatients'
+import { sityFormatter } from '../../utils/sityFormatter'
 import { Router, useRouter } from 'next/router'
 import { kindFormatter } from '../../utils/kindFormatter'
 import Link from 'next/link'
@@ -29,6 +34,10 @@ export default function Patients() {
   const router = useRouter()
 
   const skeletonArray = Array.from(Array(10))
+
+  async function handleStaffDetails(id: number) {
+    await router.push(`/staff/${id}`)
+  }
 
   return (
     <Flex m={0} p={0}>
@@ -45,7 +54,7 @@ export default function Patients() {
           color="green.900"
           lineHeight={1}
         >
-          Pacientes
+          Staff
         </Heading>
         <TableContainer py="1.5rem">
           <Table
@@ -65,24 +74,21 @@ export default function Patients() {
                   <Text>ID</Text>
                 </Th>
                 <Th>
-                  <Text>Tipo</Text>
-                </Th>
-                <Th>
-                  <Text>Espécie</Text>
+                  <Text>Foto</Text>
                 </Th>
                 <Th>
                   <Text>Nome</Text>
                 </Th>
                 <Th>
-                  <Text>Responsável</Text>
+                  <Text>Cargo</Text>
                 </Th>
                 <Th>
-                  <Text>Telefone</Text>
+                  <Text>Em plantão</Text>
                 </Th>
               </Tr>
             </Thead>
-            <Tbody>
-              {/* {isLoading
+            <Tbody p={0}>
+              {isLoading
                 ? skeletonArray.map((position, index) => {
                     return (
                       <Tr key={index}>
@@ -90,10 +96,10 @@ export default function Patients() {
                       </Tr>
                     )
                   })
-                : patients?.map((patient) => {
+                : staff?.map((staff) => {
                     return (
                       <Tr
-                        key={patient.id}
+                        key={staff.id}
                         sx={{
                           td: {
                             background: 'white',
@@ -111,30 +117,25 @@ export default function Patients() {
                           <Checkbox />
                         </Td>
                         <Td>
-                          <Text>{patient.id}</Text>
+                          <Link href={`/staff/${staff.id}`}>
+                            <Text>{staff.id}</Text>
+                          </Link>
+                        </Td>
+                        <Td p={2}>
+                          <Avatar src={staff.avatarUrl} />
                         </Td>
                         <Td>
-                          <Icon
-                            as={kindFormatter(patient.kind)}
-                            boxSize="24px"
-                            color="yellow.base"
-                          />
+                          <Text>{staff.fullName}</Text>
                         </Td>
                         <Td>
-                          <Text>{patient.breed}</Text>
+                          <Text>{staff.role}</Text>
                         </Td>
                         <Td>
-                          <Text>{patient.name}</Text>
-                        </Td>
-                        <Td>
-                          <Text>{patient.owner}</Text>
-                        </Td>
-                        <Td>
-                          <Text>{patient.owner_contact}</Text>
+                          <Text>{String(staff.onDuty)}</Text>
                         </Td>
                       </Tr>
                     )
-                  })} */}
+                  })}
             </Tbody>
           </Table>
         </TableContainer>

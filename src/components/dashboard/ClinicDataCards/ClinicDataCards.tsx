@@ -7,6 +7,7 @@ import { Card } from '../../Cards/Card'
 
 export function ClinicDataCards() {
   const { data: clinicData, error, isLoading, isLoadingError } = useClinicData()
+  console.log('CLINIC DATA', clinicData)
 
   return (
     <Stack
@@ -35,8 +36,8 @@ export function ClinicDataCards() {
         error={isLoadingError}
         label="Staff"
         graphData="Plantão"
-        today={32}
-        total={1352}
+        today={clinicData?.staff.onDuty}
+        total={clinicData?.staff.total}
       >
         <ChakraImage
           as={Image}
@@ -50,8 +51,8 @@ export function ClinicDataCards() {
         error={isLoadingError}
         label="Quartos"
         graphData="Livres"
-        today={32}
-        total={1352}
+        today={clinicData?.rooms.available}
+        total={clinicData?.rooms.total}
       >
         <ChakraImage
           as={Image}

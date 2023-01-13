@@ -42,6 +42,7 @@ export function NewReportModal() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<newReportModalData>({
     resolver: zodResolver(newReportModalSchema),
@@ -50,14 +51,18 @@ export function NewReportModal() {
   async function handleCreateNewReport(data: newReportModalData) {
     console.log(data)
 
-    await api
-      .post('/reports/create', {
-        description: data.description,
-        title: data.title,
-        type: data.type,
-        staff_id: 1,
-      })
-      .catch((err) => alert(`ERRO NO ENVIO DO RELATÓRIO: ${err}`))
+    const response = await api.post('/reports/create', {
+      description: data.description,
+      title: data.title,
+      type: data.type,
+      staff_id: 1,
+    })
+
+    const createdSuccess = response.status === 201
+    if (createdSuccess) {
+      reset()
+    }
+    return createdSuccess
   }
 
   return (

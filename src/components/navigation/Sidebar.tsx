@@ -13,12 +13,12 @@ import Image from 'next/image'
 import * as img from '../../assets/assets'
 import {
   FiCalendar,
+  FiFolder,
   FiGrid,
   FiMenu,
   FiPieChart,
   FiSearch,
   FiSettings,
-  FiUser,
 } from 'react-icons/fi'
 import { FaUserMd } from 'react-icons/fa'
 import { TbPaw } from 'react-icons/tb'
@@ -69,7 +69,7 @@ export function Sidebar() {
           <NavItem isOpen={sidebarOpen} href="/dashboard" icon={FiGrid}>
             Dashboard
           </NavItem>
-          <NavItem isOpen={sidebarOpen} href="/patients" icon={FiUser}>
+          <NavItem isOpen={sidebarOpen} href="/patients" icon={TbPaw}>
             Pacientes
           </NavItem>
           <NavItem isOpen={sidebarOpen} href="/staff" icon={FaUserMd}>
@@ -78,8 +78,8 @@ export function Sidebar() {
           <NavItem isOpen={sidebarOpen} href="/settings" icon={FiSettings}>
             Ajustes
           </NavItem>
-          <NavItem isOpen={sidebarOpen} href="/animals" icon={TbPaw}>
-            Animais
+          <NavItem isOpen={sidebarOpen} href="/animals" icon={FiFolder}>
+            Arquivos
           </NavItem>
           <NavItem isOpen={sidebarOpen} href="/reports" icon={FiPieChart}>
             Relatórios
