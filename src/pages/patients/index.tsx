@@ -17,7 +17,6 @@ import {
 } from '@chakra-ui/react'
 import { Sidebar } from '../../components/navigation/Sidebar'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
 import { api } from '../../services/api'
 import { usePatients } from '../../hooks/usePatients'
 import { sityFormatter } from '../../utils/sityFormatter'

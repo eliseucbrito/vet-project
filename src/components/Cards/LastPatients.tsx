@@ -18,7 +18,6 @@ import {
 import { getServices, useServices } from '../../hooks/useServices'
 import { statusFormatter } from '../../utils/statusFormatter'
 import { sityFormatter } from '../../utils/sityFormatter'
-import { BillingStatics } from './BillingStatistics'
 import { statusColor } from '../../utils/statusColor'
 
 export function LastPatients() {
@@ -30,7 +29,7 @@ export function LastPatients() {
   const skeletonArray = Array.from(Array(10))
 
   const { data: services, isLoading, isLoadingError } = useServices()
-  console.log(services)
+  console.log('SERVICES', services)
 
   return (
     <Box
@@ -97,8 +96,28 @@ export function LastPatients() {
           {isLoading
             ? skeletonArray.map((position, index) => {
                 return (
-                  <Tr key={index}>
-                    <Skeleton h="3rem" w="1000%" borderRadius={12} />
+                  <Tr
+                    key={index}
+                    sx={{
+                      td: {
+                        background: 'white',
+                        whiteSpace: 'nowrap',
+                        '&:first-of-type': {
+                          borderLeftRadius: '12px',
+                        },
+                        '&:last-of-type': {
+                          borderRightRadius: '12px',
+                        },
+                      },
+                    }}
+                  >
+                    <Skeleton as="td" h="3rem" borderRadius={0} />
+                    <Skeleton as="td" h="3rem" borderRadius={0} />
+                    <Skeleton as="td" h="3rem" borderRadius={0} />
+                    <Skeleton as="td" h="3rem" borderRadius={0} />
+                    <Skeleton as="td" h="3rem" borderRadius={0} />
+                    <Skeleton as="td" h="3rem" borderRadius={0} />
+                    <Skeleton as="td" h="3rem" borderRadius={0} />
                   </Tr>
                 )
               })

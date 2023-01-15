@@ -17,15 +17,10 @@ import {
   Avatar,
 } from '@chakra-ui/react'
 import { Sidebar } from '../../components/navigation/Sidebar'
-import Image from 'next/image'
-import { useEffect, useState } from 'react'
-import { api } from '../../services/api'
-import { usePatients } from '../../hooks/usePatients'
-import { sityFormatter } from '../../utils/sityFormatter'
-import { Router, useRouter } from 'next/router'
-import { kindFormatter } from '../../utils/kindFormatter'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useStaff } from '../../hooks/useStaff'
+import { dutyFormatter } from '../../utils/dutyFormatter'
 
 export default function Patients() {
   const { data: staff, isLoading } = useStaff()
@@ -131,7 +126,7 @@ export default function Patients() {
                           <Text>{staff.role}</Text>
                         </Td>
                         <Td>
-                          <Text>{String(staff.onDuty)}</Text>
+                          <Text>{dutyFormatter(staff.onDuty)}</Text>
                         </Td>
                       </Tr>
                     )

@@ -9,15 +9,9 @@ import {
 import { FcSalesPerformance, FcDocument } from 'react-icons/fc'
 import Link from 'next/link'
 import { useReports } from '../../hooks/useReports'
-import { api } from '../../services/api'
-import { useEffect, useState } from 'react'
 
 export function Reports() {
-  const { data: reports, isLoading, status } = useReports()
-  console.log('REPORT DATA', reports)
-  console.log('REPORT LOADING', isLoading)
-  console.log('REPORT STATUS', status)
-
+  const { data: reports, isFetching, status } = useReports()
   return (
     <Box display="flex" flexDir="column" gap="0.3rem" w="100%">
       {reports !== undefined ? (
@@ -57,7 +51,7 @@ export function Reports() {
                   fontWeight="medium"
                   color="gray.200"
                 >
-                  {new Date(report.created_at).toLocaleDateString()}
+                  {new Date(report.createdAt).toLocaleDateString()}
                 </Text>
                 <ChakraLink
                   as={Link}

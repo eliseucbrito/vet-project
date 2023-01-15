@@ -9,7 +9,7 @@ export async function getReports(): Promise<Report[]> {
     return {
       id: report.id,
       approved: report.approved,
-      created_at: report.created_at,
+      createdAt: report.created_at,
       description: report.description,
       title: report.title,
       type: report.type,
@@ -21,7 +21,5 @@ export async function getReports(): Promise<Report[]> {
 }
 
 export function useReports() {
-  return useQuery(['reports'], getReports, {
-    staleTime: 1000,
-  })
+  return useQuery(['reports'], getReports)
 }

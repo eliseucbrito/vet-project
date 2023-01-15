@@ -19,6 +19,8 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { api } from '../../services/api'
+import { useMutation } from '@tanstack/react-query'
+import { queryClient } from '../../services/react-query'
 
 const newPatientModalSchema = z.object({
   name: z
@@ -49,28 +51,44 @@ export function NewPatientModal() {
   })
 
   const toast = useToast()
-  let patientCreated = false
 
-  async function handleCreateNewPatient(data: newPatientModalData) {
-    console.log('PATIENT', data)
+  const createNewPatient = useMutation(
+    async (patient: newPatientModalData) => {
+      const response = await api.post('/patients/create', {
+        ...patient,
+        avatar_url: 'https://source.unsplash.com/random',
+        birth_date: patient.birthDate,
+        owner_contact: patient.ownerContact,
+      })
 
-    const response = await api.post('/patients/create', {
-      owner: data.owner,
-      kind: data.kind,
-      avatar_url: 'https://source.unsplash.com/random',
-      name: data.name,
-      birth_date: data.birthDate,
-      owner_contact: data.ownerContact,
-      breed: data.breed,
-    })
+      return response.data
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['patients'] })
+        reset()
+        toast({
+          title: 'Paciente adicionado',
+          description: 'Paciente foi criado e adicionado ao sistema!',
+          status: 'success',
+          duration: 1500,
+          isClosable: true,
+        })
+      },
+      onError: () => {
+        toast({
+          title: 'Paciente não adicionado',
+          description: 'Ocorreu um erro no envio do formulário!',
+          status: 'error',
+          duration: 1500,
+          isClosable: true,
+        })
+      },
+    },
+  )
 
-    patientCreated = response.status === 201
-
-    if (patientCreated) {
-      reset()
-    }
-
-    return patientCreated
+  async function handleCreateNewPatient(report: newPatientModalData) {
+    await createNewPatient.mutateAsync(report)
   }
 
   return (
@@ -144,25 +162,7 @@ export function NewPatientModal() {
                 _hover={{ background: 'green.800' }}
                 color="white"
                 type="submit"
-                isLoading={isSubmitting}
-                onClick={() => {
-                  patientCreated
-                    ? toast({
-                        title: 'Paciente adicionado',
-                        description:
-                          'Paciente foi criado e adicionado ao sistema!',
-                        status: 'success',
-                        duration: 1500,
-                        isClosable: true,
-                      })
-                    : toast({
-                        title: 'Paciente não adicionado',
-                        description: 'Ocorreu um erro no envio do formulário!',
-                        status: 'error',
-                        duration: 1500,
-                        isClosable: true,
-                      })
-                }}
+                isLoading={isSubmitting || createNewPatient.isLoading}
               >
                 Concluir
               </Button>

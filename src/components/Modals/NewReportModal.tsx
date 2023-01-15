@@ -15,12 +15,15 @@ import {
   Icon,
   Textarea,
   Text,
+  useToast,
 } from '@chakra-ui/react'
 import { FiPlus } from 'react-icons/fi'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { api } from '../../services/api'
+import { QueryClient, useMutation } from '@tanstack/react-query'
+import { queryClient } from '../../services/react-query'
 
 const newReportModalSchema = z.object({
   type: z.string({ required_error: 'Tipo é obrigatório' }),
@@ -39,6 +42,7 @@ type newReportModalData = z.infer<typeof newReportModalSchema>
 
 export function NewReportModal() {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const toast = useToast()
   const {
     register,
     handleSubmit,
@@ -48,21 +52,42 @@ export function NewReportModal() {
     resolver: zodResolver(newReportModalSchema),
   })
 
-  async function handleCreateNewReport(data: newReportModalData) {
-    console.log(data)
+  const createNewReport = useMutation(
+    async (report: newReportModalData) => {
+      const response = await api.post('/reports/create', {
+        ...report,
+        staff_id: 1,
+      })
 
-    const response = await api.post('/reports/create', {
-      description: data.description,
-      title: data.title,
-      type: data.type,
-      staff_id: 1,
-    })
+      return response.data
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries()
+        reset()
+        toast({
+          title: 'Relatório criado',
+          description: 'O relatório foi adicionado ao sistema!',
+          status: 'success',
+          duration: 1500,
+          isClosable: true,
+        })
+      },
+      onError: () => {
+        toast({
+          title: 'Relatório não criado',
+          description: `Ocorreu um erro no envio do relatório!
+                        Verifique os campos e tente novamente.`,
+          status: 'error',
+          duration: 1500,
+          isClosable: true,
+        })
+      },
+    },
+  )
 
-    const createdSuccess = response.status === 201
-    if (createdSuccess) {
-      reset()
-    }
-    return createdSuccess
+  async function handleCreateNewReport(report: newReportModalData) {
+    await createNewReport.mutateAsync(report)
   }
 
   return (
@@ -162,7 +187,7 @@ export function NewReportModal() {
                 _hover={{ background: 'green.800' }}
                 color="white"
                 type="submit"
-                isLoading={isSubmitting}
+                isLoading={isSubmitting || createNewReport.isLoading}
               >
                 Concluir
               </Button>

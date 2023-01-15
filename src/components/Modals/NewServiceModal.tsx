@@ -25,10 +25,12 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { api } from '../../services/api'
+import { queryClient } from '../../services/react-query'
 
 const newServiceModalSchema = z.object({
   patient_id: z
@@ -52,6 +54,7 @@ type newServiceModalData = z.infer<typeof newServiceModalSchema>
 
 export function NewServiceModal() {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const toast = useToast()
   const [createdSuccess, setCreatedSuccess] = useState<Boolean>()
   const {
     register,
@@ -62,29 +65,44 @@ export function NewServiceModal() {
     resolver: zodResolver(newServiceModalSchema),
   })
 
-  const [value, setValue] = useState('0.00')
-  const toast = useToast()
+  const createNewService = useMutation(
+    async (service: newServiceModalData) => {
+      await api.post('/services/create', {
+        description: service.description,
+        price: service.price,
+        status: service.status,
+        type: service.type,
+        patient_id: service.patient_id,
+        staff_id: service.staff_id,
+        city: service.city,
+      })
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries()
+        reset()
+        toast({
+          title: 'Paciente adicionado',
+          description: 'Paciente foi criado e adicionado ao sistema!',
+          status: 'success',
+          duration: 1500,
+          isClosable: true,
+        })
+      },
+      onError: () => {
+        toast({
+          title: 'Paciente não adicionado',
+          description: 'Ocorreu um erro no envio do formulário!',
+          status: 'error',
+          duration: 1500,
+          isClosable: true,
+        })
+      },
+    },
+  )
 
-  console.log('ERRORS', errors)
-
-  async function handleCreateNewService(data: newServiceModalData) {
-    console.log('SERVICE', data)
-
-    const response = await api.post('/services/create', {
-      description: data.description,
-      price: data.price,
-      status: data.status,
-      type: data.type,
-      patient_id: data.patient_id,
-      staff_id: data.staff_id,
-      city: data.city,
-    })
-
-    const createdSuccess = response.status === 201
-    if (createdSuccess) {
-      setCreatedSuccess(createdSuccess)
-      reset()
-    }
+  async function handleCreateNewService(service: newServiceModalData) {
+    await createNewService.mutateAsync(service)
   }
 
   return (
@@ -211,24 +229,6 @@ export function NewServiceModal() {
                 color="white"
                 type="submit"
                 isLoading={isSubmitting}
-                onClick={() => {
-                  createdSuccess
-                    ? toast({
-                        title: 'Paciente adicionado',
-                        description:
-                          'Paciente foi criado e adicionado ao sistema!',
-                        status: 'success',
-                        duration: 1500,
-                        isClosable: true,
-                      })
-                    : toast({
-                        title: 'Paciente não adicionado',
-                        description: 'Ocorreu um erro no envio do formulário!',
-                        status: 'error',
-                        duration: 1500,
-                        isClosable: true,
-                      })
-                }}
               >
                 Concluir
               </Button>

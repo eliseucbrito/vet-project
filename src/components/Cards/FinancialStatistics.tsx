@@ -1,20 +1,8 @@
-import {
-  Box,
-  Flex,
-  HStack,
-  Icon,
-  Image as ChakraImage,
-  Spinner,
-  Text,
-  VStack,
-} from '@chakra-ui/react'
-// import AreaChart from '../Charts/AreaChart'
-import Image from 'next/image'
-import * as img from '../../assets/assets'
-import { FcBearish, FcBullish } from 'react-icons/fc'
+import { Box, Flex, HStack, Spinner, Text } from '@chakra-ui/react'
+import { ApexOptions } from 'apexcharts'
 import dynamic from 'next/dynamic'
-import { useBillingStatics } from '../../hooks/useBillingStatistics'
 import { FormattedNumber } from 'react-intl'
+import { useFinancialStatistics } from '../../hooks/useFinances'
 
 const Chart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -24,9 +12,10 @@ interface BillingStaticsProps {
   type: 'incomes' | 'outcomes'
 }
 
-const chartIncomes = {
+const chartIncomes: ApexOptions = {
   chart: {
     height: 110,
+    type: 'area',
     toolbar: {
       show: false,
     },
@@ -44,6 +33,10 @@ const chartIncomes = {
   },
   dataLabels: {
     enabled: false,
+  },
+  stroke: {
+    show: false,
+    curve: 'smooth',
   },
   xaxis: {
     // type: 'numeric',
@@ -82,7 +75,7 @@ const chartIncomes = {
   },
 }
 
-const chartOutcomes = {
+const chartOutcomes: ApexOptions = {
   chart: {
     height: 110,
     type: 'area',
@@ -145,34 +138,36 @@ const chartOutcomes = {
   },
 }
 
-export function BillingStatics({ type }: BillingStaticsProps) {
-  const { data: statics } = useBillingStatics()
+export function FinancialStatics({ type }: BillingStaticsProps) {
+  const { data: statics, isLoading } = useFinancialStatistics()
   console.log('STATICS DATA', statics)
 
-  const seriesIncomes = [
-    {
-      name: 'series1',
-      data: [41, 50, 38, 61, 42, 70, 100],
-    },
-  ]
-
-  const seriesOutcomes = [
-    {
-      name: 'series1',
-      data: [11, 55, 38, 41, 48, 22, 35],
-    },
-  ]
-
-  const formattedPrice = (
+  const formattedPrice = isLoading ? undefined : (
     <FormattedNumber
-      value={type === 'incomes' ? statics?.billing : statics?.expenses}
+      value={type === 'incomes' ? statics!.weekIncomes : statics!.weekOutcomes}
       minimumFractionDigits={2}
       maximumFractionDigits={2}
       currency="BRL"
     />
   )
 
-  return (
+  const seriesIncomes = [
+    {
+      name: 'Faturamento',
+      data: statics !== undefined ? statics.incomes : [0, 0, 0, 0, 0, 0, 0],
+    },
+  ]
+
+  const seriesOutcomes = [
+    {
+      name: 'Despesas',
+      data: statics !== undefined ? statics.outcomes : [0, 0, 0, 0, 0, 0, 0],
+    },
+  ]
+
+  return isLoading ? (
+    <Spinner />
+  ) : (
     <Flex direction={['column', 'row']} justify="space-between">
       <HStack
         bg="white"
@@ -195,13 +190,14 @@ export function BillingStatics({ type }: BillingStaticsProps) {
               ? 'Faturamento da semana'
               : 'Despesas da semana'}
           </Text>
+
           <Text
             fontSize="1.5rem"
             fontWeight={700}
             color="black"
             minW="max-content"
           >
-            R$ {formattedPrice === undefined ? <Spinner /> : formattedPrice}
+            R$ {formattedPrice}
           </Text>
         </Box>
       </HStack>

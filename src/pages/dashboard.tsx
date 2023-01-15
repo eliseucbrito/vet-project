@@ -3,10 +3,8 @@ import {
   Flex,
   HStack,
   Icon,
-  Stack,
   Text,
   useBreakpointValue,
-  Image as ChakraImage,
   VStack,
   Grid,
   GridItem,
@@ -21,7 +19,7 @@ import { SearchBarPatients } from '../components/navigation/SearchBarPatients'
 import { TodoBlock } from '../components/Cards/Todo'
 import { Reports } from '../components/Cards/Reports'
 import { LastPatients } from '../components/Cards/LastPatients'
-import { BillingStatics } from '../components/Cards/BillingStatistics'
+import { FinancialStatics } from '../components/Cards/FinancialStatistics'
 import { Header } from '../components/dashboard/Header/Header'
 import { ClinicDataCards } from '../components/dashboard/ClinicDataCards/ClinicDataCards'
 import { NewReportModal } from '../components/Modals/NewReportModal'
@@ -74,8 +72,8 @@ export default function Dashboard() {
                 <SearchBarPatients />
                 <LastPatients />
                 <HStack justify="space-between" w="100%">
-                  <BillingStatics type="incomes" />
-                  <BillingStatics type="outcomes" />
+                  <FinancialStatics type="incomes" />
+                  <FinancialStatics type="outcomes" />
                 </HStack>
               </VStack>
             </GridItem>
