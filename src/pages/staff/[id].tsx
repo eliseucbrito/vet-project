@@ -21,7 +21,7 @@ import dayjs from 'dayjs'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FaUserMd } from 'react-icons/fa'
-import { FiChevronDown, FiChevronRight } from 'react-icons/fi'
+import { FiChevronDown, FiChevronRight, FiFilePlus } from 'react-icons/fi'
 import { FormattedNumber } from 'react-intl'
 import { StaffInfo } from '../../components/Cards/StaffInfo'
 import { Sidebar } from '../../components/navigation/Sidebar'
@@ -85,7 +85,7 @@ export default function StaffDetails() {
               <Text>{nameFormatter(staff.fullName)}</Text>
             </HStack>
             <Divider orientation="horizontal" />
-            <Flex py="1.5rem" gap="0.25rem">
+            <Flex py="1.5rem" gap="1rem">
               <HStack w="100%">
                 <Box bg="white" p="1rem" borderLeftRadius="md" w="max-content">
                   <VStack px="2rem">
@@ -185,8 +185,9 @@ export default function StaffDetails() {
                   </HStack>
                 </VStack>
               </HStack>
-              <VStack w="30%" align="start">
+              <VStack bg="white" p="1rem" borderRadius={12} align="start">
                 <Text fontSize="1.25rem">Atividade</Text>
+                <Divider w="15rem" />
                 <Menu>
                   <MenuButton
                     as={Button}
@@ -256,6 +257,129 @@ export default function StaffDetails() {
                   </MenuList>
                 </Menu>
               </VStack>
+            </Flex>
+            <Flex justify="space-between" w="100%" gap="1rem">
+              <VStack
+                align="start"
+                gap="1rem"
+                bg="white"
+                p="1rem"
+                borderRadius={12}
+                w="100%"
+              >
+                <HStack bg="gray.300" p="0.5rem" borderRadius={6}>
+                  <Text bg="white" p="0.5rem 1rem" borderRadius={6}>
+                    Trajetória na empresa
+                  </Text>
+                  <Text p="0.5rem 1rem" borderRadius={6}>
+                    Opção 2
+                  </Text>
+                  <Text p="0.5rem 1rem" borderRadius={6}>
+                    Opção 3
+                  </Text>
+                </HStack>
+                <Box bg="gray.300" w="100%" p="1rem 2rem" borderRadius={6}>
+                  <HStack w="100%" justify="space-between" pb="1rem">
+                    <Text fontWeight={600}>Trajetória resumida</Text>
+                    <Text>Outras opções</Text>
+                  </HStack>
+
+                  <Divider />
+                  <Flex justify="space-between" pt="1rem" w="100%">
+                    <HStack
+                      w="max-content"
+                      bg="white"
+                      p="1rem"
+                      borderRadius={12}
+                    >
+                      <Text fontSize="1.75rem">
+                        {dayjs(staff.createdAt).format("D MMM [']YY")}
+                      </Text>
+                      <Stack direction="row" h="6rem" p={4}>
+                        <Divider orientation="vertical" />
+                      </Stack>
+
+                      <Box>
+                        <Text fontSize="1.25rem">Antigo Cargo</Text>
+                        <Text fontSize="1.25rem" fontWeight={600}>
+                          Veterinária
+                        </Text>
+                      </Box>
+                      <Stack direction="row" h="6rem" p={4}>
+                        <Divider orientation="vertical" />
+                      </Stack>
+
+                      <Box>
+                        <Text fontSize="1.25rem">Novo Cargo</Text>
+                        <Text fontSize="1.25rem" fontWeight={600}>
+                          Gerente
+                        </Text>
+                      </Box>
+                      <Stack direction="row" h="6rem" p={4}>
+                        <Divider orientation="vertical" />
+                      </Stack>
+
+                      <Box>
+                        <Text fontSize="1.25rem">Mudança de salário</Text>
+                        <HStack>
+                          <Text color="gray.400">R$ 8.000,00</Text>
+                          <Text fontWeight={600}>R$ 10.000,00</Text>
+                        </HStack>
+                      </Box>
+                      <Stack direction="row" h="6rem" p={4}>
+                        <Divider orientation="vertical" />
+                      </Stack>
+
+                      <Flex gap="2rem">
+                        <Box>
+                          <Text fontSize="1.25rem">Promovida por</Text>
+                          <Text fontSize="1.25rem" fontWeight={600}>
+                            Eliseu Brito
+                          </Text>
+                        </Box>
+
+                        <Box>
+                          <Text fontSize="1.25rem">Assistência</Text>
+                          <Text fontSize="1.25rem" fontWeight={600}>
+                            Joana Maria
+                          </Text>
+                        </Box>
+                      </Flex>
+                    </HStack>
+                  </Flex>
+                </Box>
+              </VStack>
+              <Box bg="white" p="1rem" borderRadius={12}>
+                <HStack whiteSpace="nowrap" gap="1rem">
+                  <Text fontSize="1.25rem">Documentos</Text>
+                  <Text color="green.600">
+                    <FiFilePlus size={22} />
+                  </Text>
+                </HStack>
+                <Divider w="15rem" />
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rightIcon={<FiChevronDown />}
+                    bg="white"
+                    p="0.75rem"
+                    borderRadius={12}
+                    w="100%"
+                    px={4}
+                    py={2}
+                    transition="all 0.2s"
+                    _hover={{ bg: 'gray.400' }}
+                    _expanded={{ bg: 'green.600' }}
+                  >
+                    Últimos Atendimentos
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem>Report number 3</MenuItem>
+                    <MenuItem>Report number 2</MenuItem>
+                    <MenuItem>Report number 1</MenuItem>
+                  </MenuList>
+                </Menu>
+              </Box>
             </Flex>
           </>
         )}
