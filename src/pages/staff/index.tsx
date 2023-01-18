@@ -15,12 +15,19 @@ import {
   Skeleton,
   Icon,
   Avatar,
+  Wrap,
+  WrapItem,
+  HStack,
 } from '@chakra-ui/react'
 import { Sidebar } from '../../components/navigation/Sidebar'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useStaff } from '../../hooks/useStaff'
 import { dutyFormatter } from '../../utils/dutyFormatter'
+import { StaffCard } from '../../components/Cards/StaffCard'
+import { SmallSearchBar } from '../../components/defaults/SmallSearchBar'
+import { FilterButton } from '../../components/defaults/FilterButton'
+import { SortByButton } from '../../components/defaults/SortByButton'
 
 export default function Patients() {
   const { data: staff, isLoading } = useStaff()
@@ -41,7 +48,7 @@ export default function Patients() {
         overflowY="scroll"
         h="100vh"
         w="100%"
-        p={['0 1rem', '1rem 1.5rem 1rem 3rem']}
+        p={['0 1rem', '1rem 3rem 1rem 3rem']}
       >
         <Heading
           fontWeight={600}
@@ -51,89 +58,32 @@ export default function Patients() {
         >
           Staff
         </Heading>
-        <TableContainer py="1.5rem">
-          <Table
-            w="100%"
-            sx={{
-              borderCollapse: 'separate',
-              borderSpacing: '0 0.5rem',
-            }}
-            scrollBehavior={'auto'}
-          >
-            <Thead>
-              <Tr>
-                <Th>
-                  <Checkbox />
-                </Th>
-                <Th>
-                  <Text>ID</Text>
-                </Th>
-                <Th>
-                  <Text>Foto</Text>
-                </Th>
-                <Th>
-                  <Text>Nome</Text>
-                </Th>
-                <Th>
-                  <Text>Cargo</Text>
-                </Th>
-                <Th>
-                  <Text>Em plantão</Text>
-                </Th>
-              </Tr>
-            </Thead>
-            <Tbody p={0}>
-              {isLoading
-                ? skeletonArray.map((position, index) => {
-                    return (
-                      <Tr key={index}>
-                        <Skeleton h="3rem" w="1350%" borderRadius={12} />
-                      </Tr>
-                    )
-                  })
-                : staff?.map((staff) => {
-                    return (
-                      <Tr
-                        key={staff.id}
-                        sx={{
-                          td: {
-                            background: 'white',
-                            whiteSpace: 'nowrap',
-                            '&:first-of-type': {
-                              borderLeftRadius: '12px',
-                            },
-                            '&:last-of-type': {
-                              borderRightRadius: '12px',
-                            },
-                          },
-                        }}
-                      >
-                        <Td>
-                          <Checkbox />
-                        </Td>
-                        <Td>
-                          <Link href={`/staff/${staff.id}`}>
-                            <Text>{staff.id}</Text>
-                          </Link>
-                        </Td>
-                        <Td p={2}>
-                          <Avatar src={staff.avatarUrl} />
-                        </Td>
-                        <Td>
-                          <Text>{staff.fullName}</Text>
-                        </Td>
-                        <Td>
-                          <Text>{staff.role}</Text>
-                        </Td>
-                        <Td>
-                          <Text>{dutyFormatter(staff.onDuty)}</Text>
-                        </Td>
-                      </Tr>
-                    )
-                  })}
-            </Tbody>
-          </Table>
-        </TableContainer>
+        <Box pt="2rem">
+          <HStack w="100%" justify="space-between">
+            <SmallSearchBar />
+            <Flex gap={2}>
+              <SortByButton />
+              <FilterButton />
+            </Flex>
+          </HStack>
+          <Wrap justify="space-between" spacing="1.5rem" pt="1rem">
+            {staff?.map((staff) => {
+              return (
+                <WrapItem key={staff.id}>
+                  <StaffCard
+                    size="md"
+                    avatarUrl={staff.avatarUrl}
+                    email={staff.email}
+                    fullName={staff.fullName}
+                    role={staff.role}
+                    id={staff.id}
+                    onDuty={staff.onDuty}
+                  />
+                </WrapItem>
+              )
+            })}
+          </Wrap>
+        </Box>
       </Box>
     </Flex>
   )

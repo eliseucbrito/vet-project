@@ -1,16 +1,39 @@
 export function roleFormatter(role: String) {
   switch (role) {
     case 'CEO':
-      return 'CEO'
+      return {
+        role: 'CEO & CTO',
+        explanation: 'Diretor Executivo e de Tecnologia',
+      }
     case 'GENERAL_MANAGER':
-      return 'Gerente Geral'
+      return {
+        role: 'Gerente Geral',
+        explanation: 'Gerente Geral',
+      }
     case 'MANAGER':
-      return 'Gerente'
+      return {
+        role: 'Gerente',
+        explanation: 'Gerente',
+      }
     case 'VETERINARY':
-      return 'Veterinário'
+      return {
+        role: 'Veterinário',
+        explanation: 'Veterinário',
+      }
     case 'ASSISTANT':
-      return 'Assistente'
+      return {
+        role: 'Assistente',
+        explanation: 'Assistente',
+      }
     case 'INTERN':
-      return 'Estagiário'
+      return {
+        role: 'Estagiário',
+        explanation: 'Estagiário',
+      }
+    default:
+      return {
+        role: '???',
+        explanation: 'Cargo não definido',
+      }
   }
 }

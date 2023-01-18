@@ -107,7 +107,7 @@ export default function StaffDetails() {
                       fontWeight={600}
                       px="1rem"
                     >
-                      {roleFormatter(staff.role)}
+                      {roleFormatter(staff.role).role}
                     </Tag>
                   </VStack>
                   <Button
@@ -300,8 +300,8 @@ export default function StaffDetails() {
                       </Stack>
 
                       <Box>
-                        <Text fontSize="1.25rem">Antigo Cargo</Text>
-                        <Text fontSize="1.25rem" fontWeight={600}>
+                        <Text fontSize="1rem">Antigo Cargo</Text>
+                        <Text fontSize="1rem" fontWeight={600}>
                           Veterinária
                         </Text>
                       </Box>
@@ -310,8 +310,8 @@ export default function StaffDetails() {
                       </Stack>
 
                       <Box>
-                        <Text fontSize="1.25rem">Novo Cargo</Text>
-                        <Text fontSize="1.25rem" fontWeight={600}>
+                        <Text fontSize="1rem">Novo Cargo</Text>
+                        <Text fontSize="1rem" fontWeight={600}>
                           Gerente
                         </Text>
                       </Box>
@@ -320,7 +320,7 @@ export default function StaffDetails() {
                       </Stack>
 
                       <Box>
-                        <Text fontSize="1.25rem">Mudança de salário</Text>
+                        <Text fontSize="1rem">Mudança de salário</Text>
                         <HStack>
                           <Text color="gray.400">R$ 8.000,00</Text>
                           <Text fontWeight={600}>R$ 10.000,00</Text>
@@ -332,15 +332,15 @@ export default function StaffDetails() {
 
                       <Flex gap="2rem">
                         <Box>
-                          <Text fontSize="1.25rem">Promovida por</Text>
-                          <Text fontSize="1.25rem" fontWeight={600}>
+                          <Text fontSize="1rem">Promovida por</Text>
+                          <Text fontSize="1rem" fontWeight={600}>
                             Eliseu Brito
                           </Text>
                         </Box>
 
                         <Box>
-                          <Text fontSize="1.25rem">Assistência</Text>
-                          <Text fontSize="1.25rem" fontWeight={600}>
+                          <Text fontSize="1rem">Assistência</Text>
+                          <Text fontSize="1rem" fontWeight={600}>
                             Joana Maria
                           </Text>
                         </Box>
@@ -351,7 +351,7 @@ export default function StaffDetails() {
               </VStack>
               <Box bg="white" p="1rem" borderRadius={12}>
                 <HStack whiteSpace="nowrap" gap="1rem">
-                  <Text fontSize="1.25rem">Documentos</Text>
+                  <Text fontSize="1rem">Documentos</Text>
                   <Text color="green.600">
                     <FiFilePlus size={22} />
                   </Text>

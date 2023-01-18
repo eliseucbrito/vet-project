@@ -45,7 +45,7 @@ export function Sidebar() {
       gap="1.5rem"
       transition="width 0.2s"
     >
-      <Box p="1rem">
+      <Box p="1rem" h="100%">
         <HStack justify="space-between">
           {sidebarOpen && <Image alt="logo VET" src={img.logoDarkImg} />}
           <Icon

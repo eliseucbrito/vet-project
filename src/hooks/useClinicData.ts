@@ -11,6 +11,7 @@ export type PatientRequest = {
   owner: string
   owner_contact: string
   breed: string
+  created_at: Date
 }
 
 export type Patient = {
@@ -22,6 +23,7 @@ export type Patient = {
   owner: string
   ownerContact: string
   breed: string
+  createdAt: Date
 }
 
 export type StaffRequest = {
@@ -84,7 +86,6 @@ export type ServiceRequest = {
 
 export type Service = {
   id: number
-  avatarUrl: string
   createdAt: string
   description: string
   price: number

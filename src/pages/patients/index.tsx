@@ -14,6 +14,9 @@ import {
   Image as ChakraImage,
   Skeleton,
   Icon,
+  HStack,
+  Wrap,
+  WrapItem,
 } from '@chakra-ui/react'
 import { Sidebar } from '../../components/navigation/Sidebar'
 import Image from 'next/image'
@@ -23,6 +26,11 @@ import { sityFormatter } from '../../utils/sityFormatter'
 import { Router, useRouter } from 'next/router'
 import { kindFormatter } from '../../utils/kindFormatter'
 import Link from 'next/link'
+import { FilterButton } from '../../components/defaults/FilterButton'
+import { SmallSearchBar } from '../../components/defaults/SmallSearchBar'
+import { SortByButton } from '../../components/defaults/SortByButton'
+import staff from '../staff'
+import { PatientCard } from '../../components/Cards/PatientCard'
 
 export default function Patients() {
   const { data: patients, isLoading } = usePatients()
@@ -39,7 +47,7 @@ export default function Patients() {
         overflowY="scroll"
         h="100vh"
         w="100%"
-        p={['0 1rem', '1rem 1.5rem 1rem 3rem']}
+        p={['0 1rem', '1rem 3rem 1rem 3rem']}
       >
         <Heading
           fontWeight={600}
@@ -49,97 +57,26 @@ export default function Patients() {
         >
           Pacientes
         </Heading>
-        <TableContainer py="1.5rem">
-          <Table
-            w="100%"
-            sx={{
-              borderCollapse: 'separate',
-              borderSpacing: '0 0.5rem',
-            }}
-            scrollBehavior={'auto'}
-          >
-            <Thead>
-              <Tr>
-                <Th>
-                  <Checkbox />
-                </Th>
-                <Th>
-                  <Text>ID</Text>
-                </Th>
-                <Th>
-                  <Text>Tipo</Text>
-                </Th>
-                <Th>
-                  <Text>Espécie</Text>
-                </Th>
-                <Th>
-                  <Text>Nome</Text>
-                </Th>
-                <Th>
-                  <Text>Responsável</Text>
-                </Th>
-                <Th>
-                  <Text>Telefone</Text>
-                </Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {isLoading
-                ? skeletonArray.map((position, index) => {
-                    return (
-                      <Tr key={index}>
-                        <Skeleton h="3rem" w="1350%" borderRadius={12} />
-                      </Tr>
-                    )
-                  })
-                : patients?.map((patient) => {
-                    return (
-                      <Tr
-                        key={patient.id}
-                        sx={{
-                          td: {
-                            background: 'white',
-                            whiteSpace: 'nowrap',
-                            '&:first-of-type': {
-                              borderLeftRadius: '12px',
-                            },
-                            '&:last-of-type': {
-                              borderRightRadius: '12px',
-                            },
-                          },
-                        }}
-                      >
-                        <Td>
-                          <Checkbox />
-                        </Td>
-                        <Td>
-                          <Text>{patient.id}</Text>
-                        </Td>
-                        <Td>
-                          <Icon
-                            as={kindFormatter(patient.kind)}
-                            boxSize="24px"
-                            color="yellow.base"
-                          />
-                        </Td>
-                        <Td>
-                          <Text>{patient.breed}</Text>
-                        </Td>
-                        <Td>
-                          <Text>{patient.name}</Text>
-                        </Td>
-                        <Td>
-                          <Text>{patient.owner}</Text>
-                        </Td>
-                        <Td>
-                          <Text>{patient.owner_contact}</Text>
-                        </Td>
-                      </Tr>
-                    )
-                  })}
-            </Tbody>
-          </Table>
-        </TableContainer>
+        <Box pt="2rem">
+          <HStack w="100%" justify="space-between">
+            <SmallSearchBar />
+            <Flex gap={2}>
+              <SortByButton />
+              <FilterButton />
+            </Flex>
+          </HStack>
+          <Wrap justify="space-between" spacing="1.5rem" pt="1rem">
+            {patients?.map((patient) => {
+              return (
+                <WrapItem key={patient.id}>
+                  <Link href={`/patients/${patient.id}`}>
+                    <PatientCard size="md" {...patient} />
+                  </Link>
+                </WrapItem>
+              )
+            })}
+          </Wrap>
+        </Box>
       </Box>
     </Flex>
   )
