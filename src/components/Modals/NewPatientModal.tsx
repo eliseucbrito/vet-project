@@ -54,7 +54,7 @@ export function NewPatientModal() {
 
   const createNewPatient = useMutation(
     async (patient: newPatientModalData) => {
-      const response = await api.post('/patients/create', {
+      const response = await api.post('/api/patients/v1/create', {
         ...patient,
         avatar_url: 'https://source.unsplash.com/random',
         birth_date: patient.birthDate,

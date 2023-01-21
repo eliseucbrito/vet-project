@@ -144,7 +144,7 @@ export function FinancialStatics({ type }: BillingStaticsProps) {
 
   const formattedPrice = isLoading ? undefined : (
     <FormattedNumber
-      value={type === 'incomes' ? statics!.weekIncomes : statics!.weekOutcomes}
+      value={type === 'incomes' ? statics?.weekIncomes : statics?.weekOutcomes}
       minimumFractionDigits={2}
       maximumFractionDigits={2}
       currency="BRL"

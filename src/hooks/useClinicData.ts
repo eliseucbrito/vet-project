@@ -157,9 +157,9 @@ export type Report = {
 }
 
 export async function getClinicData(): Promise<ClinicData> {
-  const { data: servicesData } = await api.get('/services')
-  const { data: staffData } = await api.get('/staff')
-  const { data: roomsData } = await api.get('/rooms')
+  const { data: servicesData } = await api.get('/api/services/v1')
+  const { data: staffData } = await api.get('/api/staff/v1')
+  const { data: roomsData } = await api.get('/api/rooms/v1')
 
   const services = servicesData.map((service: ServiceRequest) => {
     return {

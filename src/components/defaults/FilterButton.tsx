@@ -21,6 +21,7 @@ export function FilterButton() {
           p="0.25rem 0.5rem"
           align="center"
           gap="0.25rem"
+          cursor="pointer"
         >
           <BsFilter />
           <Text fontSize="0.875rem">Filtro</Text>

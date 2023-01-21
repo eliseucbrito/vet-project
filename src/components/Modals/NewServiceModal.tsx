@@ -67,7 +67,7 @@ export function NewServiceModal() {
 
   const createNewService = useMutation(
     async (service: newServiceModalData) => {
-      await api.post('/services/create', {
+      await api.post('/api/services/v1/create', {
         description: service.description,
         price: service.price,
         status: service.status,

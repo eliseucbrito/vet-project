@@ -56,7 +56,7 @@ type GetServicesResponse = {
 }
 
 export async function getServices(): Promise<Service[]> {
-  const { data } = await api.get('/services')
+  const { data } = await api.get('/api/services/v1')
 
   const services = data.map((service: Service) => {
     return {

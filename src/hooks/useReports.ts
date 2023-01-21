@@ -3,7 +3,7 @@ import { api } from '../services/api'
 import { Report, ReportRequest } from './useClinicData'
 
 export async function getReports(): Promise<Report[]> {
-  const { data } = await api.get('/reports')
+  const { data } = await api.get('/api/reports/v1')
 
   const reports = data.map((report: ReportRequest) => {
     return {

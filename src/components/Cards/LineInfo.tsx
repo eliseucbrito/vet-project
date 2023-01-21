@@ -7,7 +7,7 @@ interface StaffInfoProps extends TextProps {
   children?: ReactNode
 }
 
-export function StaffInfo({
+export function LineInfo({
   data,
   label,
   children,
@@ -15,7 +15,7 @@ export function StaffInfo({
 }: StaffInfoProps) {
   return (
     <Box w="100%">
-      <Text fontWeight={600} color="gray.500">
+      <Text fontWeight={600} color="gray.500" whiteSpace="nowrap">
         {label}
       </Text>
       <Text fontSize="sm" {...textprops}>

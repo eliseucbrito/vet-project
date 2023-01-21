@@ -23,7 +23,14 @@ interface PatientCardProps extends Patient {
 
 export function PatientCard({ size, ...patient }: PatientCardProps) {
   return (
-    <Box w="17rem" bg="white" p="1rem" borderRadius="2xl">
+    <Box
+      w="17rem"
+      minW="17rem"
+      bg="white"
+      p="1rem"
+      borderLeftRadius="2xl"
+      borderRightRadius={size !== 'lg' ? '2xl' : '0'}
+    >
       <VStack px="2rem" align="center">
         <Avatar
           src={
@@ -60,7 +67,7 @@ export function PatientCard({ size, ...patient }: PatientCardProps) {
             fontSize="sm"
             lineHeight={1}
           >
-            {/* {phoneFormatter(patient.ownerContact)} */}
+            {phoneFormatter(patient.ownerContact)}
           </Text>
         )}
         <Tag
@@ -84,7 +91,7 @@ export function PatientCard({ size, ...patient }: PatientCardProps) {
               Tipo
             </Text>
             <Icon
-              as={kindFormatter(patient.kind)}
+              as={kindFormatter(patient.kind)?.icon}
               boxSize="1.5rem"
               color="yellow.500"
             />

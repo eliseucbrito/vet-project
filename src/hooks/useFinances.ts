@@ -16,8 +16,12 @@ export type FinancesProps = {
 }
 
 export async function getFinances(): Promise<FinancesProps> {
-  const { data: reportsData } = await api.get<ReportRequest[]>('/reports')
-  const { data: servicesData } = await api.get<ServiceRequest[]>('/services')
+  const { data: reportsData } = await api.get<ReportRequest[]>(
+    '/api/reports/v1',
+  )
+  const { data: servicesData } = await api.get<ServiceRequest[]>(
+    '/api/services/v1',
+  )
 
   const weekDayFinance = [
     { weekDay: 0, incomes: 0, outcomes: 0, profits: 0 },

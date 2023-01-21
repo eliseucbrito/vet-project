@@ -11,10 +11,10 @@ import Link from 'next/link'
 import { useReports } from '../../hooks/useReports'
 
 export function Reports() {
-  const { data: reports, isFetching, status } = useReports()
+  const { data: reports, isSuccess, status } = useReports()
   return (
     <Box display="flex" flexDir="column" gap="0.3rem" w="100%">
-      {reports !== undefined ? (
+      {isSuccess ? (
         reports.slice(0, 3).map((report) => {
           return (
             <VStack

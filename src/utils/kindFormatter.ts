@@ -4,20 +4,20 @@ import { GiCow, GiHorseHead, GiRattlesnake, GiSeaTurtle } from 'react-icons/gi'
 export function kindFormatter(kind: string) {
   switch (kind) {
     case 'DOG':
-      return FaDog
+      return { name: 'Cachorro', icon: FaDog }
     case 'CAT':
-      return FaCat
+      return { name: 'Gato', icon: FaCat }
     case 'BIRD':
-      return FaEarlybirds
+      return { name: 'Pássaro', icon: FaEarlybirds }
     case 'TURTLE':
-      return GiSeaTurtle
+      return { name: 'Tartaruga', icon: GiSeaTurtle }
     case 'OTTER':
-      return FaOtter
-    case 'SNAKE':
-      return GiRattlesnake
-    case 'COW':
-      return GiCow
+      return { name: 'Lontra', icon: FaOtter }
+    case 'REPTILE':
+      return { name: 'Réptil', icon: GiRattlesnake }
+    case 'CATTLE':
+      return { name: 'Gado Bovino', icon: GiCow }
     case 'HORSE':
-      return GiHorseHead
+      return { name: 'Cavalo', icon: GiHorseHead }
   }
 }

@@ -3,7 +3,7 @@ import { api } from '../services/api'
 import { Staff, StaffRequest } from './useClinicData'
 
 export async function getStaff(): Promise<Staff[]> {
-  const { data } = await api.get('/staff')
+  const { data } = await api.get('/api/staff/v1')
   console.log('STAFF DATA', data)
 
   const staff = data.map((user: StaffRequest) => {

@@ -19,24 +19,16 @@ import {
   WrapItem,
 } from '@chakra-ui/react'
 import { Sidebar } from '../../components/navigation/Sidebar'
-import Image from 'next/image'
-import { api } from '../../services/api'
 import { usePatients } from '../../hooks/usePatients'
-import { sityFormatter } from '../../utils/sityFormatter'
-import { Router, useRouter } from 'next/router'
-import { kindFormatter } from '../../utils/kindFormatter'
 import Link from 'next/link'
 import { FilterButton } from '../../components/defaults/FilterButton'
 import { SmallSearchBar } from '../../components/defaults/SmallSearchBar'
 import { SortByButton } from '../../components/defaults/SortByButton'
-import staff from '../staff'
 import { PatientCard } from '../../components/Cards/PatientCard'
 
 export default function Patients() {
   const { data: patients, isLoading } = usePatients()
   console.log(patients)
-
-  const router = useRouter()
 
   const skeletonArray = Array.from(Array(10))
 
