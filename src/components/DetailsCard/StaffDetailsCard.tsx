@@ -1,16 +1,20 @@
 import { VStack, HStack } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import { FormattedNumber } from 'react-intl'
-import { StaffDetails } from '../../hooks/useStaffDetails'
+import { StaffDetailsType } from '../../hooks/useStaffDetails'
 import { CnpjCpfFormatter } from '../../utils/CnpjCpfFormatter'
 import { dutyFormatter } from '../../utils/dutyFormatter'
+import { hourFormatter } from '../../utils/hourFormatter'
 import { LineInfo } from '../Cards/LineInfo'
 
 interface StaffDetailsCardProps {
-  staff: StaffDetails
+  staff: StaffDetailsType
 }
 
 export function StaffDetailsCard({ staff }: StaffDetailsCardProps) {
+  const weeklyWorkLoadInHours = staff.weeklyWorkLoad / 60
+  const hoursLeft = staff.weeklyWorkLoad - staff.workLoadCompleted
+
   return (
     <VStack
       h="100%"
@@ -36,7 +40,10 @@ export function StaffDetailsCard({ staff }: StaffDetailsCardProps) {
           />
         </LineInfo>
 
-        <LineInfo label="Carga Horária" data={'40h/sem'} />
+        <LineInfo
+          label="Carga Horária"
+          data={`${weeklyWorkLoadInHours}h/sem`}
+        />
       </HStack>
 
       <HStack w="100%" gap="2rem" justify="space-between">
@@ -55,7 +62,12 @@ export function StaffDetailsCard({ staff }: StaffDetailsCardProps) {
           />
         </LineInfo>
 
-        <LineInfo label={'Horas Trabalhadas'} data={'23h / 40h'} />
+        <LineInfo
+          label={'Horas Trabalhadas'}
+          data={`${hourFormatter(
+            staff.workLoadCompleted,
+          )}h / ${weeklyWorkLoadInHours}h`}
+        />
       </HStack>
 
       <HStack w="100%" gap="2rem" justify="space-between">

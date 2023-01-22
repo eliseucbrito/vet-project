@@ -13,13 +13,20 @@ import {
 import { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import { FiChevronDown } from 'react-icons/fi'
-import { getStaffDetails, ReportDetails } from '../../hooks/useStaffDetails'
+import {
+  ReportDetails,
+  StaffServicesDetails,
+} from '../../hooks/useStaffDetails'
 
 interface ActivityCardProps {
   reports: ReportDetails[]
+  services: StaffServicesDetails[]
 }
 
-export function ActivityCard({ reports }: ActivityCardProps) {
+export function ActivityCard({ reports, services }: ActivityCardProps) {
+  console.log('REPORTS', reports)
+  console.log('SERVICES', services)
+
   return (
     <HStack
       bg="white"
@@ -34,7 +41,7 @@ export function ActivityCard({ reports }: ActivityCardProps) {
       <VStack bg="white" borderRadius={12} align="start">
         <Text fontSize="1.25rem">Atividade</Text>
         <Divider w="15rem" />
-        <Menu>
+        <Menu w="100%">
           <MenuButton
             as={Button}
             rightIcon={<FiChevronDown />}
@@ -50,18 +57,22 @@ export function ActivityCard({ reports }: ActivityCardProps) {
           >
             Últimos Relatórios
           </MenuButton>
-          <MenuList>
-            {reports.slice(0, 5).map((report) => {
-              return (
-                <MenuItem
-                  as={Link}
-                  href={`/api/services/v1/${report.id}`}
-                  key={report.id}
-                >
-                  {report.title}
-                </MenuItem>
-              )
-            })}
+          <MenuList w="105%">
+            {reports.length === 0 ? (
+              <Text textAlign="center">Sem relatórios registrados</Text>
+            ) : (
+              reports.slice(0, 5).map((report) => {
+                return (
+                  <MenuItem
+                    as={Link}
+                    href={`/api/services/v1/${report.id}`}
+                    key={report.id}
+                  >
+                    {report.title}
+                  </MenuItem>
+                )
+              })
+            )}
           </MenuList>
         </Menu>
 
@@ -82,9 +93,22 @@ export function ActivityCard({ reports }: ActivityCardProps) {
             Últimos Atendimentos
           </MenuButton>
           <MenuList>
-            <MenuItem>Service number 3</MenuItem>
-            <MenuItem>Service number 2</MenuItem>
-            <MenuItem>Service number 1</MenuItem>
+            {services.length === 0 ? (
+              <Text textAlign="center">Sem Atendimentos registrados</Text>
+            ) : (
+              services.slice(0, 5).map((service) => {
+                return (
+                  <MenuItem
+                    as={Link}
+                    href={`/api/services/v1/${service.id}`}
+                    key={service.id}
+                  >
+                    {service.type} <br />
+                    {service.patient.name}
+                  </MenuItem>
+                )
+              })
+            )}
           </MenuList>
         </Menu>
 

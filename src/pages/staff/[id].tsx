@@ -24,7 +24,7 @@ import { LineInfo } from '../../components/Cards/LineInfo'
 import { Sidebar } from '../../components/navigation/Sidebar'
 import {
   getStaffDetails,
-  ServiceDetails,
+  StaffDetailsType,
   useStaffDetails,
 } from '../../hooks/useStaffDetails'
 import { CnpjCpfFormatter } from '../../utils/CnpjCpfFormatter'
@@ -34,9 +34,10 @@ import { StaffCard } from '../../components/Cards/StaffCard'
 import { StaffDetailsCard } from '../../components/DetailsCard/StaffDetailsCard'
 import { ActivityCard } from '../../components/DetailsCard/ActivityCard'
 import { TrajectoryCard } from '../../components/DetailsCard/TrajectoryCard'
+import Link from 'next/link'
 
 interface StaffDetailsProps {
-  staffSSR: ServiceDetails
+  staffSSR: StaffDetailsType
   id: string
 }
 
@@ -84,43 +85,55 @@ export default function StaffDetails({ staffSSR, id }: StaffDetailsProps) {
                 />
 
                 <StaffDetailsCard staff={staff} />
-                <ActivityCard reports={staff.reports} />
+                <ActivityCard
+                  reports={staff.reports}
+                  services={staff.services}
+                />
               </HStack>
             </Flex>
             <Flex justify="space-between" w="100%" gap="1rem">
-              <TrajectoryCard />
+              <TrajectoryCard services={staff.services} />
 
-              <Box bg="white" p="1rem" borderRadius={12}>
-                <HStack whiteSpace="nowrap" gap="1rem">
-                  <Text fontSize="1rem">Documentos</Text>
-                  <Text color="green.600">
-                    <FiFilePlus size={22} />
-                  </Text>
-                </HStack>
-                <Divider w="15rem" />
-                <Menu>
-                  <MenuButton
-                    as={Button}
-                    rightIcon={<FiChevronDown />}
-                    bg="white"
-                    p="0.75rem"
-                    borderRadius={12}
-                    w="100%"
-                    px={4}
-                    py={2}
-                    transition="all 0.2s"
-                    _hover={{ bg: 'gray.400' }}
-                    _expanded={{ bg: 'green.600' }}
-                  >
-                    Últimos Atendimentos
-                  </MenuButton>
-                  <MenuList>
-                    <MenuItem>Report number 3</MenuItem>
-                    <MenuItem>Report number 2</MenuItem>
-                    <MenuItem>Report number 1</MenuItem>
-                  </MenuList>
-                </Menu>
-              </Box>
+              <VStack
+                bg="white"
+                p="1rem"
+                borderRadius={12}
+                gap={1}
+                align="start"
+                w="max-content"
+              >
+                <Text fontSize="1rem" whiteSpace="normal">
+                  Documentos
+                </Text>
+                <Divider />
+                <Text
+                  as={Link}
+                  lineHeight={1}
+                  fontSize="1rem"
+                  color="black"
+                  p="0.25rem"
+                  href={'/exams'}
+                  _hover={{ color: 'gray.600' }}
+                  transition="color 0.2s"
+                  whiteSpace="normal"
+                >
+                  Identidade
+                </Text>
+
+                <Text
+                  as={Link}
+                  lineHeight={1}
+                  fontSize="1rem"
+                  color="black"
+                  p="0.25rem"
+                  href={'/exams'}
+                  _hover={{ color: 'gray.600' }}
+                  transition="color 0.2s"
+                  whiteSpace="normal"
+                >
+                  Carteira de Trabalho
+                </Text>
+              </VStack>
             </Flex>
           </>
         )}
