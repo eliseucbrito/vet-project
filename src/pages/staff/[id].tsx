@@ -54,7 +54,16 @@ export default function StaffDetails({ staffSSR, id }: StaffDetailsProps) {
     <Flex w="100vw" h="100vh">
       <Sidebar />
 
-      <Box overflow="auto" w="100%" p={['0 1rem', '1rem 1.5rem 1rem 3rem']}>
+      <Box
+        overflow="auto"
+        sx={{
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        }}
+        w="100%"
+        p={['0 1rem', '1rem 1.5rem 1rem 3rem']}
+      >
         {staff === undefined ? (
           <Spinner />
         ) : (
@@ -92,7 +101,10 @@ export default function StaffDetails({ staffSSR, id }: StaffDetailsProps) {
               </HStack>
             </Flex>
             <Flex justify="space-between" w="100%" gap="1rem">
-              <TrajectoryCard services={staff.services} />
+              <TrajectoryCard
+                services={staff.services}
+                roleHistoric={staff.roleHistoric}
+              />
 
               <VStack
                 bg="white"
@@ -129,7 +141,7 @@ export default function StaffDetails({ staffSSR, id }: StaffDetailsProps) {
                   href={'/exams'}
                   _hover={{ color: 'gray.600' }}
                   transition="color 0.2s"
-                  whiteSpace="normal"
+                  whiteSpace="nowrap"
                 >
                   Carteira de Trabalho
                 </Text>

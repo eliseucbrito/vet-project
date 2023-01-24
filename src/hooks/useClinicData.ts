@@ -144,6 +144,7 @@ export type ReportRequest = {
   title: string
   type: 'PAYMENT' | 'REQUEST' | 'REPORT' | 'APPROVED' | 'REJECTED'
   staff: StaffRequest
+  payment_value: number
 }
 
 export type Report = {

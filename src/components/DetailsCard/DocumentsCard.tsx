@@ -9,8 +9,9 @@ export function DocumentsCard() {
       borderRadius={12}
       gap={1}
       align="start"
-      justify="space-between"
-      w="100%"
+      flex={1}
+      w="max-content"
+      h="100%"
     >
       <VStack align="start" w="100%">
         <Text fontSize="1rem" whiteSpace="normal">

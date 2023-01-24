@@ -70,15 +70,17 @@ export default function Patients() {
             {staff?.map((staff) => {
               return (
                 <WrapItem key={staff.id}>
-                  <StaffCard
-                    size="md"
-                    avatarUrl={staff.avatarUrl}
-                    email={staff.email}
-                    fullName={staff.fullName}
-                    role={staff.role}
-                    id={staff.id}
-                    onDuty={staff.onDuty}
-                  />
+                  <Link href={`/staff/${staff.id}`}>
+                    <StaffCard
+                      size="md"
+                      avatarUrl={staff.avatarUrl}
+                      email={staff.email}
+                      fullName={staff.fullName}
+                      role={staff.role}
+                      id={staff.id}
+                      onDuty={staff.onDuty}
+                    />
+                  </Link>
                 </WrapItem>
               )
             })}

@@ -10,19 +10,31 @@ import {
 import dayjs from 'dayjs'
 import { useState } from 'react'
 import { ServiceDetails } from '../../hooks/usePatientDetails'
-import { StaffServicesDetails } from '../../hooks/useStaffDetails'
+import {
+  RoleHistoricDetails,
+  StaffServicesDetails,
+} from '../../hooks/useStaffDetails'
 import { kindFormatter } from '../../utils/kindFormatter'
+import { roleFormatter } from '../../utils/roleFormatter'
 import { serviceTypeFormatter } from '../../utils/serviceTypeFormatter'
 import { sityFormatter } from '../../utils/sityFormatter'
 import { statusFormatter } from '../../utils/statusFormatter'
 import { CheckBar } from '../defaults/CheckBar'
+import { FormattedNumber } from 'react-intl'
 import { FilterButton } from '../defaults/FilterButton'
+import { nameFormatter } from '../../utils/nameFormatter'
+import Link from 'next/link'
+import { hourFormatter } from '../../utils/hourFormatter'
 
 interface TrajectoryCardProps {
   services: StaffServicesDetails[]
+  roleHistoric: RoleHistoricDetails[]
 }
 
-export function TrajectoryCard({ services }: TrajectoryCardProps) {
+export function TrajectoryCard({
+  services,
+  roleHistoric,
+}: TrajectoryCardProps) {
   const [displayedData, setDisplayedData] = useState(1)
 
   return (
@@ -32,8 +44,18 @@ export function TrajectoryCard({ services }: TrajectoryCardProps) {
       bg="white"
       p="1rem"
       borderRadius={12}
-      w="100%"
+      w="max-content"
       overflow="auto"
+      sx={{
+        '&::-webkit-scrollbar': {
+          width: '12px',
+          borderRadius: '8px',
+          backgroundColor: `rgba(0, 0, 0, 0.1)`,
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: `rgba(0, 0, 0, 0.05)`,
+        },
+      }}
     >
       <HStack bg="gray.300" p="0.5rem" borderRadius={6}>
         <Text
@@ -65,67 +87,136 @@ export function TrajectoryCard({ services }: TrajectoryCardProps) {
           </HStack>
 
           <Divider />
-          {services.map((service) => {
-            return (
-              <Flex key={service.id} justify="space-between" pt="1rem" w="100%">
-                <HStack w="max-content" bg="white" p="1rem" borderRadius={12}>
-                  <Text fontSize="1.75rem">
-                    {dayjs(service.createdAt).format("D MMM [']YY")}
-                  </Text>
-                  <Stack direction="row" h="6rem" p={4}>
-                    <Divider orientation="vertical" />
-                  </Stack>
+          <VStack
+            overflow="auto"
+            h="100%"
+            w="100%"
+            p={2}
+            mt={4}
+            sx={{
+              '&::-webkit-scrollbar': {
+                width: '12px',
+                borderRadius: '8px',
+                backgroundColor: `rgba(0, 0, 0, 0.1)`,
+              },
+              '&::-webkit-scrollbar-thumb': {
+                backgroundColor: `rgba(0, 0, 0, 0.05)`,
+              },
+            }}
+          >
+            {roleHistoric.map((role, index) => {
+              return (
+                <Flex
+                  key={role.id}
+                  justify="space-between"
+                  w="100%"
+                  align="center"
+                  gap="2rem"
+                >
+                  <CheckBar
+                    variable={'COMPLETED'}
+                    requirement={'COMPLETED'}
+                    LineBackground={'blue'}
+                    CircleBackground={'white'}
+                    borderColorIfTrue={'blue'}
+                    borderColorIfFalse={'green.600'}
+                  />
 
-                  <Box>
-                    <Text fontSize="1rem">Antigo Cargo</Text>
-                    <Text fontSize="1rem" fontWeight={600}>
-                      Veterinária
+                  <HStack w="max-content" bg="white" p="1rem" borderRadius={12}>
+                    <Text fontSize="1.75rem" whiteSpace="nowrap">
+                      {dayjs(role.startedIn).format("D MMM [']YY")}
                     </Text>
-                  </Box>
-                  <Stack direction="row" h="6rem" p={4}>
-                    <Divider orientation="vertical" />
-                  </Stack>
+                    <Stack direction="row" h="6rem" p={4}>
+                      <Divider orientation="vertical" />
+                    </Stack>
 
-                  <Box>
-                    <Text fontSize="1rem">Novo Cargo</Text>
-                    <Text fontSize="1rem" fontWeight={600}>
-                      Gerente
-                    </Text>
-                  </Box>
-                  <Stack direction="row" h="6rem" p={4}>
-                    <Divider orientation="vertical" />
-                  </Stack>
+                    {index > 0 && (
+                      <>
+                        <Box>
+                          <Text fontSize="1rem">Antigo Cargo</Text>
+                          <Text fontSize="1rem" fontWeight={600}>
+                            {roleFormatter(roleHistoric[index - 1]?.role).role}
+                          </Text>
+                        </Box>
+                        <Stack direction="row" h="6rem" p={4}>
+                          <Divider orientation="vertical" />
+                        </Stack>
+                      </>
+                    )}
 
-                  <Box>
-                    <Text fontSize="1rem">Mudança de salário</Text>
-                    <HStack>
-                      <Text color="gray.400">R$ 8.000,00</Text>
-                      <Text fontWeight={600}>R$ 10.000,00</Text>
-                    </HStack>
-                  </Box>
-                  <Stack direction="row" h="6rem" p={4}>
-                    <Divider orientation="vertical" />
-                  </Stack>
-
-                  <Flex gap="2rem">
                     <Box>
-                      <Text fontSize="1rem">Promovida por</Text>
+                      <Text fontSize="1rem">Novo Cargo</Text>
                       <Text fontSize="1rem" fontWeight={600}>
-                        Eliseu Brito
+                        {roleFormatter(role.role).role}
                       </Text>
                     </Box>
+                    <Stack direction="row" h="6rem" p={4}>
+                      <Divider orientation="vertical" />
+                    </Stack>
 
                     <Box>
-                      <Text fontSize="1rem">Assistência</Text>
-                      <Text fontSize="1rem" fontWeight={600}>
-                        Joana Maria
+                      <Text fontSize="1rem">
+                        {index > 0 ? 'Mudança de salário' : 'Salário'}
                       </Text>
+                      <HStack>
+                        {index > 0 && (
+                          <Text color="gray.400">
+                            R${' '}
+                            <FormattedNumber
+                              value={roleHistoric[index - 1]!.baseSalary}
+                              minimumFractionDigits={2}
+                              maximumFractionDigits={2}
+                              currency="BRL"
+                            />
+                          </Text>
+                        )}
+                        <Text fontWeight={600}>
+                          R${' '}
+                          <FormattedNumber
+                            value={role.baseSalary}
+                            minimumFractionDigits={2}
+                            maximumFractionDigits={2}
+                            currency="BRL"
+                          />
+                        </Text>
+                      </HStack>
                     </Box>
-                  </Flex>
-                </HStack>
-              </Flex>
-            )
-          })}
+                    <Stack direction="row" h="6rem" p={4}>
+                      <Divider orientation="vertical" />
+                    </Stack>
+
+                    <Box>
+                      <Text fontSize="1rem">Carga Horária</Text>
+                      <HStack>
+                        {index > 0 && (
+                          <Text color="gray.400">
+                            {roleHistoric[index - 1]!.weeklyWorkLoad / 60}h/sem
+                          </Text>
+                        )}
+                        <Text fontWeight={600}>
+                          {role.weeklyWorkLoad / 60}h/sem
+                        </Text>
+                      </HStack>
+                    </Box>
+
+                    <Flex gap="2rem">
+                      <Box>
+                        <Text fontSize="1rem">Promovida por</Text>
+                        <Text
+                          as={Link}
+                          href={`/staff/${role.promotedBy.id}`}
+                          fontSize="1rem"
+                          fontWeight={600}
+                        >
+                          {nameFormatter(role.promotedBy.fullName)}
+                        </Text>
+                      </Box>
+                    </Flex>
+                  </HStack>
+                </Flex>
+              )
+            })}
+          </VStack>
         </Box>
       ) : (
         <Box bg="gray.300" w="100%" p="1rem 2rem" borderRadius={6}>
@@ -135,15 +226,31 @@ export function TrajectoryCard({ services }: TrajectoryCardProps) {
           </HStack>
 
           <Divider />
-          <VStack h="100%" w="100%" mt={4}>
+          <VStack
+            overflowX="auto"
+            h="100%"
+            w="100%"
+            p={2}
+            mt={4}
+            sx={{
+              '&::-webkit-scrollbar': {
+                width: '12px',
+                borderRadius: '8px',
+                backgroundColor: `rgba(0, 0, 0, 0.1)`,
+              },
+              '&::-webkit-scrollbar-thumb': {
+                backgroundColor: `rgba(0, 0, 0, 0.05)`,
+              },
+            }}
+          >
             {services.map((service) => {
               return (
                 <Flex
-                  align="center"
                   key={service.id}
                   justify="space-between"
                   w="100%"
-                  gap="1rem"
+                  align="center"
+                  gap="2rem"
                 >
                   <CheckBar
                     variable={service.status}

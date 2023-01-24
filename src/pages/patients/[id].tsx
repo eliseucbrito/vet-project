@@ -37,6 +37,7 @@ import { DocumentsCard } from '../../components/DetailsCard/DocumentsCard'
 
 interface PatientDetailsProps {
   PatientServices: PatientServicesType[]
+  id: string
 }
 
 export default function PatientDetails({
@@ -57,7 +58,16 @@ export default function PatientDetails({
     <Flex w="100vw" h="100vh">
       <Sidebar />
 
-      <Box w="100%" p={['0 1rem', '1rem 1.5rem 3rem 3rem']}>
+      <Box
+        overflow="auto"
+        sx={{
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        }}
+        w="100%"
+        p={['0 1rem', '1rem 1.5rem 1rem 3rem']}
+      >
         {!isSuccess ? (
           <Spinner />
         ) : (
@@ -98,9 +108,9 @@ export default function PatientDetails({
 
                   <PatientReportsCard services={data.services} />
                 </HStack>
-                <HStack h="100%" w="100%" align="start">
+                <HStack justify="space-between" w="100%" gap="1rem">
                   <ServicesDetailsCard
-                    service={data.services}
+                    services={data.services}
                     title="Serviços"
                   />
                   <DocumentsCard />
@@ -115,7 +125,7 @@ export default function PatientDetails({
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const id = params!.id
+  const id = String(params!.id)
   const patientServices = await getPatientsDetails(id)
 
   return {
