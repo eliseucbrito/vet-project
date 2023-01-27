@@ -68,16 +68,15 @@ export type StaffDetailsType = {
 
 export async function getStaffDetails(id: string): Promise<StaffDetailsType> {
   const { data: staffData } = await api.get(`/api/staff/v1/${id}`)
-  const { data: staffReportsData } = await api.get(
-    `/api/staff/v1/${id}/reports`,
-  )
-  const { data: roleHistoricData } = await api.get(
-    `/api/staff/v1/${id}/role-historic`,
-  )
-
-  const { data: staffServices } = await api.get(`/api/services/v1/staff`, {
+  const { data: staffReportsData } = await api.get(`/api/reports/v1`, {
     params: {
-      id,
+      'staff-id': id,
+    },
+  })
+
+  const { data: staffServices } = await api.get(`/api/services/v1`, {
+    params: {
+      'staff-id': id,
     },
   })
 
@@ -88,19 +87,21 @@ export async function getStaffDetails(id: string): Promise<StaffDetailsType> {
     }
   })
 
-  const roleHistoric = roleHistoricData.map((obj) => {
-    return {
-      id: obj.id,
-      startedIn: obj.started_in,
-      baseSalary: obj.base_salary / 1000,
-      weeklyWorkLoad: obj.weekly_work_load,
-      promotedBy: {
-        id: obj.promoted_by.id,
-        fullName: obj.promoted_by.full_name,
-      },
-      role: obj.role,
-    }
-  })
+  console.log('STAFF DATA', staffData)
+
+  // const roleHistoric = roleHistoricData.map((obj) => {
+  //   return {
+  //     id: obj.id,
+  //     startedIn: obj.started_in,
+  //     baseSalary: obj.base_salary / 1000,
+  //     weeklyWorkLoad: obj.weekly_work_load,
+  //     promotedBy: {
+  //       id: obj.promoted_by.id,
+  //       fullName: obj.promoted_by.full_name,
+  //     },
+  //     role: obj.role,
+  //   }
+  // })
 
   const services = staffServices.map((service: any) => {
     return {
@@ -125,12 +126,12 @@ export async function getStaffDetails(id: string): Promise<StaffDetailsType> {
     cpf: staffData.cpf,
     fullName: staffData.full_name,
     onDuty: staffData.on_duty,
-    role: staffData.staffRole,
+    role: staffData.staff_role,
     weeklyWorkLoad: staffData.weekly_work_load,
     workLoadCompleted: staffData.work_load_completed,
     reports,
     services,
-    roleHistoric,
+    roleHistoric: [],
   }
 
   return staff

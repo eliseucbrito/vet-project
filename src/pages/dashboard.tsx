@@ -32,77 +32,74 @@ export default function Dashboard() {
   const [hasNotification, setHasNotification] = useState(true)
 
   return (
-    <Flex m={0} p={0}>
-      {isWideVersion && <Sidebar />}
-      <Box h="100vh" w="100%" p={['0 1rem', '0.25rem 1.5rem 1rem 2rem']}>
-        <HStack w="100%" m={0} p={0} mb="1rem" justify="space-between">
-          {!isWideVersion && (
-            <HStack mt="-0.4%" justify="space-between" w="100%">
-              <Box mt="0.5rem">
-                <DrawerBar />
-              </Box>
-              <Box cursor="pointer" w="100%">
-                <DrawerTodo />
-              </Box>
-              <Box pt="0.5rem">
-                <Icon
-                  as={FiBell}
-                  fill={hasNotification ? 'yellow.400' : ''}
-                  stroke={hasNotification ? 'yellow.400' : ''}
-                  boxSize="1rem"
-                  onClick={() => setHasNotification(!hasNotification)}
-                />
-              </Box>
-            </HStack>
-          )}
-        </HStack>
-        <main>
-          <Header />
-          <ClinicDataCards />
-          <Grid
-            display={['flex', 'grid']}
-            flexDir="column"
-            gap="1rem"
-            mt="1rem"
-            mr="1rem"
-            templateColumns={'70% 30%'}
-          >
-            <GridItem w="100%">
-              <VStack>
-                <SearchBarPatients />
-                <LastPatients />
-                <HStack justify="space-between" w="100%">
-                  <FinancialStatics type="incomes" />
-                  <FinancialStatics type="outcomes" />
-                </HStack>
+    <Box h="100vh" w="100%" p={['0 1rem', '0.25rem 0 1rem 2.5rem']}>
+      <HStack w="100%" m={0} p={0} mb="1rem" justify="space-between">
+        {!isWideVersion && (
+          <HStack mt="-0.4%" justify="space-between" w="100%">
+            <Box mt="0.5rem">
+              <DrawerBar />
+            </Box>
+            <Box cursor="pointer" w="100%">
+              <DrawerTodo />
+            </Box>
+            <Box pt="0.5rem">
+              <Icon
+                as={FiBell}
+                fill={hasNotification ? 'yellow.400' : ''}
+                stroke={hasNotification ? 'yellow.400' : ''}
+                boxSize="1rem"
+                onClick={() => setHasNotification(!hasNotification)}
+              />
+            </Box>
+          </HStack>
+        )}
+      </HStack>
+      <main>
+        <Header />
+        <ClinicDataCards />
+        <Grid
+          display={['flex', 'grid']}
+          flexDir="column"
+          gap="1rem"
+          mt="1rem"
+          mr="1rem"
+          templateColumns={'70% 30%'}
+        >
+          <GridItem w="100%">
+            <VStack>
+              <SearchBarPatients />
+              <LastPatients />
+              <HStack justify="space-between" w="100%">
+                <FinancialStatics type="incomes" />
+                <FinancialStatics type="outcomes" />
+              </HStack>
+            </VStack>
+          </GridItem>
+          <GridItem w="100%">
+            <VStack h="100%" justify="space-between">
+              <Show breakpoint="(min-height: 700px)">
+                <TodoBlock />
+              </Show>
+              <VStack w="100%">
+                <Flex
+                  bg="white"
+                  w="100%"
+                  p="0.75rem"
+                  borderRadius={12}
+                  justify="space-between"
+                  align="center"
+                >
+                  <Text fontSize="0.875rem" fontWeight="600" color="black">
+                    Relatórios
+                  </Text>
+                  <NewReportModal />
+                </Flex>
+                <Reports />
               </VStack>
-            </GridItem>
-            <GridItem w="100%">
-              <VStack h="100%" justify="space-between">
-                <Show breakpoint="(min-height: 700px)">
-                  <TodoBlock />
-                </Show>
-                <VStack w="100%">
-                  <Flex
-                    bg="white"
-                    w="100%"
-                    p="0.75rem"
-                    borderRadius={12}
-                    justify="space-between"
-                    align="center"
-                  >
-                    <Text fontSize="0.875rem" fontWeight="600" color="black">
-                      Relatórios
-                    </Text>
-                    <NewReportModal />
-                  </Flex>
-                  <Reports />
-                </VStack>
-              </VStack>
-            </GridItem>
-          </Grid>
-        </main>
-      </Box>
-    </Flex>
+            </VStack>
+          </GridItem>
+        </Grid>
+      </main>
+    </Box>
   )
 }

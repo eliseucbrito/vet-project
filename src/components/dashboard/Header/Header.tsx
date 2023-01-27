@@ -1,6 +1,7 @@
 import { HStack, Text, VStack } from '@chakra-ui/react'
 import { useContext } from 'react'
 import { VetContext } from '../../../context/VetContext'
+import { DutyButton } from '../../defaults/DutyButton'
 import { NewPatientModal } from '../../Modals/NewPatientModal'
 import { NewServiceModal } from '../../Modals/NewServiceModal'
 
@@ -31,6 +32,7 @@ export function Header() {
         </Text>
       </VStack>
       <HStack>
+        <DutyButton />
         <NewServiceModal />
         <NewPatientModal />
       </HStack>

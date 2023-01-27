@@ -57,6 +57,7 @@ interface User {
   lvlAccess: number
   avatar?: string
   sex: string
+  id: string
 }
 
 interface VetContextData {
@@ -77,6 +78,7 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
     lvlAccess: 5,
     sex: 'm',
     avatar: 'https://github.com/eliseubrito7z.png',
+    id: '1',
   })
 
   return <VetContext.Provider value={{ user }}>{children}</VetContext.Provider>

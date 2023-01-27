@@ -55,72 +55,68 @@ export default function PatientDetails({
   console.log('PATIENT DATA', data)
 
   return (
-    <Flex w="100vw" h="100vh">
-      <Sidebar />
+    <Box
+      overflow="auto"
+      sx={{
+        '&::-webkit-scrollbar': {
+          display: 'none',
+        },
+      }}
+      w="100%"
+      p={['0 1rem', '1rem 1.5rem 1rem 3rem']}
+    >
+      {!isSuccess ? (
+        <Spinner />
+      ) : (
+        <>
+          <Heading
+            fontWeight={600}
+            fontSize="1.5rem"
+            color="green.700"
+            lineHeight={1}
+            display="flex"
+            gap="0.5rem"
+          >
+            <FaUserMd />
+            {data.patient.name}
+          </Heading>
+          <Divider mt="1rem" orientation="horizontal" />
 
-      <Box
-        overflow="auto"
-        sx={{
-          '&::-webkit-scrollbar': {
-            display: 'none',
-          },
-        }}
-        w="100%"
-        p={['0 1rem', '1rem 1.5rem 1rem 3rem']}
-      >
-        {!isSuccess ? (
-          <Spinner />
-        ) : (
-          <>
-            <Heading
-              fontWeight={600}
-              fontSize="1.5rem"
-              color="green.700"
-              lineHeight={1}
-              display="flex"
-              gap="0.5rem"
-            >
-              <FaUserMd />
-              {data.patient.name}
-            </Heading>
-            <Divider mt="1rem" orientation="horizontal" />
+          <HStack
+            overflow="auto"
+            justify="space-between"
+            align="flex-start"
+            w="100%"
+            h="100%"
+            pt="1rem"
+            sx={{
+              '&::-webkit-scrollbar': {
+                display: 'none',
+              },
+            }}
+          >
+            <VStack h="100%" w="100%" align="start" gap={1}>
+              <HStack h="100%" w="100%" align="start">
+                <PatientCard size="lg" {...data.patient} />
+                <PatientDetailsCard
+                  patient={data.patient}
+                  totalServices={data.services.length}
+                />
 
-            <HStack
-              overflow="auto"
-              justify="space-between"
-              align="flex-start"
-              w="100%"
-              h="100%"
-              pt="1rem"
-              sx={{
-                '&::-webkit-scrollbar': {
-                  display: 'none',
-                },
-              }}
-            >
-              <VStack h="100%" w="100%" align="start" gap={1}>
-                <HStack h="100%" w="100%" align="start">
-                  <PatientCard size="lg" {...data.patient} />
-                  <PatientDetailsCard
-                    patient={data.patient}
-                    totalServices={data.services.length}
-                  />
-
-                  <PatientReportsCard services={data.services} />
-                </HStack>
-                <HStack justify="space-between" w="100%" gap="1rem">
-                  <ServicesDetailsCard
-                    services={data.services}
-                    title="Serviços"
-                  />
-                  <DocumentsCard />
-                </HStack>
-              </VStack>
-            </HStack>
-          </>
-        )}
-      </Box>
-    </Flex>
+                <PatientReportsCard services={data.services} />
+              </HStack>
+              <HStack justify="space-between" w="100%" gap="1rem">
+                <ServicesDetailsCard
+                  services={data.services}
+                  title="Serviços"
+                />
+                <DocumentsCard />
+              </HStack>
+            </VStack>
+          </HStack>
+        </>
+      )}
+    </Box>
   )
 }
 

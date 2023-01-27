@@ -33,43 +33,40 @@ export default function Patients() {
   const skeletonArray = Array.from(Array(10))
 
   return (
-    <Flex m={0} p={0}>
-      <Sidebar />
-      <Box
-        overflowY="scroll"
-        h="100vh"
-        w="100%"
-        p={['0 1rem', '1rem 3rem 1rem 3rem']}
+    <Box
+      overflowY="scroll"
+      h="100vh"
+      w="100%"
+      p={['0 1rem', '1rem 3rem 1rem 3rem']}
+    >
+      <Heading
+        fontWeight={600}
+        fontSize="1.5rem"
+        color="green.900"
+        lineHeight={1}
       >
-        <Heading
-          fontWeight={600}
-          fontSize="1.5rem"
-          color="green.900"
-          lineHeight={1}
-        >
-          Pacientes
-        </Heading>
-        <Box pt="2rem">
-          <HStack w="100%" justify="space-between">
-            <SmallSearchBar />
-            <Flex gap={2}>
-              <SortByButton />
-              <FilterButton />
-            </Flex>
-          </HStack>
-          <Wrap justify="space-between" spacing="1.5rem" pt="1rem">
-            {patients?.map((patient) => {
-              return (
-                <WrapItem key={patient.id}>
-                  <Link href={`/patients/${patient.id}`}>
-                    <PatientCard size="md" {...patient} />
-                  </Link>
-                </WrapItem>
-              )
-            })}
-          </Wrap>
-        </Box>
+        Pacientes
+      </Heading>
+      <Box pt="2rem">
+        <HStack w="100%" justify="space-between">
+          <SmallSearchBar />
+          <Flex gap={2}>
+            <SortByButton />
+            <FilterButton />
+          </Flex>
+        </HStack>
+        <Wrap justify="space-between" spacing="1.5rem" pt="1rem">
+          {patients?.map((patient) => {
+            return (
+              <WrapItem key={patient.id}>
+                <Link href={`/patients/${patient.id}`}>
+                  <PatientCard size="md" {...patient} />
+                </Link>
+              </WrapItem>
+            )
+          })}
+        </Wrap>
       </Box>
-    </Flex>
+    </Box>
   )
 }

@@ -17,6 +17,7 @@ export type PatientDetails = {
 export type ServiceDetails = {
   id: number
   createdAt: string
+  service_date: string
   type: 'EXAM' | 'MEDICAL_CARE' | 'HOME_CARE' | 'SURGERY' | 'EMERGENCY'
   status:
     | 'NOT_INITIALIZED'
@@ -48,7 +49,11 @@ export type PatientServicesType = {
 export async function getPatientsDetails(
   id: string,
 ): Promise<PatientServicesType> {
-  const { data } = await api.get(`/api/patients/v1/${id}/details`)
+  const { data } = await api.get(`/api/services/v1`, {
+    params: {
+      'patient-id': id,
+    },
+  })
 
   const ServicesArray: ServiceDetails[] = data.map((data: any) => {
     return {
@@ -60,8 +65,7 @@ export async function getPatientsDetails(
       staff: {
         id: data.staff.id,
         fullName: data.staff.full_name,
-        role: data.staff.staffRole,
-        email: data.staff.email,
+        role: data.staff.role,
       },
     }
   })

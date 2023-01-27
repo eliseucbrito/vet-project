@@ -51,106 +51,99 @@ export default function StaffDetails({ staffSSR, id }: StaffDetailsProps) {
   console.log(staff)
 
   return (
-    <Flex w="100vw" h="100vh">
-      <Sidebar />
+    <Box
+      overflow="auto"
+      sx={{
+        '&::-webkit-scrollbar': {
+          display: 'none',
+        },
+      }}
+      w="100%"
+      p={['0 1rem', '1rem 1.5rem 1rem 3rem']}
+    >
+      {staff === undefined ? (
+        <Spinner />
+      ) : (
+        <>
+          <Heading
+            fontWeight={600}
+            fontSize="1.5rem"
+            color="green.700"
+            lineHeight={1}
+            display="flex"
+            gap="0.5rem"
+          >
+            <FaUserMd />
+            {nameFormatter(staff.fullName)}
+          </Heading>
+          <Divider mt="1rem" orientation="horizontal" />
 
-      <Box
-        overflow="auto"
-        sx={{
-          '&::-webkit-scrollbar': {
-            display: 'none',
-          },
-        }}
-        w="100%"
-        p={['0 1rem', '1rem 1.5rem 1rem 3rem']}
-      >
-        {staff === undefined ? (
-          <Spinner />
-        ) : (
-          <>
-            <Heading
-              fontWeight={600}
-              fontSize="1.5rem"
-              color="green.700"
-              lineHeight={1}
-              display="flex"
-              gap="0.5rem"
-            >
-              <FaUserMd />
-              {nameFormatter(staff.fullName)}
-            </Heading>
-            <Divider mt="1rem" orientation="horizontal" />
-
-            <Flex py="1.5rem" gap="1rem">
-              <HStack w="100%">
-                <StaffCard
-                  size={'lg'}
-                  avatarUrl={staff.avatarUrl}
-                  fullName={staff.fullName}
-                  email={staff.email}
-                  role={staff.role}
-                  id={staff.id}
-                  onDuty={staff.onDuty}
-                />
-
-                <StaffDetailsCard staff={staff} />
-                <ActivityCard
-                  reports={staff.reports}
-                  services={staff.services}
-                />
-              </HStack>
-            </Flex>
-            <Flex justify="space-between" w="100%" gap="1rem">
-              <TrajectoryCard
-                services={staff.services}
-                roleHistoric={staff.roleHistoric}
+          <Flex py="1.5rem" gap="1rem">
+            <HStack w="100%">
+              <StaffCard
+                size={'lg'}
+                avatarUrl={staff.avatarUrl}
+                fullName={staff.fullName}
+                email={staff.email}
+                role={staff.role}
+                id={staff.id}
+                onDuty={staff.onDuty}
               />
 
-              <VStack
-                bg="white"
-                p="1rem"
-                borderRadius={12}
-                gap={1}
-                align="start"
-                w="max-content"
-              >
-                <Text fontSize="1rem" whiteSpace="normal">
-                  Documentos
-                </Text>
-                <Divider />
-                <Text
-                  as={Link}
-                  lineHeight={1}
-                  fontSize="1rem"
-                  color="black"
-                  p="0.25rem"
-                  href={'/exams'}
-                  _hover={{ color: 'gray.600' }}
-                  transition="color 0.2s"
-                  whiteSpace="normal"
-                >
-                  Identidade
-                </Text>
+              <StaffDetailsCard staff={staff} />
+              <ActivityCard reports={staff.reports} services={staff.services} />
+            </HStack>
+          </Flex>
+          <Flex justify="space-between" w="100%" gap="1rem">
+            <TrajectoryCard
+              services={staff.services}
+              roleHistoric={staff.roleHistoric}
+            />
 
-                <Text
-                  as={Link}
-                  lineHeight={1}
-                  fontSize="1rem"
-                  color="black"
-                  p="0.25rem"
-                  href={'/exams'}
-                  _hover={{ color: 'gray.600' }}
-                  transition="color 0.2s"
-                  whiteSpace="nowrap"
-                >
-                  Carteira de Trabalho
-                </Text>
-              </VStack>
-            </Flex>
-          </>
-        )}
-      </Box>
-    </Flex>
+            <VStack
+              bg="white"
+              p="1rem"
+              borderRadius={12}
+              gap={1}
+              align="start"
+              w="max-content"
+            >
+              <Text fontSize="1rem" whiteSpace="normal">
+                Documentos
+              </Text>
+              <Divider />
+              <Text
+                as={Link}
+                lineHeight={1}
+                fontSize="1rem"
+                color="black"
+                p="0.25rem"
+                href={'/exams'}
+                _hover={{ color: 'gray.600' }}
+                transition="color 0.2s"
+                whiteSpace="normal"
+              >
+                Identidade
+              </Text>
+
+              <Text
+                as={Link}
+                lineHeight={1}
+                fontSize="1rem"
+                color="black"
+                p="0.25rem"
+                href={'/exams'}
+                _hover={{ color: 'gray.600' }}
+                transition="color 0.2s"
+                whiteSpace="nowrap"
+              >
+                Carteira de Trabalho
+              </Text>
+            </VStack>
+          </Flex>
+        </>
+      )}
+    </Box>
   )
 }
 
