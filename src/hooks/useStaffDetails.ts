@@ -7,13 +7,19 @@ export type ReportDetails = {
 }
 
 export type RoleHistoricDetails = {
-  id: number
   startedIn: string
   baseSalary: number
   weeklyWorkLoad: number
   promotedBy: {
     id: number
     fullName: string
+    role:
+      | 'CEO'
+      | 'GENERAL_MANAGER'
+      | 'MANAGER'
+      | 'VETERINARY'
+      | 'ASSISTANT'
+      | 'INTERN'
   }
   role:
     | 'CEO'
@@ -87,21 +93,25 @@ export async function getStaffDetails(id: string): Promise<StaffDetailsType> {
     }
   })
 
-  console.log('STAFF DATA', staffData)
+  console.log('STAFF DATA 2', staffData)
 
-  // const roleHistoric = roleHistoricData.map((obj) => {
-  //   return {
-  //     id: obj.id,
-  //     startedIn: obj.started_in,
-  //     baseSalary: obj.base_salary / 1000,
-  //     weeklyWorkLoad: obj.weekly_work_load,
-  //     promotedBy: {
-  //       id: obj.promoted_by.id,
-  //       fullName: obj.promoted_by.full_name,
-  //     },
-  //     role: obj.role,
-  //   }
-  // })
+  const roleHistoric: Array<RoleHistoricDetails> = []
+
+  staffData.role_historic.map((obj) => {
+    const historic = {
+      startedIn: obj.started_in,
+      baseSalary: obj.base_salary / 1000,
+      weeklyWorkLoad: obj.weekly_work_load,
+      promotedBy: {
+        id: obj.promoter.id,
+        fullName: obj.promoter.full_name,
+        role: obj.promoter.role,
+      },
+      role: obj.role,
+    }
+
+    roleHistoric.unshift(historic)
+  })
 
   const services = staffServices.map((service: any) => {
     return {
@@ -121,7 +131,7 @@ export async function getStaffDetails(id: string): Promise<StaffDetailsType> {
     id: staffData.id,
     avatarUrl: staffData.avatar_url,
     email: staffData.email,
-    baseSalary: staffData.base_salary,
+    baseSalary: staffData.base_salary / 1000,
     createdAt: staffData.created_at,
     cpf: staffData.cpf,
     fullName: staffData.full_name,
@@ -131,7 +141,7 @@ export async function getStaffDetails(id: string): Promise<StaffDetailsType> {
     workLoadCompleted: staffData.work_load_completed,
     reports,
     services,
-    roleHistoric: [],
+    roleHistoric,
   }
 
   return staff

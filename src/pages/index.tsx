@@ -30,6 +30,8 @@ export default function Login() {
       bgGradient={['linear(to-b, #EEF0F0, #E7E7E7, #8ED7C6 )', 'none']}
       justifyContent="space-between"
       overflow="hidden"
+      w="100%"
+      h="100%"
     >
       <Box w="100%" h="100vh" py="2.5rem" px={['1rem', '5rem']}>
         <ChakraImage marginBottom="2rem" as={Image} src={img.logoImg} alt="" />

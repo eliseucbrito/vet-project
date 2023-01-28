@@ -54,7 +54,7 @@ export function NewReportModal() {
 
   const createNewReport = useMutation(
     async (report: newReportModalData) => {
-      const response = await api.post('/reports/create', {
+      const response = await api.post('/api/reports/v1/create', {
         ...report,
         staff_id: 1,
       })

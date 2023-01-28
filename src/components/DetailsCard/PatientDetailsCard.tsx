@@ -34,11 +34,12 @@ export function PatientDetailsCard({
           label="Data de Nascimento"
           data={new Date(patient.birthDate).toLocaleDateString()}
         />
+
+        <LineInfo label="Serviços Realizados" data={totalServices}></LineInfo>
       </HStack>
 
       <HStack w="100%" gap="2rem" justify="space-between">
-        <LineInfo label="Serviços Realizados" data={totalServices}></LineInfo>
-
+        <LineInfo label="Raça" data={patient.breed} />
         <LineInfo
           label="Idade"
           data={ageFormatter(patient.birthDate)}
@@ -49,12 +50,8 @@ export function PatientDetailsCard({
         <LineInfo label="ID" data={patient.id} />
 
         <LineInfo label="Espécie" data={kindFormatter(patient.kind)?.name} />
-      </HStack>
 
-      <HStack w="100%" gap="2rem" justify="space-between">
         <LineInfo label="Responsável" data={nameFormatter(patient.owner)} />
-
-        <LineInfo label="Raça" data={patient.breed} />
       </HStack>
     </VStack>
   )

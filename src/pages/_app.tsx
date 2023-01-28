@@ -43,7 +43,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 </Flex>
               ) : (
                 <Flex w="100vw" h="100vh">
-                  <Sidebar />
+                  {router.asPath !== '/' && <Sidebar />}
                   <Component {...pageProps} />
                 </Flex>
               )}

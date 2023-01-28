@@ -33,7 +33,7 @@ import { nameFormatter } from '../../utils/nameFormatter'
 import { StaffCard } from '../../components/Cards/StaffCard'
 import { StaffDetailsCard } from '../../components/DetailsCard/StaffDetailsCard'
 import { ActivityCard } from '../../components/DetailsCard/ActivityCard'
-import { TrajectoryCard } from '../../components/DetailsCard/TrajectoryCard'
+import { TrajectoryCard } from '../../components/StaffHistoricCard/StaffHistoricCard'
 import Link from 'next/link'
 
 interface StaffDetailsProps {
@@ -48,7 +48,7 @@ export default function StaffDetails({ staffSSR, id }: StaffDetailsProps) {
     initialData: staffSSR,
   })
 
-  console.log(staff)
+  console.log('STAFF DETAILSS', staff)
 
   return (
     <Box
@@ -94,7 +94,7 @@ export default function StaffDetails({ staffSSR, id }: StaffDetailsProps) {
               <ActivityCard reports={staff.reports} services={staff.services} />
             </HStack>
           </Flex>
-          <Flex justify="space-between" w="100%" gap="1rem">
+          <Flex justify="space-between" h="100%" w="100%" gap="1rem">
             <TrajectoryCard
               services={staff.services}
               roleHistoric={staff.roleHistoric}

@@ -66,7 +66,9 @@ export default function PatientDetails({
       p={['0 1rem', '1rem 1.5rem 1rem 3rem']}
     >
       {!isSuccess ? (
-        <Spinner />
+        <Flex w="100%" h="100%" justify="center" align="center">
+          <Spinner />
+        </Flex>
       ) : (
         <>
           <Heading

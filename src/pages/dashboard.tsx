@@ -32,7 +32,7 @@ export default function Dashboard() {
   const [hasNotification, setHasNotification] = useState(true)
 
   return (
-    <Box h="100vh" w="100%" p={['0 1rem', '0.25rem 0 1rem 2.5rem']}>
+    <Box h="100vh" w="100%" p={['0 1rem', '0.25rem 1rem 1rem 2.5rem']}>
       <HStack w="100%" m={0} p={0} mb="1rem" justify="space-between">
         {!isWideVersion && (
           <HStack mt="-0.4%" justify="space-between" w="100%">

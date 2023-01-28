@@ -36,13 +36,12 @@ export function PatientReportsCard({ services }: PatientReportsCardProps) {
       gap={1}
       align="start"
       justify="space-between"
-      w="100%"
       h="100%"
     >
-      <VStack align="start" w="100%">
+      <VStack align="start">
         <Text fontSize="1rem">Exames</Text>
         <Divider />
-        {examsArray.map((exam) => {
+        {examsArray.slice(0, 4).map((exam) => {
           return (
             <Text
               key={exam.id}
@@ -61,10 +60,10 @@ export function PatientReportsCard({ services }: PatientReportsCardProps) {
           )
         })}
       </VStack>
-      <VStack align="start" w="100%">
+      <VStack align="start">
         <Text fontSize="1rem">Atendimentos</Text>
         <Divider />
-        {medicalCareArray.map((medicalCare) => {
+        {medicalCareArray.slice(0, 4).map((medicalCare) => {
           return (
             <Text
               key={medicalCare.id}
@@ -85,10 +84,10 @@ export function PatientReportsCard({ services }: PatientReportsCardProps) {
           )
         })}
       </VStack>
-      <VStack align="start" w="100%">
+      <VStack align="start">
         <Text fontSize="1rem">Cirurgias</Text>
         <Divider />
-        {surgeriesArray.map((surgery) => {
+        {surgeriesArray.slice(0, 4).map((surgery) => {
           return (
             <Text
               key={surgery.id}
