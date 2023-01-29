@@ -26,6 +26,7 @@ import {
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import dayjs from 'dayjs'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -43,6 +44,9 @@ const newServiceModalSchema = z.object({
     .transform((staff_id) => Number(staff_id)),
   type: z.string().min(2),
   status: z.string().min(2),
+  service_date: z
+    .string()
+    .transform((date) => dayjs(date).format('YYYY/MM/DD HH:mm:ss')),
   description: z
     .string()
     .min(20, { message: 'A descrição deve conter no mínimo 20 caracteres' }),
@@ -60,6 +64,7 @@ export function NewServiceModal() {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitting, isSubmitSuccessful, touchedFields },
   } = useForm<newServiceModalData>({
     resolver: zodResolver(newServiceModalSchema),
@@ -68,13 +73,7 @@ export function NewServiceModal() {
   const createNewService = useMutation(
     async (service: newServiceModalData) => {
       await api.post('/api/services/v1/create', {
-        description: service.description,
-        price: service.price,
-        status: service.status,
-        type: service.type,
-        patient_id: service.patient_id,
-        staff_id: service.staff_id,
-        city: service.city,
+        ...service,
       })
     },
     {
@@ -104,6 +103,8 @@ export function NewServiceModal() {
   async function handleCreateNewService(service: newServiceModalData) {
     await createNewService.mutateAsync(service)
   }
+
+  const statusIsScheduled = watch('status') === 'SCHEDULED'
 
   return (
     <>
@@ -197,6 +198,12 @@ export function NewServiceModal() {
                       <option value="PAID">Pago</option>
                       <option value="CANCELED">Cancelado</option>
                     </Select>
+                    <Input
+                      type="datetime-local"
+                      marginBottom={2}
+                      {...register('service_date')}
+                      disabled={!statusIsScheduled}
+                    />
                     <Select
                       placeholder="Cidade de atendimento"
                       isInvalid={errors.city !== undefined}

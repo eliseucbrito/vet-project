@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import {
   Button,
   Modal,
@@ -16,18 +17,21 @@ import {
   Textarea,
   Text,
   useToast,
+  InputGroup,
+  InputLeftElement,
 } from '@chakra-ui/react'
 import { FiPlus } from 'react-icons/fi'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { api } from '../../services/api'
 import { QueryClient, useMutation } from '@tanstack/react-query'
 import { queryClient } from '../../services/react-query'
+import { error } from 'console'
 
 const newReportModalSchema = z.object({
   type: z.string({ required_error: 'Tipo é obrigatório' }),
-  urgency: z.string({ required_error: 'Urgência é obrigatório' }),
+  price: z.string().transform((price) => Number(price) * 1000),
   title: z
     .string()
     .min(15, { message: 'O Título deve conter no mínimo 15 caracteres' })
@@ -47,6 +51,7 @@ export function NewReportModal() {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<newReportModalData>({
     resolver: zodResolver(newReportModalSchema),
@@ -56,6 +61,7 @@ export function NewReportModal() {
     async (report: newReportModalData) => {
       const response = await api.post('/api/reports/v1/create', {
         ...report,
+        payment_value: report.price,
         staff_id: 1,
       })
 
@@ -89,6 +95,8 @@ export function NewReportModal() {
   async function handleCreateNewReport(report: newReportModalData) {
     await createNewReport.mutateAsync(report)
   }
+
+  const reportTypeIsPayment = watch('type') === 'PAYMENT'
 
   return (
     <>
@@ -135,20 +143,24 @@ export function NewReportModal() {
                     )}
                   </VStack>
                   <VStack w="100%">
-                    <Select
-                      placeholder="Urgência"
-                      isInvalid={errors.urgency !== undefined}
-                      errorBorderColor="red"
-                      {...register('urgency')}
-                    >
-                      <option value="HIGH">Alta</option>
-                      <option value="MEDIUM">Média</option>
-                      <option value="LOW">Baixa</option>
-                      <option value="NONE">Nenhuma</option>
-                    </Select>
-                    {errors.urgency && (
-                      <Text size="sm">{errors.urgency?.message}</Text>
-                    )}
+                    <InputGroup>
+                      <InputLeftElement
+                        pointerEvents="none"
+                        color="black"
+                        fontSize="1rem"
+                        children="R$"
+                      />
+                      <Input
+                        placeholder="1200"
+                        {...register('price')}
+                        disabled={!reportTypeIsPayment}
+                        title={
+                          reportTypeIsPayment
+                            ? 'Informe o preço do pagamento'
+                            : 'Não é possível enviar preço em relatórios diferentes de "Pagamento"'
+                        }
+                      />
+                    </InputGroup>
                   </VStack>
                 </HStack>
                 <VStack w="100%" align="start">

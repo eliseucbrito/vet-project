@@ -29,7 +29,6 @@ export function LastPatients() {
   const skeletonArray = Array.from(Array(10))
 
   const { data: services, isLoading, isLoadingError } = useServices()
-  console.log('SERVICES', services)
 
   return (
     <Box

@@ -29,9 +29,8 @@ import { SmallSearchBar } from '../../components/defaults/SmallSearchBar'
 import { FilterButton } from '../../components/defaults/FilterButton'
 import { SortByButton } from '../../components/defaults/SortByButton'
 
-export default function Patients() {
+export default function Staff() {
   const { data: staff, isLoading } = useStaff()
-  console.log(staff)
 
   const router = useRouter()
 
@@ -46,7 +45,7 @@ export default function Patients() {
       overflowY="scroll"
       h="100vh"
       w="100%"
-      p={['0 1rem', '1rem 3rem 1rem 3rem']}
+      p={['0 1rem', '1rem 1.5rem 1rem 3rem']}
     >
       <Heading
         fontWeight={600}

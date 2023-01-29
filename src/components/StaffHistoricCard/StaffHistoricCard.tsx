@@ -33,7 +33,7 @@ interface TrajectoryCardProps {
   roleHistoric: RoleHistoricDetails[]
 }
 
-export function TrajectoryCard({
+export function StaffHistoricCard({
   services,
   roleHistoric,
 }: TrajectoryCardProps) {

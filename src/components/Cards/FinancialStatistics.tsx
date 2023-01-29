@@ -140,7 +140,6 @@ const chartOutcomes: ApexOptions = {
 
 export function FinancialStatics({ type }: BillingStaticsProps) {
   const { data: statics, isLoading } = useFinancialStatistics()
-  console.log('STATICS DATA', statics)
 
   const formattedPrice = isLoading ? undefined : (
     <FormattedNumber

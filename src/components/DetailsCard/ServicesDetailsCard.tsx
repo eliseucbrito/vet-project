@@ -26,7 +26,6 @@ interface DetailsCardProps {
 }
 
 export function ServicesDetailsCard({ title, services }: DetailsCardProps) {
-  console.log('SERVICES DETAILS CARD', services)
   return (
     <VStack
       align="start"

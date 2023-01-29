@@ -1,5 +1,4 @@
 export function phoneFormatter(phone: string) {
-  console.log('PHONE', phone)
   const phoneArray = phone.split('')
 
   const phoneFormatted = `(${phoneArray[0] + phoneArray[1]}) ${phoneArray[2]}.${

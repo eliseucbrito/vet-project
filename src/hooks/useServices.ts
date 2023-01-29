@@ -1,44 +1,39 @@
+/* eslint-disable array-callback-return */
 import { useQuery } from '@tanstack/react-query'
 import { api } from '../services/api'
+import { ServiceRequest } from './useClinicData'
 
 type Patient = {
   id: number
-  avatar_url: string
-  birth_date: string
+  avatarUrl: string
+  createdAt: string
+  birthDate: string
   kind: string
   name: string
   owner: string
-  owner_contact: string
+  ownerContact: string
   breed: string
-}
-
-type StaffUser = {
-  id: number
-  avatar_url: string
-  email: string
-  password: string
-  base_salary: number
-  created_at: Date
-  cpf: string
-  full_name: string
-  staff_role:
-    | 'CEO'
-    | 'GENERAL_MANAGER'
-    | 'MANAGER'
-    | 'VETERINARY'
-    | 'ASSISTANT'
-    | 'INTERN'
 }
 
 type Service = {
   id: number
-  avatar_url: string
-  created_at: string
+  createdAt: string
+  serviceDate: string
   description: string
   price: number
   patient: Patient
-  staff: StaffUser
-  city: 'TRINDADE_PE' | 'ARARIPINA_PE' | 'OURICURI_PE'
+  staff: {
+    id: number
+    fullName: string
+    avatarUrl: string
+    role:
+      | 'CEO'
+      | 'GENERAL_MANAGER'
+      | 'MANAGER'
+      | 'VETERINARY'
+      | 'ASSISTANT'
+      | 'INTERN'
+  }
   type: 'EXAM' | 'MEDICAL_CARE' | 'HOME_CARE' | 'SURGERY' | 'EMERGENCY'
   status:
     | 'NOT_INITIALIZED'
@@ -48,36 +43,65 @@ type Service = {
     | 'WAITING_PAYMENT'
     | 'PAID'
     | 'CANCELED'
+  city: 'TRINDADE_PE' | 'ARARIPINA_PE' | 'OURICURI_PE'
 }
 
-type GetServicesResponse = {
-  total: number
-  services: Service[]
+type ServiceResponse = {
+  servicesArray: Service[]
+  service: Service | undefined
 }
 
-export async function getServices(): Promise<Service[]> {
-  const { data } = await api.get('/api/services/v1')
+export async function getServices(id?: string): Promise<ServiceResponse> {
+  const { data } = await api.get<ServiceRequest[]>('/api/services/v1')
 
-  const services = data.map((service: Service) => {
-    return {
+  const servicesArray: Array<Service> = []
+  let serviceDetails: Service | undefined
+
+  data.map((service: ServiceRequest) => {
+    const services = {
       id: service.id,
-      avatar_url: service.patient.avatar_url,
-      created_at: service.created_at,
-      patient: service.patient,
-      price: service.price,
+      createdAt: service.created_at,
+      serviceDate: service.service_date,
+      patient: {
+        id: service.patient.id,
+        avatarUrl: service.patient.avatar_url,
+        createdAt: service.patient.created_at,
+        birthDate: service.patient.birth_date,
+        kind: service.patient.kind,
+        name: service.patient.name,
+        owner: service.patient.owner,
+        ownerContact: service.patient.owner_contact,
+        breed: service.patient.breed,
+      },
+      price: service.price / 1000,
       description: service.description,
-      staff: service.staff,
+      staff: {
+        id: service.staff.id,
+        fullName: service.staff.full_name,
+        avatarUrl: service.staff.avatar_url,
+        role: service.staff.role,
+      },
       status: service.status,
       type: service.type,
       city: service.city,
     }
+
+    if (id === undefined) {
+      // if no id provided, return all services
+      return servicesArray.push(services)
+    }
+    // if id provided, return the corresponding service
+    if (id === String(service.id)) return (serviceDetails = services)
   })
 
-  return services
+  return {
+    servicesArray,
+    service: serviceDetails,
+  }
 }
 
-export function useServices() {
-  return useQuery(['services'], getServices, {
+export function useServices(id?: string) {
+  return useQuery(['services', id], () => getServices(id), {
     staleTime: 1000 * 2,
   })
 }

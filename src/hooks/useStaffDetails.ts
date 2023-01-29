@@ -93,8 +93,6 @@ export async function getStaffDetails(id: string): Promise<StaffDetailsType> {
     }
   })
 
-  console.log('STAFF DATA 2', staffData)
-
   const roleHistoric: Array<RoleHistoricDetails> = []
 
   staffData.role_historic.map((obj) => {

@@ -24,9 +24,6 @@ interface ActivityCardProps {
 }
 
 export function ActivityCard({ reports, services }: ActivityCardProps) {
-  console.log('REPORTS', reports)
-  console.log('SERVICES', services)
-
   return (
     <HStack
       bg="white"

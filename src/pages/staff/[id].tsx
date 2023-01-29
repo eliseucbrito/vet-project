@@ -1,39 +1,26 @@
 import {
   Box,
-  Button,
   Divider,
   Flex,
   Heading,
   HStack,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Spinner,
-  Stack,
   Text,
   VStack,
 } from '@chakra-ui/react'
-import dayjs from 'dayjs'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { FaUserMd } from 'react-icons/fa'
-import { FiChevronDown, FiChevronRight, FiFilePlus } from 'react-icons/fi'
-import { FormattedNumber } from 'react-intl'
-import { LineInfo } from '../../components/Cards/LineInfo'
-import { Sidebar } from '../../components/navigation/Sidebar'
 import {
   getStaffDetails,
   StaffDetailsType,
   useStaffDetails,
 } from '../../hooks/useStaffDetails'
-import { CnpjCpfFormatter } from '../../utils/CnpjCpfFormatter'
-import { dutyFormatter } from '../../utils/dutyFormatter'
 import { nameFormatter } from '../../utils/nameFormatter'
 import { StaffCard } from '../../components/Cards/StaffCard'
 import { StaffDetailsCard } from '../../components/DetailsCard/StaffDetailsCard'
 import { ActivityCard } from '../../components/DetailsCard/ActivityCard'
-import { TrajectoryCard } from '../../components/StaffHistoricCard/StaffHistoricCard'
+import { StaffHistoricCard } from '../../components/StaffHistoricCard/StaffHistoricCard'
 import Link from 'next/link'
 
 interface StaffDetailsProps {
@@ -44,11 +31,9 @@ interface StaffDetailsProps {
 export default function StaffDetails({ staffSSR, id }: StaffDetailsProps) {
   const router = useRouter()
 
-  const { data: staff, isSuccess } = useStaffDetails(id, {
+  const { data: staff } = useStaffDetails(id, {
     initialData: staffSSR,
   })
-
-  console.log('STAFF DETAILSS', staff)
 
   return (
     <Box
@@ -95,7 +80,7 @@ export default function StaffDetails({ staffSSR, id }: StaffDetailsProps) {
             </HStack>
           </Flex>
           <Flex justify="space-between" h="100%" w="100%" gap="1rem">
-            <TrajectoryCard
+            <StaffHistoricCard
               services={staff.services}
               roleHistoric={staff.roleHistoric}
             />

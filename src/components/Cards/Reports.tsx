@@ -12,6 +12,7 @@ import { useReports } from '../../hooks/useReports'
 
 export function Reports() {
   const { data: reports, isSuccess, status } = useReports()
+
   return (
     <Box display="flex" flexDir="column" gap="0.3rem" w="100%">
       {isSuccess ? (

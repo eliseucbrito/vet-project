@@ -7,7 +7,6 @@ import { Card } from '../../Cards/Card'
 
 export function ClinicDataCards() {
   const { data: clinicData, error, isLoading, isLoadingError } = useClinicData()
-  console.log('CLINIC DATA', clinicData)
 
   return (
     <Stack

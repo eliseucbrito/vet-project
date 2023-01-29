@@ -45,14 +45,10 @@ export default function PatientDetails({
   id,
 }: PatientDetailsProps) {
   const router = useRouter()
-  console.log(PatientServices)
 
   const { data, isSuccess } = usePatientDetails(id, {
     initialData: PatientServices,
   })
-
-  console.log('SSR REQUEST', PatientServices)
-  console.log('PATIENT DATA', data)
 
   return (
     <Box

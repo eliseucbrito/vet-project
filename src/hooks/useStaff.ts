@@ -4,7 +4,6 @@ import { Staff, StaffRequest } from './useClinicData'
 
 export async function getStaff(): Promise<Staff[]> {
   const { data } = await api.get('/api/staff/v1')
-  console.log('STAFF DATA', data)
 
   const staff = data.map((user: StaffRequest) => {
     return {
@@ -15,7 +14,7 @@ export async function getStaff(): Promise<Staff[]> {
       createdAt: user.created_at,
       cpf: user.cpf,
       fullName: user.full_name,
-      role: user.staffRole,
+      role: user.staff_role,
       onDuty: user.on_duty,
     }
   })

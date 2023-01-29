@@ -4,6 +4,7 @@ import { api } from '../services/api'
 
 export type PatientRequest = {
   id: number
+  created_at: string
   avatar_url: string
   birth_date: string
   kind: string
@@ -11,11 +12,11 @@ export type PatientRequest = {
   owner: string
   owner_contact: string
   breed: string
-  created_at: Date
 }
 
 export type Patient = {
   id: number
+  createdAt: string
   avatarUrl: string
   birthDate: string
   kind: string
@@ -23,7 +24,6 @@ export type Patient = {
   owner: string
   ownerContact: string
   breed: string
-  createdAt: Date
 }
 
 export type StaffRequest = {
@@ -36,7 +36,7 @@ export type StaffRequest = {
   cpf: string
   full_name: string
   on_duty: boolean
-  staffRole:
+  staff_role:
     | 'CEO'
     | 'GENERAL_MANAGER'
     | 'MANAGER'
@@ -68,10 +68,22 @@ export type ServiceRequest = {
   id: number
   avatar_url: string
   created_at: string
+  service_date: string
   description: string
   price: number
   patient: PatientRequest
-  staff: StaffRequest
+  staff: {
+    id: number
+    full_name: string
+    avatar_url: string
+    role:
+      | 'CEO'
+      | 'GENERAL_MANAGER'
+      | 'MANAGER'
+      | 'VETERINARY'
+      | 'ASSISTANT'
+      | 'INTERN'
+  }
   type: 'EXAM' | 'MEDICAL_CARE' | 'HOME_CARE' | 'SURGERY' | 'EMERGENCY'
   status:
     | 'NOT_INITIALIZED'
@@ -87,10 +99,21 @@ export type ServiceRequest = {
 export type Service = {
   id: number
   createdAt: string
+  serviceDate: string
   description: string
   price: number
   patient: Patient
-  staff: Staff
+  staff: {
+    id: number
+    fullName: string
+    role:
+      | 'CEO'
+      | 'GENERAL_MANAGER'
+      | 'MANAGER'
+      | 'VETERINARY'
+      | 'ASSISTANT'
+      | 'INTERN'
+  }
   type: 'EXAM' | 'MEDICAL_CARE' | 'HOME_CARE' | 'SURGERY' | 'EMERGENCY'
   status:
     | 'NOT_INITIALIZED'

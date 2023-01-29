@@ -23,8 +23,6 @@ export async function getFinances(): Promise<FinancesProps> {
     '/api/services/v1',
   )
 
-  console.log('REPORTS DATA', reportsData)
-
   const weekDayFinance = [
     { weekDay: 0, incomes: 0, outcomes: 0, profits: 0 },
     { weekDay: 1, incomes: 0, outcomes: 0, profits: 0 },
@@ -53,9 +51,7 @@ export async function getFinances(): Promise<FinancesProps> {
 
     if (reportDay >= oneWeekAgo && reportDay <= today) {
       const daysAgo = reportDay.get('date') - oneWeekAgo.get('date')
-      console.log(`SERVICE: ${report.id} DAYS AGO: ${daysAgo}`)
 
-      console.log('REPORT PRICE', report.payment_price / 1000)
       weekDayFinance[daysAgo].outcomes += report.payment_value / 1000
     }
   })
@@ -96,15 +92,7 @@ export async function getFinances(): Promise<FinancesProps> {
     weekIncomes += day.incomes
     weekOutcomes += day.outcomes
     weekProfits += day.profits
-
-    return null
   })
-
-  weekDayFinance.map((day, index) => {
-    seriesIncomesData[index] += day.outcomes
-  })
-
-  console.log('WEEK DAY FINANCE FINAL', weekDayFinance)
 
   return {
     incomes: seriesIncomesData,

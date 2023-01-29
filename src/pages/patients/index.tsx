@@ -28,7 +28,6 @@ import { PatientCard } from '../../components/Cards/PatientCard'
 
 export default function Patients() {
   const { data: patients, isLoading } = usePatients()
-  console.log(patients)
 
   const skeletonArray = Array.from(Array(10))
 
@@ -37,7 +36,7 @@ export default function Patients() {
       overflowY="scroll"
       h="100vh"
       w="100%"
-      p={['0 1rem', '1rem 3rem 1rem 3rem']}
+      p={['0 1rem', '1rem 1.5rem 1rem 3rem']}
     >
       <Heading
         fontWeight={600}
@@ -55,7 +54,7 @@ export default function Patients() {
             <FilterButton />
           </Flex>
         </HStack>
-        <Wrap justify="space-between" spacing="1.5rem" pt="1rem">
+        <Wrap spacing="1.5rem" pt="1rem">
           {patients?.map((patient) => {
             return (
               <WrapItem key={patient.id}>

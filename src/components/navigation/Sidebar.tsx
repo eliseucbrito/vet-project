@@ -78,8 +78,8 @@ export function Sidebar() {
           <NavItem isOpen={sidebarOpen} href="/settings" icon={FiSettings}>
             Ajustes
           </NavItem>
-          <NavItem isOpen={sidebarOpen} href="/animals" icon={FiFolder}>
-            Arquivos
+          <NavItem isOpen={sidebarOpen} href="/services" icon={FiFolder}>
+            Atendimentos
           </NavItem>
           <NavItem isOpen={sidebarOpen} href="/reports" icon={FiPieChart}>
             Relatórios
