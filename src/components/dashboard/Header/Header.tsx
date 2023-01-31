@@ -8,6 +8,8 @@ import { NewServiceModal } from '../../Modals/NewServiceModal'
 export function Header() {
   const { user } = useContext(VetContext)
 
+  const firstName = user?.fullName.slice()[0]
+
   return (
     <HStack w="100%" align="center" justify="space-between" mb="1.75rem">
       <VStack align="start">
@@ -17,8 +19,7 @@ export function Header() {
           color="green.900"
           lineHeight={1}
         >
-          Bem-vind{user.sex.includes('m') ? 'o' : 'a'} novamente,{' '}
-          {user.firstName}
+          Bem-vindo(a) novamente {firstName}
         </Text>
 
         <Text

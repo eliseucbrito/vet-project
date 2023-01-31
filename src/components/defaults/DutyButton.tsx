@@ -7,20 +7,72 @@ import {
   AlertDialogOverlay,
   Button,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react'
-import { GetServerSideProps } from 'next'
-import { useRef } from 'react'
-import { getStaffDetails } from '../../hooks/useStaffDetails'
+import { useMutation } from '@tanstack/react-query'
+import { useContext, useState } from 'react'
+import { VetContext } from '../../context/VetContext'
+import { useStaffDetails } from '../../hooks/useStaffDetails'
+import { api } from '../../services/api'
+import { queryClient } from '../../services/react-query'
 
-interface DutyButtonProps {
-  onDuty?: boolean
-}
-
-export function DutyButton({ onDuty }: DutyButtonProps) {
+export function DutyButton() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const cancelRef = useRef()
+  const { user: UserInitialData } = useContext(VetContext)
+  const toast = useToast()
 
-  const buttonText = onDuty ? 'Sair do plantão' : 'Entrar no plantão'
+  const userID = String(UserInitialData!.id)
+
+  const { data: user } = useStaffDetails(userID, {
+    initialData: UserInitialData,
+  })
+
+  const onDutyInitialState = user === undefined ? false : user.onDuty
+
+  const [onDuty, setOnDuty] = useState(onDutyInitialState)
+
+  const buttonText =
+    user?.onDuty === true ? 'Sair do plantão' : 'Entrar no plantão'
+
+  const submitOnDutyState = useMutation(
+    async (onDuty: boolean) => {
+      await api.patch(`/api/staff/v1/${1}/on-duty`, {
+        on_duty: onDuty,
+      })
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['clinicData'] })
+        queryClient.invalidateQueries({ queryKey: ['staff', userID] })
+        toast({
+          title: 'Entrou no Plantão',
+          description:
+            'Agora você pode receber clientes e suas horas serão contadas!',
+          status: 'success',
+          duration: 1500,
+          isClosable: true,
+        })
+      },
+      onError: () => {
+        toast({
+          title: 'Erro no envio da solicitação',
+          description: 'Ocorreu um erro no envio do formulário!',
+          status: 'error',
+          duration: 1500,
+          isClosable: true,
+        })
+      },
+    },
+  )
+
+  async function handleSetOnDuty(onDuty: boolean) {
+    console.log('ON DUTY FUNCTION ', onDuty)
+    setOnDuty(onDuty)
+    await submitOnDutyState.mutateAsync(onDuty)
+  }
+
+  console.log('USER DUTY ', user)
+  console.log('ON DUTY STATE', onDuty)
 
   return (
     <>
@@ -55,7 +107,10 @@ export function DutyButton({ onDuty }: DutyButtonProps) {
               <Button
                 bg="green.600"
                 _hover={{ background: 'green.800' }}
-                onClick={onClose}
+                onClick={() => {
+                  onClose()
+                  handleSetOnDuty(!onDuty)
+                }}
                 ml={3}
               >
                 Confirmar
@@ -66,22 +121,4 @@ export function DutyButton({ onDuty }: DutyButtonProps) {
       </AlertDialog>
     </>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  // const id = String(params!.id)
-  const id = '1'
-  const staff = await getStaffDetails(id)
-
-  let onDuty = false
-
-  if (staff.onDuty) {
-    onDuty = true
-  }
-
-  return {
-    props: {
-      onDuty,
-    },
-  }
 }

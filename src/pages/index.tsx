@@ -18,12 +18,28 @@ import * as img from '../assets/assets'
 import { MdOutlineLogin } from 'react-icons/md'
 import Link from 'next/link'
 import { Button } from '../components/defaults/Button'
+import { GetServerSideProps } from 'next'
+import { getStaffDetails, StaffDetailsType } from '../hooks/useStaffDetails'
+import { useContext } from 'react'
+import { VetContext } from '../context/VetContext'
 
-export default function Login() {
+interface LoginProps {
+  staff: StaffDetailsType
+}
+
+export default function Login({ staff }: LoginProps) {
   const isWideVersion = useBreakpointValue({
     base: false,
     md: true,
   })
+
+  console.log('STAFF SSR', staff)
+
+  const { setUserLoggedIn } = useContext(VetContext)
+
+  function handleLogin() {
+    setUserLoggedIn(staff)
+  }
 
   return (
     <Flex
@@ -111,7 +127,12 @@ export default function Login() {
                 </Stack>
 
                 <ChakraLink as={Link} href="/dashboard">
-                  <Button type="submit" variant="DefaultButton" bg="green.600">
+                  <Button
+                    type="submit"
+                    variant="DefaultButton"
+                    bg="green.600"
+                    onClick={handleLogin}
+                  >
                     ENTRAR
                   </Button>
                 </ChakraLink>
@@ -158,4 +179,16 @@ export default function Login() {
       )}
     </Flex>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  // const id = String(params!.id)
+  const id = '1'
+  const staff = await getStaffDetails(id)
+
+  return {
+    props: {
+      staff,
+    },
+  }
 }

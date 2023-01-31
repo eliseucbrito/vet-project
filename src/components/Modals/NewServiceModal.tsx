@@ -46,7 +46,12 @@ const newServiceModalSchema = z.object({
   status: z.string().min(2),
   service_date: z
     .string()
+    .optional()
     .transform((date) => dayjs(date).format('YYYY/MM/DD HH:mm:ss')),
+  reason: z
+    .string()
+    .min(5, { message: 'O Motivo deve conter no mínimo 5 caracteres' })
+    .max(30, { message: 'O Motivo deve conter no máximo 30 caracteres' }),
   description: z
     .string()
     .min(20, { message: 'A descrição deve conter no mínimo 20 caracteres' }),
@@ -65,7 +70,7 @@ export function NewServiceModal() {
     handleSubmit,
     reset,
     watch,
-    formState: { errors, isSubmitting, isSubmitSuccessful, touchedFields },
+    formState: { errors, isSubmitting },
   } = useForm<newServiceModalData>({
     resolver: zodResolver(newServiceModalSchema),
   })
@@ -74,6 +79,7 @@ export function NewServiceModal() {
     async (service: newServiceModalData) => {
       await api.post('/api/services/v1/create', {
         ...service,
+        title: service.reason,
       })
     },
     {
@@ -99,6 +105,8 @@ export function NewServiceModal() {
       },
     },
   )
+
+  console.log(errors)
 
   async function handleCreateNewService(service: newServiceModalData) {
     await createNewService.mutateAsync(service)
@@ -200,23 +208,32 @@ export function NewServiceModal() {
                     </Select>
                     <Input
                       type="datetime-local"
-                      marginBottom={2}
+                      required={statusIsScheduled}
                       {...register('service_date')}
                       disabled={!statusIsScheduled}
                     />
-                    <Select
-                      placeholder="Cidade de atendimento"
-                      isInvalid={errors.city !== undefined}
-                      errorBorderColor="red.600"
-                      marginBottom={2}
-                      {...register('city')}
-                    >
-                      <option value="TRINDADE_PE">Trindade-PE</option>
-                      <option value="ARARIPINA_PE">Araripina-PE</option>
-                      <option value="OURICURI_PE">Ouricuri-PE</option>
-                    </Select>
                   </GridItem>
                 </Grid>
+
+                <HStack w="100%" justify="center">
+                  <Input
+                    w="100%"
+                    placeholder="Motivo do Atendimento"
+                    isInvalid={errors.patient_id !== undefined}
+                    errorBorderColor="red.600"
+                    {...register('reason')}
+                  />
+                  <Select
+                    placeholder="Cidade de atendimento"
+                    isInvalid={errors.city !== undefined}
+                    errorBorderColor="red.600"
+                    {...register('city')}
+                  >
+                    <option value="TRINDADE_PE">Trindade-PE</option>
+                    <option value="ARARIPINA_PE">Araripina-PE</option>
+                    <option value="OURICURI_PE">Ouricuri-PE</option>
+                  </Select>
+                </HStack>
                 <Textarea
                   placeholder="Descrição"
                   isInvalid={errors.description !== undefined}

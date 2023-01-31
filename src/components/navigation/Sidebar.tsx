@@ -8,6 +8,7 @@ import {
   Flex,
   Avatar,
   Box,
+  Spinner,
 } from '@chakra-ui/react'
 import Image from 'next/image'
 import * as img from '../../assets/assets'
@@ -26,6 +27,7 @@ import { CgLogOut } from 'react-icons/cg'
 import { useContext, useState } from 'react'
 import { NavItem } from './NavItem'
 import { VetContext } from '../../context/VetContext'
+import { nameFormatter } from '../../utils/nameFormatter'
 
 export function Sidebar() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -34,6 +36,8 @@ export function Sidebar() {
   function handleSidebarState() {
     setSidebarOpen(!sidebarOpen)
   }
+
+  console.log('SIDEBAR USER', user)
 
   return (
     <Stack
@@ -97,29 +101,35 @@ export function Sidebar() {
         h="4.5rem"
         justify="space-between"
       >
-        <Box alignItems="center" display={sidebarOpen ? 'flex' : 'none'}>
-          <Avatar src={user.avatar} borderRadius={12} />
-          <VStack ml="2" align="start" sx={{ lineHeight: 0.75 }}>
-            <Text
-              fontSize="1rem"
-              overflow="hidden"
-              textOverflow="ellipsis"
-              whiteSpace="nowrap"
-              mr="2"
-            >
-              {user.firstName + '' + user.lastName}
-            </Text>
-            <Text fontSize="0.875rem">{user.role}</Text>
-          </VStack>
-        </Box>
-        <Icon
-          marginLeft="auto"
-          cursor="pointer"
-          onClick={() => alert('deslogou')}
-          as={CgLogOut}
-          boxSize="24px"
-          margin={sidebarOpen ? '0' : '0 auto'}
-        />
+        {user === undefined ? (
+          <Spinner />
+        ) : (
+          <>
+            <Box alignItems="center" display={sidebarOpen ? 'flex' : 'none'}>
+              <Avatar src={user?.avatarUrl} borderRadius={12} />
+              <VStack ml="2" align="start" sx={{ lineHeight: 0.75 }}>
+                <Text
+                  fontSize="1rem"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                  whiteSpace="nowrap"
+                  mr="2"
+                >
+                  {nameFormatter(user!.fullName)}
+                </Text>
+                <Text fontSize="0.875rem">{user?.role}</Text>
+              </VStack>
+            </Box>
+            <Icon
+              marginLeft="auto"
+              cursor="pointer"
+              onClick={() => alert('deslogou')}
+              as={CgLogOut}
+              boxSize="24px"
+              margin={sidebarOpen ? '0' : '0 auto'}
+            />
+          </>
+        )}
       </Flex>
     </Stack>
   )

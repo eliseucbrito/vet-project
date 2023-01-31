@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { api } from '../services/api'
 import { ServiceRequest } from './useClinicData'
 
@@ -20,6 +20,7 @@ type Service = {
   createdAt: string
   serviceDate: string
   description: string
+  title: string
   price: number
   patient: Patient
   staff: {
@@ -46,7 +47,7 @@ type Service = {
   city: 'TRINDADE_PE' | 'ARARIPINA_PE' | 'OURICURI_PE'
 }
 
-type ServiceResponse = {
+export type ServiceResponse = {
   servicesArray: Service[]
   service: Service | undefined
 }
@@ -74,6 +75,7 @@ export async function getServices(id?: string): Promise<ServiceResponse> {
         breed: service.patient.breed,
       },
       price: service.price / 1000,
+      title: service.title,
       description: service.description,
       staff: {
         id: service.staff.id,
@@ -100,8 +102,8 @@ export async function getServices(id?: string): Promise<ServiceResponse> {
   }
 }
 
-export function useServices(id?: string) {
-  return useQuery(['services', id], () => getServices(id), {
-    staleTime: 1000 * 2,
+export function useServices(id?: string, options?: UseQueryOptions) {
+  return useQuery(['services'], () => getServices(id), {
+    staleTime: 1000 * 60,
   })
 }

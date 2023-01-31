@@ -7,10 +7,10 @@ import { ServicesList } from '../components/ServicesList'
 export default function Exams() {
   const { data: services } = useServices()
 
-  const examsArray: Array<Service> = []
+  const emergencysArray: Array<Service> = []
 
   services?.servicesArray.map((service) => {
-    if (service.type === 'EXAM') examsArray.push(service)
+    if (service.type === 'EMERGENCY') emergencysArray.push(service)
   })
 
   return (
@@ -27,10 +27,10 @@ export default function Exams() {
         lineHeight={1}
         p="0.75rem"
       >
-        Exames
+        Emergências
       </Heading>
       <Divider orientation="horizontal" />
-      <ServicesList exams={examsArray} />
+      <ServicesList exams={emergencysArray} />
     </VStack>
   )
 }

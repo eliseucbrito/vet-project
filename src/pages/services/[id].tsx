@@ -7,10 +7,21 @@ import {
   Image,
   Avatar,
   Divider,
+  Spinner,
+  Editable,
+  EditablePreview,
+  EditableTextarea,
+  Textarea,
+  Icon,
+  Box,
 } from '@chakra-ui/react'
 import { GetServerSideProps } from 'next'
 import { FormattedNumber } from 'react-intl'
-import { useServices } from '../../hooks/useServices'
+import {
+  getServices,
+  ServiceResponse,
+  useServices,
+} from '../../hooks/useServices'
 import { ageFormatter } from '../../utils/ageFormatter'
 import { kindFormatter } from '../../utils/kindFormatter'
 import { nameFormatter } from '../../utils/nameFormatter'
@@ -19,13 +30,26 @@ import { roleFormatter } from '../../utils/roleFormatter'
 import { serviceTypeFormatter } from '../../utils/serviceTypeFormatter'
 import { sityFormatter } from '../../utils/sityFormatter'
 import { statusFormatter } from '../../utils/statusFormatter'
+import { EditableCard } from './components/EditableCard'
+import * as img from '../../assets/assets'
+import { ServiceInformations } from './components/ServiceInformations'
 
 interface ServiceDetailsProps {
   id: string
+  servicesSSR: ServiceResponse
 }
 
-export default function ServiceDetails({ id }: ServiceDetailsProps) {
-  const { data: service } = useServices(id)
+export default function ServiceDetails({
+  id,
+  servicesSSR,
+}: ServiceDetailsProps) {
+  const { data: service } = useServices(id, {
+    initialData: servicesSSR,
+  })
+
+  console.log(service)
+
+  const title = service?.service?.type === 'EXAM' ? 'Exame de' : 'Razão'
 
   return (
     <VStack
@@ -33,173 +57,80 @@ export default function ServiceDetails({ id }: ServiceDetailsProps) {
       w="100%"
       h="100vh"
       p={['0 1rem', '1rem 1.5rem 1rem 3rem']}
+      overflow="auto"
+      sx={{
+        '&::-webkit-scrollbar': {
+          display: 'none',
+        },
+      }}
     >
-      <Heading
-        fontWeight={600}
-        fontSize="1.5rem"
-        color="green.900"
-        lineHeight={1}
-        pb="1rem"
-      >
-        Atendimento N° {id}
-      </Heading>
-      <Divider orientation="horizontal" />
-      <HStack
-        sx={{
-          span: {
-            fontSize: '0.875rem',
-            display: 'block',
-            fontWeight: 600,
-          },
-          p: {
-            paddingX: '0.25rem',
-          },
-        }}
-        pt="1rem"
-        align="start"
-        w="100%"
-      >
-        <VStack w="100%" align="start">
-          <Text
-            w="100%"
-            textAlign="center"
-            bg="yellow.400"
+      {service === undefined ? (
+        <Spinner />
+      ) : (
+        <>
+          <Heading
             fontWeight={600}
-            color="black"
+            fontSize="1.5rem"
+            color="green.900"
+            lineHeight={1}
+            pb="2rem"
           >
-            Paciente
-          </Text>
-          <HStack w="100%">
-            <Text w="100%" bg="yellow.400" color="black">
-              <span>Nome</span>
-              {service?.service?.patient.name}
-            </Text>
+            Atendimento N° {id}
+          </Heading>
 
-            <Text w="100%" bg="yellow.400" color="black">
-              <span>Nascimento</span>
-              {new Date(
-                service!.service!.patient.birthDate,
-              ).toLocaleDateString()}
-            </Text>
-          </HStack>
-
-          <HStack w="100%">
-            <Text w="100%" bg="yellow.400" color="black">
-              <span>Espécie</span>
-              {kindFormatter(service!.service!.patient.kind).name}
-            </Text>
-
-            <Text w="100%" bg="yellow.400" color="black">
-              <span>Raça</span>
-              {service!.service!.patient.breed}
-            </Text>
-          </HStack>
-
-          <HStack w="100%">
-            <Text w="100%" bg="yellow.400" color="black">
-              <span>Responsável</span>
-              {service!.service!.patient.owner}
-            </Text>
-
-            <Text w="100%" bg="yellow.400" color="black">
-              <span>Contato</span>
-              {phoneFormatter(service!.service!.patient.ownerContact)}
-            </Text>
-          </HStack>
-        </VStack>
-
-        <VStack w="max-content">
-          <Text
-            textAlign="center"
-            w="100%"
-            bg="yellow.400"
-            fontWeight={600}
-            color="black"
-          >
-            Veterinário
-          </Text>
+          <ServiceInformations service={service.service!} />
           <VStack w="100%">
-            <Text w="100%" whiteSpace="nowrap" bg="yellow.400" color="black">
-              <span>Nome</span>
-              {nameFormatter(service!.service!.staff.fullName)}
+            <Text
+              textAlign="center"
+              w="100%"
+              fontSize="1.25rem"
+              fontWeight={600}
+              bg="blue.300"
+            >
+              Detalhes
             </Text>
+            <VStack w="100%" align="start" borderBottom="1px">
+              <Text fontSize="1.125rem" fontWeight={600}>
+                {title}
+              </Text>
+              <Text>{service.service?.title}</Text>
+            </VStack>
 
-            <Text w="100%" bg="yellow.400" color="black">
-              <span>Cargo</span>
-              {roleFormatter(service!.service!.staff.role).role}
-            </Text>
+            <VStack w="100%" align="start" borderBottom="1px">
+              <Text fontSize="1.125rem" fontWeight={600}>
+                Descrição
+              </Text>
+              <Text>{service.service?.description}</Text>
+            </VStack>
 
-            <Text w="100%" bg="yellow.400" color="black">
-              <span>ID</span>
-              {service!.service!.staff.id}
-            </Text>
-          </VStack>
-        </VStack>
-
-        <VStack w="100%" align="start">
-          <Text
-            w="100%"
-            textAlign="center"
-            bg="yellow.400"
-            fontWeight={600}
-            color="black"
-          >
-            Atendimento
-          </Text>
-          <HStack w="100%">
-            <Text w="100%" bg="yellow.400" color="black">
-              <span>Tipo de Atendimento</span>
-              {serviceTypeFormatter(service!.service!.type)}
-            </Text>
-
-            <Text w="100%" bg="yellow.400" color="black">
-              <span>Data</span>
-              {service?.service?.status === 'SCHEDULED'
-                ? service!.service!.serviceDate
-                : new Date(service!.service!.createdAt).toLocaleDateString()}
-            </Text>
-          </HStack>
-
-          <HStack w="100%">
-            <Text w="100%" bg="yellow.400" color="black">
-              <span>Status</span>
-              {statusFormatter(service!.service!.status)}
-            </Text>
-
-            <Text w="100%" bg="yellow.400" color="black">
-              <span>Cidade</span>
-              {sityFormatter(service!.service!.city)}
-            </Text>
-          </HStack>
-
-          <HStack w="100%">
-            <Text w="100%" bg="yellow.400" color="black">
-              <span>Valor</span>
-              R${' '}
-              <FormattedNumber
-                value={service!.service!.price}
-                minimumFractionDigits={2}
-                maximumFractionDigits={2}
-                currency="BRL"
+            <Box
+              p="1rem"
+              bg="white"
+              borderRadius={12}
+              w="100%"
+              h="100%"
+              minH="20rem"
+            >
+              <EditableCard
+                id={service.service!.id}
+                title="Resultado do Exame"
+                value={service.service!.description}
               />
-            </Text>
-
-            <Text w="100%" bg="yellow.400" color="black">
-              <span>ID do Atendimento</span>
-              {service!.service!.id}
-            </Text>
-          </HStack>
-        </VStack>
-      </HStack>
+            </Box>
+          </VStack>
+        </>
+      )}
     </VStack>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = String(params!.id)
+  const servicesSSR = await getServices(id)
 
   return {
     props: {
+      servicesSSR,
       id,
     },
   }

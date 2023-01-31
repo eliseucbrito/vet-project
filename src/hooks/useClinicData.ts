@@ -69,6 +69,7 @@ export type ServiceRequest = {
   avatar_url: string
   created_at: string
   service_date: string
+  title: string
   description: string
   price: number
   patient: PatientRequest
@@ -100,6 +101,7 @@ export type Service = {
   id: number
   createdAt: string
   serviceDate: string
+  title: string
   description: string
   price: number
   patient: Patient

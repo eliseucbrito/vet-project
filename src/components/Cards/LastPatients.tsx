@@ -9,16 +9,16 @@ import {
   Tr,
   useBreakpointValue,
   Image as ChakraImage,
-  Avatar,
   Box,
-  Stack,
   Skeleton,
-  VStack,
+  Icon,
 } from '@chakra-ui/react'
-import { getServices, useServices } from '../../hooks/useServices'
+import { useServices } from '../../hooks/useServices'
 import { statusFormatter } from '../../utils/statusFormatter'
 import { sityFormatter } from '../../utils/sityFormatter'
 import { statusColor } from '../../utils/statusColor'
+import { kindFormatter } from '../../utils/kindFormatter'
+import Link from 'next/link'
 
 export function LastPatients() {
   const isWideVersion = useBreakpointValue({
@@ -120,7 +120,7 @@ export function LastPatients() {
                   </Tr>
                 )
               })
-            : services?.slice(0, 10).map((service) => {
+            : services?.servicesArray?.slice(0, 10).map((service) => {
                 return (
                   <Tr
                     key={service.id}
@@ -141,15 +141,13 @@ export function LastPatients() {
                       <Checkbox />
                     </Td>
                     <Td>
-                      <Text>{service.id}</Text>
+                      <Link href={`/services/${service.id}`}>{service.id}</Link>
                     </Td>
                     <Td>
-                      <ChakraImage
-                        w="40px"
-                        h="40px"
-                        borderRadius="full"
-                        alt=""
-                        src="https://loremflickr.com/640/480/animals"
+                      <Icon
+                        as={kindFormatter(service.patient.kind).icon}
+                        color="yellow.base"
+                        boxSize="1.5rem"
                       />
                     </Td>
                     <Td>
@@ -157,7 +155,7 @@ export function LastPatients() {
                     </Td>
                     <Td>
                       <Text>
-                        {new Date(service.created_at).toLocaleDateString()}
+                        {new Date(service.createdAt).toLocaleDateString()}
                       </Text>
                     </Td>
                     <Td>

@@ -22,7 +22,7 @@ interface ExamsProps {
   exams: Service[]
 }
 
-export default function ExamsList({ exams }: ExamsProps) {
+export function ServicesList({ exams }: ExamsProps) {
   return (
     <VStack w="100%" h="100%">
       <Table>

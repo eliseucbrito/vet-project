@@ -4,13 +4,13 @@ import { Service } from '../../../hooks/useClinicData'
 import { useServices } from '../../../hooks/useServices'
 import { ServicesList } from '../components/ServicesList'
 
-export default function Exams() {
+export default function Surgerys() {
   const { data: services } = useServices()
 
-  const examsArray: Array<Service> = []
+  const surgerysArray: Array<Service> = []
 
   services?.servicesArray.map((service) => {
-    if (service.type === 'EXAM') examsArray.push(service)
+    if (service.type === 'SURGERY') surgerysArray.push(service)
   })
 
   return (
@@ -19,6 +19,12 @@ export default function Exams() {
       w="100%"
       align="start"
       p={['0 1rem', '1rem 1.5rem 1rem 3rem']}
+      overflow="auto"
+      sx={{
+        '&::-webkit-scrollbar': {
+          display: 'none',
+        },
+      }}
     >
       <Heading
         fontWeight={600}
@@ -27,10 +33,10 @@ export default function Exams() {
         lineHeight={1}
         p="0.75rem"
       >
-        Exames
+        Cirurgias
       </Heading>
       <Divider orientation="horizontal" />
-      <ServicesList exams={examsArray} />
+      <ServicesList exams={surgerysArray} />
     </VStack>
   )
 }

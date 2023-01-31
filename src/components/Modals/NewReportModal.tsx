@@ -31,7 +31,10 @@ import { error } from 'console'
 
 const newReportModalSchema = z.object({
   type: z.string({ required_error: 'Tipo é obrigatório' }),
-  price: z.string().transform((price) => Number(price) * 1000),
+  price: z
+    .string()
+    .optional()
+    .transform((price) => Number(price) * 1000),
   title: z
     .string()
     .min(15, { message: 'O Título deve conter no mínimo 15 caracteres' })
@@ -153,6 +156,7 @@ export function NewReportModal() {
                       <Input
                         placeholder="1200"
                         {...register('price')}
+                        required={reportTypeIsPayment}
                         disabled={!reportTypeIsPayment}
                         title={
                           reportTypeIsPayment

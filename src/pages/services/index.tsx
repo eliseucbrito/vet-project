@@ -1,15 +1,6 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  HStack,
-  Icon,
-  Text,
-  VStack,
-} from '@chakra-ui/react'
+import { Heading, HStack, Icon, Text, VStack } from '@chakra-ui/react'
 import Link from 'next/link'
 import { FiFolder } from 'react-icons/fi'
-import { useServices } from '../../hooks/useServices'
 
 export default function Services() {
   return (
@@ -49,7 +40,7 @@ export default function Services() {
           </Text>
         </VStack>
 
-        <VStack as={Link} href="/services/cares" align="center">
+        <VStack as={Link} href="/services/medical-cares" align="center">
           <Icon as={FiFolder} boxSize="7rem" />
           <Text fontWeight={600} lineHeight={0}>
             Atendimentos
