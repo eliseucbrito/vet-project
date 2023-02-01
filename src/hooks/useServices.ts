@@ -104,6 +104,6 @@ export async function getServices(id?: string): Promise<ServiceResponse> {
 
 export function useServices(id?: string, options?: UseQueryOptions) {
   return useQuery(['services'], () => getServices(id), {
-    staleTime: 1000 * 60,
+    staleTime: 1000 * 60 * 60,
   })
 }

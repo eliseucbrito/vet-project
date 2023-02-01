@@ -28,6 +28,7 @@ import { useContext, useState } from 'react'
 import { NavItem } from './NavItem'
 import { VetContext } from '../../context/VetContext'
 import { nameFormatter } from '../../utils/nameFormatter'
+import { useRouter } from 'next/router'
 
 export function Sidebar() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -36,8 +37,6 @@ export function Sidebar() {
   function handleSidebarState() {
     setSidebarOpen(!sidebarOpen)
   }
-
-  console.log('SIDEBAR USER', user)
 
   return (
     <Stack

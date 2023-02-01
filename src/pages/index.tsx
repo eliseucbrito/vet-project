@@ -33,8 +33,6 @@ export default function Login({ staff }: LoginProps) {
     md: true,
   })
 
-  console.log('STAFF SSR', staff)
-
   const { setUserLoggedIn } = useContext(VetContext)
 
   function handleLogin() {
@@ -183,7 +181,7 @@ export default function Login({ staff }: LoginProps) {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   // const id = String(params!.id)
-  const id = '1'
+  const id = '1' // from cookies
   const staff = await getStaffDetails(id)
 
   return {

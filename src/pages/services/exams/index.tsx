@@ -1,17 +1,13 @@
 /* eslint-disable array-callback-return */
 import { Divider, Flex, Heading, VStack } from '@chakra-ui/react'
+import { useContext } from 'react'
+import { VetContext } from '../../../context/VetContext'
 import { Service } from '../../../hooks/useClinicData'
 import { useServices } from '../../../hooks/useServices'
 import { ServicesList } from '../components/ServicesList'
 
 export default function Exams() {
-  const { data: services } = useServices()
-
-  const examsArray: Array<Service> = []
-
-  services?.servicesArray.map((service) => {
-    if (service.type === 'EXAM') examsArray.push(service)
-  })
+  const { servicesCategorized } = useContext(VetContext)
 
   return (
     <VStack
@@ -30,7 +26,7 @@ export default function Exams() {
         Exames
       </Heading>
       <Divider orientation="horizontal" />
-      <ServicesList exams={examsArray} />
+      <ServicesList exams={servicesCategorized.exams} />
     </VStack>
   )
 }

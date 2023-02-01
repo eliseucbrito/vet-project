@@ -1,15 +1,14 @@
 import { HStack, Text, VStack } from '@chakra-ui/react'
-import { useContext } from 'react'
-import { VetContext } from '../../../context/VetContext'
+import { nameFormatter } from '../../../utils/nameFormatter'
 import { DutyButton } from '../../defaults/DutyButton'
 import { NewPatientModal } from '../../Modals/NewPatientModal'
 import { NewServiceModal } from '../../Modals/NewServiceModal'
 
-export function Header() {
-  const { user } = useContext(VetContext)
+interface HeaderProps {
+  name: string
+}
 
-  const firstName = user?.fullName.slice()[0]
-
+export function Header({ name }: HeaderProps) {
   return (
     <HStack w="100%" align="center" justify="space-between" mb="1.75rem">
       <VStack align="start">
@@ -19,7 +18,7 @@ export function Header() {
           color="green.900"
           lineHeight={1}
         >
-          Bem-vindo(a) novamente {firstName}
+          Bem-vindo(a) novamente {nameFormatter(name)}
         </Text>
 
         <Text

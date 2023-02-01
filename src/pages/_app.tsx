@@ -1,4 +1,4 @@
-import { Box, ChakraProvider, Flex, Image, Spinner } from '@chakra-ui/react'
+import { ChakraProvider, Flex, Image, Spinner } from '@chakra-ui/react'
 import { Hydrate, QueryClientProvider } from '@tanstack/react-query'
 import type { AppProps } from 'next/app'
 import { IntlProvider } from 'react-intl'
@@ -9,8 +9,6 @@ import { defaultTheme } from '../styles/theme/defaultTheme'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Sidebar } from '../components/navigation/Sidebar'
-
-import loadGif from '../assets/1208-squirrel-lineal.gif'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()

@@ -10,25 +10,25 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import { useMutation } from '@tanstack/react-query'
+import { GetServerSideProps } from 'next'
 import { useContext, useState } from 'react'
 import { VetContext } from '../../context/VetContext'
-import { useStaffDetails } from '../../hooks/useStaffDetails'
+import { getStaffDetails, useStaffDetails } from '../../hooks/useStaffDetails'
 import { api } from '../../services/api'
 import { queryClient } from '../../services/react-query'
 
 export function DutyButton() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { user: UserInitialData } = useContext(VetContext)
   const toast = useToast()
+  const { user: UserInitialData } = useContext(VetContext)
 
-  const userID = String(UserInitialData!.id)
+  const userID = String(UserInitialData?.id)
 
   const { data: user } = useStaffDetails(userID, {
     initialData: UserInitialData,
   })
 
   const onDutyInitialState = user === undefined ? false : user.onDuty
-
   const [onDuty, setOnDuty] = useState(onDutyInitialState)
 
   const buttonText =
@@ -66,13 +66,9 @@ export function DutyButton() {
   )
 
   async function handleSetOnDuty(onDuty: boolean) {
-    console.log('ON DUTY FUNCTION ', onDuty)
     setOnDuty(onDuty)
     await submitOnDutyState.mutateAsync(onDuty)
   }
-
-  console.log('USER DUTY ', user)
-  console.log('ON DUTY STATE', onDuty)
 
   return (
     <>
