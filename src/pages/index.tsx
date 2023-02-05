@@ -1,7 +1,6 @@
 import {
   Box,
   Flex,
-  Heading,
   Text,
   useBreakpointValue,
   VStack,
@@ -18,26 +17,47 @@ import * as img from '../assets/assets'
 import { MdOutlineLogin } from 'react-icons/md'
 import Link from 'next/link'
 import { Button } from '../components/defaults/Button'
-import { GetServerSideProps } from 'next'
-import { getStaffDetails, StaffDetailsType } from '../hooks/useStaffDetails'
+import { StaffDetailsType } from '../hooks/useStaffDetails'
 import { useContext } from 'react'
 import { VetContext } from '../context/VetContext'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 interface LoginProps {
   staff: StaffDetailsType
 }
+
+const LoginSchema = z.object({
+  email: z
+    .string()
+    .email()
+    .min(8, { message: 'O Email é obrigatório' })
+    .transform((email) => email.toLowerCase()),
+  password: z.string().min(6, { message: 'O tamanho mínimo é 6 caracteres' }),
+})
+
+type LoginData = z.infer<typeof LoginSchema>
 
 export default function Login({ staff }: LoginProps) {
   const isWideVersion = useBreakpointValue({
     base: false,
     md: true,
   })
+  const { signIn } = useContext(VetContext)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginData>({
+    resolver: zodResolver(LoginSchema),
+  })
 
-  const { setUserLoggedIn } = useContext(VetContext)
-
-  function handleLogin() {
-    setUserLoggedIn(staff)
+  function handleSignIn(credentials: LoginData) {
+    signIn(credentials)
   }
+
+  console.log('ERROS LOGIN ', errors)
 
   return (
     <Flex
@@ -83,7 +103,7 @@ export default function Login({ staff }: LoginProps) {
             </Text>
 
             <Box w="100%">
-              <form action="">
+              <form onSubmit={handleSubmit(handleSignIn)}>
                 <FormControl isRequired w="100%">
                   <FormLabel htmlFor="email-input">E-mail</FormLabel>
                   <Input
@@ -93,6 +113,7 @@ export default function Login({ staff }: LoginProps) {
                     marginBottom="1.25rem"
                     bg={['none', 'white']}
                     border={['1px', '1px']}
+                    {...register('email')}
                   />
 
                   <FormLabel htmlFor="password-input">Senha</FormLabel>
@@ -102,6 +123,7 @@ export default function Login({ staff }: LoginProps) {
                     type="password"
                     bg={['none', 'white']}
                     border={['1px', '1px']}
+                    {...register('password')}
                   />
                 </FormControl>
 
@@ -124,16 +146,9 @@ export default function Login({ staff }: LoginProps) {
                   </ChakraLink>
                 </Stack>
 
-                <ChakraLink as={Link} href="/dashboard">
-                  <Button
-                    type="submit"
-                    variant="DefaultButton"
-                    bg="green.600"
-                    onClick={handleLogin}
-                  >
-                    ENTRAR
-                  </Button>
-                </ChakraLink>
+                <Button type="submit" variant="DefaultButton" bg="green.600">
+                  ENTRAR
+                </Button>
               </form>
             </Box>
           </VStack>
@@ -177,16 +192,4 @@ export default function Login({ staff }: LoginProps) {
       )}
     </Flex>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  // const id = String(params!.id)
-  const id = '1' // from cookies
-  const staff = await getStaffDetails(id)
-
-  return {
-    props: {
-      staff,
-    },
-  }
 }

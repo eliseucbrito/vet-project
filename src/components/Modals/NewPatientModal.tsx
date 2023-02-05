@@ -69,7 +69,7 @@ export function NewPatientModal() {
         reset()
         toast({
           title: 'Paciente adicionado',
-          description: 'Paciente foi criado e adicionado ao sistema!',
+          description: 'Paciente criado e adicionado ao sistema!',
           status: 'success',
           duration: 1500,
           isClosable: true,

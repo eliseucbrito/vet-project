@@ -65,7 +65,7 @@ export default function Dashboard() {
             )}
           </HStack>
           <main>
-            <Header name={user!.fullName} />
+            <Header />
             <ClinicDataCards />
             <Grid
               display={['flex', 'grid']}

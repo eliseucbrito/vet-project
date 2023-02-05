@@ -1,21 +1,26 @@
 /* eslint-disable array-callback-return */
+import { useRouter } from 'next/router'
 import { createContext, ReactNode, useState } from 'react'
 import { Service } from '../hooks/useClinicData'
-import { ServiceResponse, useServices } from '../hooks/useServices'
+import { setCookie } from 'nookies'
 import { StaffDetailsType } from '../hooks/useStaffDetails'
+import { api } from '../services/api'
 
-type ServicesCategorized = {
-  exams: Service[]
-  surgerys: Service[]
-  medicalCare: Service[]
-  emergencys: Service[]
+export interface User {
+  id: number
+  avatarUrl: string
+  fullName: string
+  role: string
 }
 
-interface VetContextData {
-  user: StaffDetailsType | undefined
-  services: ServiceResponse | undefined
-  servicesCategorized: ServicesCategorized
-  setUserLoggedIn: (user: StaffDetailsType) => void
+type SignInCredentials = {
+  email: string
+  password: string
+}
+
+type VetContextData = {
+  user: User | undefined
+  signIn(credentials: SignInCredentials): Promise<void>
 }
 
 export const VetContext = createContext({} as VetContextData)
@@ -25,34 +30,50 @@ interface VetContextProviderProps {
 }
 
 export function VetContextProvider({ children }: VetContextProviderProps) {
-  const [user, setUser] = useState<StaffDetailsType | undefined>()
+  const [user, setUser] = useState<User | undefined>()
+  const router = useRouter()
 
-  const { data: services } = useServices()
+  async function handleSetUser(token: string) {
+    const response = await api.get('/api/staff/v1/auth', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
 
-  const servicesCategorized: ServicesCategorized = {
-    exams: [],
-    surgerys: [],
-    medicalCare: [],
-    emergencys: [],
-  }
+    const data = response.data
 
-  services?.servicesArray.map((service) => {
-    if (service.type === ('HOME_CARE' || 'MEDICAL_CARE'))
-      servicesCategorized.medicalCare.push(service)
-    if (service.type === 'SURGERY') servicesCategorized.surgerys.push(service)
-    if (service.type === 'EXAM') servicesCategorized.exams.push(service)
-    if (service.type === 'EMERGENCY')
-      servicesCategorized.emergencys.push(service)
-  })
+    const user = {
+      id: data.id,
+      avatarUrl: data.avatar_url,
+      fullName: data.full_name,
+      role: data.role,
+    }
 
-  function setUserLoggedIn(user: StaffDetailsType) {
     setUser(user)
   }
 
+  async function signIn({ email, password }: SignInCredentials) {
+    const { data } = await api.post('/auth/signin', {
+      username: email,
+      password,
+    })
+
+    const { accessToken: token, refreshToken } = data
+    const authenticated = data.authenticated
+
+    if (authenticated) {
+      setCookie(undefined, 'vet.token', token, {
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+        path: '/',
+      })
+      setCookie(undefined, 'vet.refreshToken', refreshToken)
+      handleSetUser(token)
+      router.push('/dashboard')
+    }
+  }
+
   return (
-    <VetContext.Provider
-      value={{ user, setUserLoggedIn, services, servicesCategorized }}
-    >
+    <VetContext.Provider value={{ user, signIn }}>
       {children}
     </VetContext.Provider>
   )
