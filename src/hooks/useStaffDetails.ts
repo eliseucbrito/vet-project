@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { api } from '../services/api'
 
@@ -95,7 +96,7 @@ export async function getStaffDetails(id: string): Promise<StaffDetailsType> {
 
   const roleHistoric: Array<RoleHistoricDetails> = []
 
-  staffData.role_historic.map((obj) => {
+  staffData.role_historic.map((obj: any) => {
     const historic = {
       startedIn: obj.started_in,
       baseSalary: obj.base_salary / 1000,
@@ -146,5 +147,7 @@ export async function getStaffDetails(id: string): Promise<StaffDetailsType> {
 }
 
 export function useStaffDetails(id: string, option?: UseQueryOptions) {
-  return useQuery(['staff', id], () => getStaffDetails(id))
+  return useQuery(['staff', id], () => getStaffDetails(id), {
+    staleTime: 1000 * 60 * 60,
+  })
 }

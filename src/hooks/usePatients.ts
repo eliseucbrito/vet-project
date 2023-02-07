@@ -22,5 +22,7 @@ export async function getPatients(): Promise<Patient[]> {
 }
 
 export function usePatients() {
-  return useQuery(['patients'], getPatients)
+  return useQuery(['patients'], getPatients, {
+    staleTime: 1000 * 60 * 60,
+  })
 }

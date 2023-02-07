@@ -23,6 +23,8 @@ import { VetContext } from '../context/VetContext'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { GetServerSideProps } from 'next'
+import { parseCookies } from 'nookies'
 
 interface LoginProps {
   staff: StaffDetailsType
@@ -192,4 +194,21 @@ export default function Login({ staff }: LoginProps) {
       )}
     </Flex>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const cookies = parseCookies(ctx)
+
+  if (cookies['vet.token']) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: {},
+  }
 }

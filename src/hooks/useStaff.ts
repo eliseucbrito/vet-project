@@ -23,5 +23,7 @@ export async function getStaff(): Promise<Staff[]> {
 }
 
 export function useStaff() {
-  return useQuery(['staff'], getStaff)
+  return useQuery(['staff'], getStaff, {
+    staleTime: 1000 * 60 * 60,
+  })
 }

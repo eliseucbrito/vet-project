@@ -105,5 +105,7 @@ export async function getFinances(): Promise<FinancesProps> {
 }
 
 export function useFinancialStatistics() {
-  return useQuery(['finances'], getFinances)
+  return useQuery(['finances'], getFinances, {
+    staleTime: 1000 * 60 * 60,
+  })
 }

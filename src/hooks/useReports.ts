@@ -21,5 +21,7 @@ export async function getReports(): Promise<Report[]> {
 }
 
 export function useReports() {
-  return useQuery(['reports'], getReports)
+  return useQuery(['reports'], getReports, {
+    staleTime: 1000 * 60 * 60,
+  })
 }

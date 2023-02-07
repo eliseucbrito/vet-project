@@ -91,5 +91,7 @@ export async function getPatientsDetails(
 }
 
 export function usePatientDetails(id: string, option?: UseQueryOptions) {
-  return useQuery(['patient', id], () => getPatientsDetails(id))
+  return useQuery(['patient', id], () => getPatientsDetails(id), {
+    staleTime: 1000 * 60 * 60,
+  })
 }

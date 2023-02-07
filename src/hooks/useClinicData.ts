@@ -251,5 +251,7 @@ export async function getClinicData(): Promise<ClinicData> {
 }
 
 export function useClinicData() {
-  return useQuery(['clinicData'], getClinicData)
+  return useQuery(['clinicData'], getClinicData, {
+    staleTime: 1000 * 60 * 60,
+  })
 }
