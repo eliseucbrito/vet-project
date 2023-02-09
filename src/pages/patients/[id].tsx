@@ -36,19 +36,11 @@ import { PatientReportsCard } from '../../components/DetailsCard/PatientReportsC
 import { DocumentsCard } from '../../components/DetailsCard/DocumentsCard'
 
 interface PatientDetailsProps {
-  PatientServices: PatientServicesType[]
   id: string
 }
 
-export default function PatientDetails({
-  PatientServices,
-  id,
-}: PatientDetailsProps) {
-  const router = useRouter()
-
-  const { data, isSuccess } = usePatientDetails(id, {
-    initialData: PatientServices,
-  })
+export default function PatientDetails({ id }: PatientDetailsProps) {
+  const { data, isSuccess } = usePatientDetails(id)
 
   return (
     <Box
@@ -95,7 +87,14 @@ export default function PatientDetails({
           >
             <VStack h="100%" w="100%" align="start" gap={1}>
               <HStack h="100%" w="100%" align="start">
-                <PatientCard size="lg" {...data.patient} />
+                <PatientCard
+                  size="lg"
+                  {...data.patient}
+                  createdAt={new Date(
+                    data.patient.createdAt,
+                  ).toLocaleDateString()}
+                  birthDate={data.patient.birthDate}
+                />
                 <PatientDetailsCard
                   patient={data.patient}
                   totalServices={data.services.length}
@@ -120,11 +119,9 @@ export default function PatientDetails({
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = String(params!.id)
-  const patientServices = await getPatientsDetails(id)
 
   return {
     props: {
-      patientServices,
       id,
     },
   }

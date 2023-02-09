@@ -16,38 +16,17 @@ import {
   Box,
 } from '@chakra-ui/react'
 import { GetServerSideProps } from 'next'
-import { FormattedNumber } from 'react-intl'
-import {
-  getServices,
-  ServiceResponse,
-  useServices,
-} from '../../hooks/useServices'
-import { ageFormatter } from '../../utils/ageFormatter'
-import { kindFormatter } from '../../utils/kindFormatter'
-import { nameFormatter } from '../../utils/nameFormatter'
-import { phoneFormatter } from '../../utils/phoneFormatter'
-import { roleFormatter } from '../../utils/roleFormatter'
-import { serviceTypeFormatter } from '../../utils/serviceTypeFormatter'
-import { sityFormatter } from '../../utils/sityFormatter'
-import { statusFormatter } from '../../utils/statusFormatter'
-import { EditableCard } from './components/EditableCard'
+import { useServices } from '../../hooks/useServices'
+import { EditableCard } from '../../components/comp/EditableCard'
 import * as img from '../../assets/assets'
-import { ServiceInformations } from './components/ServiceInformations'
+import { ServiceInformations } from '../../components/comp/ServiceInformations'
 
 interface ServiceDetailsProps {
   id: string
-  servicesSSR: ServiceResponse
 }
 
-export default function ServiceDetails({
-  id,
-  servicesSSR,
-}: ServiceDetailsProps) {
-  const { data: service } = useServices(id, {
-    initialData: servicesSSR,
-  })
-
-  console.log(service)
+export default function ServiceDetails({ id }: ServiceDetailsProps) {
+  const { data: service } = useServices(id)
 
   const title = service?.service?.type === 'EXAM' ? 'Exame de' : 'Razão'
 
@@ -111,11 +90,13 @@ export default function ServiceDetails({
               h="100%"
               minH="20rem"
             >
-              <EditableCard
-                id={service.service!.id}
-                title="Resultado do Exame"
-                value={service.service!.description}
-              />
+              {service.service === undefined ? null : (
+                <EditableCard
+                  id={service.service!.id}
+                  title="Resultado do Exame"
+                  value={service.service!.description}
+                />
+              )}
             </Box>
           </VStack>
         </>
@@ -126,11 +107,9 @@ export default function ServiceDetails({
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = String(params!.id)
-  const servicesSSR = await getServices(id)
 
   return {
     props: {
-      servicesSSR,
       id,
     },
   }

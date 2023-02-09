@@ -40,9 +40,9 @@ const chartIncomes: ApexOptions = {
   },
   xaxis: {
     // type: 'numeric',
-    lines: {
-      show: false,
-    },
+    // lines: {
+    //   show: false,
+    // },
     axisBorder: {
       show: false,
     },
@@ -52,23 +52,23 @@ const chartIncomes: ApexOptions = {
   },
   yaxis: [
     {
-      y: 0,
-      offsetX: 0,
-      offsetY: 0,
+      // y: 0,
+      // offsetX: 0,
+      // offsetY: 0,
       labels: {
         show: false,
       },
-      padding: {
-        left: 0,
-        right: 0,
-      },
+      // padding: {
+      //   left: 0,
+      //   right: 0,
+      // },
     },
   ],
   fill: {
     opacity: 1,
     type: 'gradient',
     gradient: {
-      shad: 'dark',
+      // shad: 'dark',
       opacityFrom: 1,
       opacityTo: 0.7,
     },
@@ -103,9 +103,9 @@ const chartOutcomes: ApexOptions = {
   },
   xaxis: {
     type: 'numeric',
-    lines: {
-      show: false,
-    },
+    // lines: {
+    //   show: false,
+    // },
     axisBorder: {
       show: false,
     },
@@ -115,23 +115,23 @@ const chartOutcomes: ApexOptions = {
   },
   yaxis: [
     {
-      y: 0,
-      offsetX: 0,
-      offsetY: 0,
+      // y: 0,
+      // offsetX: 0,
+      // offsetY: 0,
       labels: {
         show: false,
       },
-      padding: {
-        left: 0,
-        right: 0,
-      },
+      // padding: {
+      //   left: 0,
+      //   right: 0,
+      // },
     },
   ],
   fill: {
     opacity: 1,
     type: 'gradient',
     gradient: {
-      shad: 'dark',
+      // shad: 'dark',
       opacityFrom: 1,
       opacityTo: 0.7,
     },

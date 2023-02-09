@@ -4,10 +4,15 @@ import { useContext } from 'react'
 import { VetContext } from '../../../context/VetContext'
 import { Service } from '../../../hooks/useClinicData'
 import { useServices } from '../../../hooks/useServices'
-import { ServicesList } from '../components/ServicesList'
+import { ServicesList } from '../../../components/comp/ServicesList'
 
 export default function Exams() {
-  const { servicesCategorized } = useContext(VetContext)
+  const { data: service } = useServices()
+
+  const exams: Service[] = []
+  service?.servicesArray.map((service) => {
+    if (service.type === 'EXAM') exams.push(service)
+  })
 
   return (
     <VStack
@@ -26,7 +31,7 @@ export default function Exams() {
         Exames
       </Heading>
       <Divider orientation="horizontal" />
-      <ServicesList exams={servicesCategorized.exams} />
+      <ServicesList exams={exams} />
     </VStack>
   )
 }

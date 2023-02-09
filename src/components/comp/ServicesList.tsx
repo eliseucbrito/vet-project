@@ -11,12 +11,10 @@ import {
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import Link from 'next/link'
-import { FormattedNumber } from 'react-intl'
-import { Service } from '../../../hooks/useClinicData'
-import { useServices } from '../../../hooks/useServices'
-import { kindFormatter } from '../../../utils/kindFormatter'
-import { nameFormatter } from '../../../utils/nameFormatter'
-import { statusFormatter } from '../../../utils/statusFormatter'
+import { Service } from '../../hooks/useClinicData'
+import { kindFormatter } from '../../utils/kindFormatter'
+import { nameFormatter } from '../../utils/nameFormatter'
+import { statusFormatter } from '../../utils/statusFormatter'
 
 interface ExamsProps {
   exams: Service[]

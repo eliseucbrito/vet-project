@@ -16,12 +16,8 @@ export type FinancesProps = {
 }
 
 export async function getFinances(): Promise<FinancesProps> {
-  const { data: reportsData } = await api.get<ReportRequest[]>(
-    '/api/reports/v1',
-  )
-  const { data: servicesData } = await api.get<ServiceRequest[]>(
-    '/api/services/v1',
-  )
+  const { data: reportsData } = await api.get('/api/reports/v1')
+  const { data: servicesData } = await api.get('/api/services/v1')
 
   const weekDayFinance = [
     { weekDay: 0, incomes: 0, outcomes: 0, profits: 0 },
@@ -40,7 +36,7 @@ export async function getFinances(): Promise<FinancesProps> {
       return
     }
 
-    const reportDay = dayjs(new Date(report.created_at)).subtract(3, 'hours')
+    const reportDay = dayjs(report.created_at)
     const oneWeekAgo = dayjs(new Date())
       .subtract(7, 'day')
       .set('hours', 0)
@@ -50,8 +46,7 @@ export async function getFinances(): Promise<FinancesProps> {
     const today = dayjs(new Date())
 
     if (reportDay >= oneWeekAgo && reportDay <= today) {
-      const daysAgo = reportDay.get('date') - oneWeekAgo.get('date')
-
+      const daysAgo = reportDay.diff(oneWeekAgo, 'days')
       weekDayFinance[daysAgo].outcomes += report.payment_value / 1000
     }
   })
@@ -61,7 +56,8 @@ export async function getFinances(): Promise<FinancesProps> {
       // eslint-disable-next-line no-useless-return
       return
     }
-    const serviceDay = dayjs(new Date(service.created_at)).subtract(3, 'hours')
+
+    const serviceDay = dayjs(service.created_at)
     const oneWeekAgo = dayjs(new Date())
       .subtract(7, 'day')
       .set('hours', 0)
@@ -71,7 +67,7 @@ export async function getFinances(): Promise<FinancesProps> {
     const today = dayjs(new Date())
 
     if (serviceDay >= oneWeekAgo && serviceDay <= today) {
-      const daysAgo = serviceDay.get('date') - oneWeekAgo.get('date')
+      const daysAgo = serviceDay.diff(oneWeekAgo, 'days')
 
       weekDayFinance[daysAgo].incomes += service.price / 1000
     }

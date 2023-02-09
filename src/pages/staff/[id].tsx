@@ -22,6 +22,7 @@ import { StaffDetailsCard } from '../../components/DetailsCard/StaffDetailsCard'
 import { ActivityCard } from '../../components/DetailsCard/ActivityCard'
 import { StaffHistoricCard } from '../../components/StaffHistoricCard/StaffHistoricCard'
 import Link from 'next/link'
+import { parseCookies } from 'nookies'
 
 interface StaffDetailsProps {
   staffSSR: StaffDetailsType
@@ -134,11 +135,9 @@ export default function StaffDetails({ staffSSR, id }: StaffDetailsProps) {
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = String(params!.id)
-  const staff = await getStaffDetails(id)
 
   return {
     props: {
-      staffSSR: staff,
       id,
     },
   }

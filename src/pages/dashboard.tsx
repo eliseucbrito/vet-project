@@ -11,7 +11,6 @@ import {
   Show,
   Spinner,
 } from '@chakra-ui/react'
-import { Sidebar } from '../components/navigation/Sidebar'
 import { FiBell } from 'react-icons/fi'
 import { DrawerBar } from '../components/navigation/DrawerBar'
 import { DrawerTodo } from '../components/navigation/DrawerTodo'
@@ -25,7 +24,6 @@ import { Header } from '../components/dashboard/Header/Header'
 import { ClinicDataCards } from '../components/dashboard/ClinicDataCards/ClinicDataCards'
 import { NewReportModal } from '../components/Modals/NewReportModal'
 import { VetContext } from '../context/VetContext'
-import { useRouter } from 'next/router'
 
 export default function Dashboard() {
   const isWideVersion = useBreakpointValue({

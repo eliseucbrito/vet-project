@@ -19,7 +19,7 @@ import { SortByItem } from './SortByItem'
 export function SortByButton() {
   return (
     <Popover>
-      <PopoverTrigger placement="bottom" closeOnBlur={false}>
+      <PopoverTrigger>
         <Flex
           bg="white"
           borderRadius="3xl"

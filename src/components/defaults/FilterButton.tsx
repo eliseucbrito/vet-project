@@ -14,7 +14,7 @@ import { BsFilter } from 'react-icons/bs'
 export function FilterButton() {
   return (
     <Popover>
-      <PopoverTrigger placement="bottom" closeOnBlur={true}>
+      <PopoverTrigger>
         <Flex
           bg="white"
           borderRadius="3xl"

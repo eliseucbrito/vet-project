@@ -11,20 +11,25 @@ import {
   Stack,
   Image as ChakraImage,
   Link as ChakraLink,
+  InputGroup,
+  InputRightElement,
+  Button,
+  Icon,
 } from '@chakra-ui/react'
 import Image from 'next/image'
 import * as img from '../assets/assets'
 import { MdOutlineLogin } from 'react-icons/md'
 import Link from 'next/link'
-import { Button } from '../components/defaults/Button'
+import { Button as VETbutton } from '../components/defaults/Button'
 import { StaffDetailsType } from '../hooks/useStaffDetails'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { VetContext } from '../context/VetContext'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
+import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai'
 
 interface LoginProps {
   staff: StaffDetailsType
@@ -33,7 +38,7 @@ interface LoginProps {
 const LoginSchema = z.object({
   email: z
     .string()
-    .email()
+    .email({ message: 'Email inválido' })
     .min(8, { message: 'O Email é obrigatório' })
     .transform((email) => email.toLowerCase()),
   password: z.string().min(6, { message: 'O tamanho mínimo é 6 caracteres' }),
@@ -42,6 +47,9 @@ const LoginSchema = z.object({
 type LoginData = z.infer<typeof LoginSchema>
 
 export default function Login({ staff }: LoginProps) {
+  const [show, setShow] = useState(false)
+  const handleClick = () => setShow(!show)
+
   const isWideVersion = useBreakpointValue({
     base: false,
     md: true,
@@ -111,22 +119,46 @@ export default function Login({ staff }: LoginProps) {
                   <Input
                     focusBorderColor="green.600"
                     id="email-input"
-                    type="email"
-                    marginBottom="1.25rem"
+                    type="text"
                     bg={['none', 'white']}
-                    border={['1px', '1px']}
                     {...register('email')}
                   />
+                  {errors.email && (
+                    <Text fontSize="0.75rem" color="red" pt="0.25rem">
+                      {errors.email.message}
+                    </Text>
+                  )}
 
-                  <FormLabel htmlFor="password-input">Senha</FormLabel>
-                  <Input
-                    focusBorderColor="green.600"
-                    id="password-input"
-                    type="password"
-                    bg={['none', 'white']}
-                    border={['1px', '1px']}
-                    {...register('password')}
-                  />
+                  <FormLabel pt="0.75rem" htmlFor="password-input">
+                    Senha
+                  </FormLabel>
+                  <InputGroup w="100%">
+                    <Input
+                      focusBorderColor="green.600"
+                      id="password-input"
+                      type={show ? 'text' : 'password'}
+                      bg={['none', 'white']}
+                      {...register('password')}
+                    />
+                    <InputRightElement>
+                      <Button
+                        variant="unstyled"
+                        onClick={handleClick}
+                        display="flex"
+                      >
+                        {show ? (
+                          <Icon as={AiOutlineEyeInvisible} boxSize={'20px'} />
+                        ) : (
+                          <Icon as={AiOutlineEye} boxSize={'20px'} />
+                        )}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
+                  {errors.password && (
+                    <Text fontSize="0.75rem" color="red" pt="0.25rem">
+                      {errors.password.message}
+                    </Text>
+                  )}
                 </FormControl>
 
                 <Stack
@@ -148,9 +180,9 @@ export default function Login({ staff }: LoginProps) {
                   </ChakraLink>
                 </Stack>
 
-                <Button type="submit" variant="DefaultButton" bg="green.600">
+                <VETbutton type="submit" variant="DefaultButton" bg="green.600">
                   ENTRAR
-                </Button>
+                </VETbutton>
               </form>
             </Box>
           </VStack>

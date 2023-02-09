@@ -10,10 +10,9 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import { useMutation } from '@tanstack/react-query'
-import { GetServerSideProps } from 'next'
 import { useContext, useState } from 'react'
 import { VetContext } from '../../context/VetContext'
-import { getStaffDetails, useStaffDetails } from '../../hooks/useStaffDetails'
+import { useStaffDetails } from '../../hooks/useStaffDetails'
 import { api } from '../../services/api'
 import { queryClient } from '../../services/react-query'
 
@@ -24,15 +23,27 @@ export function DutyButton() {
 
   const userID = String(UserInitialData?.id)
 
-  const { data: user } = useStaffDetails(userID, {
-    initialData: UserInitialData,
-  })
+  const { data: user } = useStaffDetails(userID)
 
-  const onDutyInitialState = user === undefined ? false : user.onDuty
-  const [onDuty, setOnDuty] = useState(onDutyInitialState)
+  const onDutyUser = user?.onDuty
+
+  const [dutyState, setDutyState] = useState(onDutyUser)
 
   const buttonText =
-    user?.onDuty === true ? 'Sair do plantão' : 'Entrar no plantão'
+    dutyState === true ? 'Sair do plantão' : 'Entrar no plantão'
+
+  const toastTitle =
+    dutyState === true ? 'Saiu do plantão' : 'Entrou no plantão'
+
+  const toastDescription =
+    dutyState === true
+      ? 'Agora suas horas não serão registradas!'
+      : 'Agora você pode receber clientes e suas horas serão contadas!'
+
+  async function handleSetOnDuty() {
+    setDutyState(!dutyState)
+    await submitOnDutyState.mutateAsync(!dutyState)
+  }
 
   const submitOnDutyState = useMutation(
     async (onDuty: boolean) => {
@@ -45,9 +56,8 @@ export function DutyButton() {
         queryClient.invalidateQueries({ queryKey: ['clinicData'] })
         queryClient.invalidateQueries({ queryKey: ['staff', userID] })
         toast({
-          title: 'Entrou no Plantão',
-          description:
-            'Agora você pode receber clientes e suas horas serão contadas!',
+          title: toastTitle,
+          description: toastDescription,
           status: 'success',
           duration: 1500,
           isClosable: true,
@@ -64,11 +74,6 @@ export function DutyButton() {
       },
     },
   )
-
-  async function handleSetOnDuty(onDuty: boolean) {
-    setOnDuty(onDuty)
-    await submitOnDutyState.mutateAsync(onDuty)
-  }
 
   return (
     <>
@@ -105,7 +110,7 @@ export function DutyButton() {
                 _hover={{ background: 'green.800' }}
                 onClick={() => {
                   onClose()
-                  handleSetOnDuty(!onDuty)
+                  handleSetOnDuty()
                 }}
                 ml={3}
               >

@@ -21,9 +21,9 @@ import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { FiEdit } from 'react-icons/fi'
 import { z } from 'zod'
-import { logoImg } from '../../../assets/assets'
-import { api } from '../../../services/api'
-import { queryClient } from '../../../services/react-query'
+import { logoImg } from '../../assets/assets'
+import { api } from '../../services/api'
+import { queryClient } from '../../services/react-query'
 
 interface EditableCardProps {
   title: string

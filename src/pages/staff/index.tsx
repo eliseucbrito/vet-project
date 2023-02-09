@@ -1,20 +1,8 @@
 import {
   Box,
-  Checkbox,
   Flex,
   Heading,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
   Image as ChakraImage,
-  Skeleton,
-  Icon,
-  Avatar,
   Wrap,
   WrapItem,
   HStack,
@@ -30,11 +18,9 @@ import { FilterButton } from '../../components/defaults/FilterButton'
 import { SortByButton } from '../../components/defaults/SortByButton'
 
 export default function Staff() {
-  const { data: staff, isLoading } = useStaff()
+  const { data: staff } = useStaff()
 
   const router = useRouter()
-
-  const skeletonArray = Array.from(Array(10))
 
   async function handleStaffDetails(id: number) {
     await router.push(`/staff/${id}`)

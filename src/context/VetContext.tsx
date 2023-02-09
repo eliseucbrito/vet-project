@@ -6,6 +6,7 @@ import { parseCookies, setCookie } from 'nookies'
 import { StaffDetailsType } from '../hooks/useStaffDetails'
 import { api } from '../services/api'
 import { z } from 'zod'
+import { GetServerSideProps } from 'next'
 
 export interface User {
   id: number
@@ -21,6 +22,7 @@ type SignInCredentials = {
 
 type VetContextData = {
   user: User | undefined
+  servicesCategorized: any
   signIn(credentials: SignInCredentials): Promise<void>
 }
 
@@ -33,6 +35,13 @@ interface VetContextProviderProps {
 export function VetContextProvider({ children }: VetContextProviderProps) {
   const [user, setUser] = useState<User | undefined>()
   const router = useRouter()
+
+  const servicesCategorized = {
+    exams: [],
+    surgerys: [],
+    emergencys: [],
+    medicalCare: [],
+  }
 
   async function signIn({ email, password }: SignInCredentials) {
     const { data } = await api.post(
@@ -107,13 +116,12 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
           }
 
           setUser(user)
-          router.push('/dashboard')
         })
     }
   }, [])
 
   return (
-    <VetContext.Provider value={{ user, signIn }}>
+    <VetContext.Provider value={{ user, signIn, servicesCategorized }}>
       {children}
     </VetContext.Provider>
   )

@@ -53,7 +53,9 @@ export type ServiceResponse = {
 }
 
 export async function getServices(id?: string): Promise<ServiceResponse> {
-  const { data } = await api.get<ServiceRequest[]>('/api/services/v1')
+  const { data } = await api.get('/api/services/v1')
+
+  console.log('SERVICES DATA', data)
 
   const servicesArray: Array<Service> = []
   let serviceDetails: Service | undefined

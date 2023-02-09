@@ -38,7 +38,7 @@ export function ActivityCard({ reports, services }: ActivityCardProps) {
       <VStack bg="white" borderRadius={12} align="start">
         <Text fontSize="1.25rem">Atividade</Text>
         <Divider w="15rem" />
-        <Menu w="100%">
+        <Menu>
           <MenuButton
             as={Button}
             rightIcon={<FiChevronDown />}

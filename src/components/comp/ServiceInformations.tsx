@@ -1,10 +1,9 @@
 import { Box, Divider, HStack, Text, VStack } from '@chakra-ui/react'
-import dayjs from 'dayjs'
-import { Service } from '../../../hooks/useClinicData'
-import { kindFormatter } from '../../../utils/kindFormatter'
-import { phoneFormatter } from '../../../utils/phoneFormatter'
-import { serviceTypeFormatter } from '../../../utils/serviceTypeFormatter'
-import { sityFormatter } from '../../../utils/sityFormatter'
+import { Service } from '../../hooks/useClinicData'
+import { kindFormatter } from '../../utils/kindFormatter'
+import { phoneFormatter } from '../../utils/phoneFormatter'
+import { serviceTypeFormatter } from '../../utils/serviceTypeFormatter'
+import { sityFormatter } from '../../utils/sityFormatter'
 
 interface ServiceInformationsProps {
   service: Service
