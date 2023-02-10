@@ -27,13 +27,16 @@ type Service = {
     id: number
     fullName: string
     avatarUrl: string
-    role:
-      | 'CEO'
-      | 'GENERAL_MANAGER'
-      | 'MANAGER'
-      | 'VETERINARY'
-      | 'ASSISTANT'
-      | 'INTERN'
+    role: {
+      code: number
+      description:
+        | 'CEO'
+        | 'GENERAL_MANAGER'
+        | 'MANAGER'
+        | 'VETERINARY'
+        | 'ASSISTANT'
+        | 'INTERN'
+    }
   }
   type: 'EXAM' | 'MEDICAL_CARE' | 'HOME_CARE' | 'SURGERY' | 'EMERGENCY'
   status:
@@ -55,12 +58,13 @@ export type ServiceResponse = {
 export async function getServices(id?: string): Promise<ServiceResponse> {
   const { data } = await api.get('/api/services/v1')
 
+  console.log('ID RECEIVED ', id)
   console.log('SERVICES DATA', data)
 
   const servicesArray: Array<Service> = []
   let serviceDetails: Service | undefined
 
-  data.map((service: ServiceRequest) => {
+  data.map((service) => {
     const services = {
       id: service.id,
       createdAt: service.created_at,
@@ -83,7 +87,10 @@ export async function getServices(id?: string): Promise<ServiceResponse> {
         id: service.staff.id,
         fullName: service.staff.full_name,
         avatarUrl: service.staff.avatar_url,
-        role: service.staff.role,
+        role: {
+          code: service.staff.role.id,
+          description: service.staff.role.description,
+        },
       },
       status: service.status,
       type: service.type,
@@ -105,7 +112,7 @@ export async function getServices(id?: string): Promise<ServiceResponse> {
 }
 
 export function useServices(id?: string, options?: UseQueryOptions) {
-  return useQuery(['services'], () => getServices(id), {
+  return useQuery(['services', id], () => getServices(id), {
     staleTime: 1000 * 60 * 60,
   })
 }

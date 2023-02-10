@@ -9,7 +9,8 @@ export default function MedicalCares() {
 
   const medicalCares: Service[] = []
   service?.servicesArray.map((service) => {
-    if (service.type === 'EXAM') medicalCares.push(service)
+    if (service.type === 'MEDICAL_CARE' || service.type === 'HOME_CARE')
+      medicalCares.push(service)
   })
 
   return (

@@ -43,7 +43,7 @@ export default function ServiceDetails({ id }: ServiceDetailsProps) {
         },
       }}
     >
-      {service === undefined ? (
+      {service?.service === undefined ? (
         <Spinner />
       ) : (
         <>

@@ -1,6 +1,8 @@
 import { VStack, HStack } from '@chakra-ui/react'
 import dayjs from 'dayjs'
+import { useContext } from 'react'
 import { FormattedNumber } from 'react-intl'
+import { VetContext } from '../../context/VetContext'
 import { StaffDetailsType } from '../../hooks/useStaffDetails'
 import { CnpjCpfFormatter } from '../../utils/CnpjCpfFormatter'
 import { dutyFormatter } from '../../utils/dutyFormatter'
@@ -12,8 +14,11 @@ interface StaffDetailsCardProps {
 }
 
 export function StaffDetailsCard({ staff }: StaffDetailsCardProps) {
+  const { user } = useContext(VetContext)
   const weeklyWorkLoadInHours = staff.weeklyWorkLoad / 60
   const hoursLeft = staff.weeklyWorkLoad - staff.workLoadCompleted
+
+  const managerAccessLevel = user !== undefined ? user?.role.code >= 4 : false
 
   return (
     <VStack
@@ -30,15 +35,17 @@ export function StaffDetailsCard({ staff }: StaffDetailsCardProps) {
           data={new Date(staff.createdAt).toLocaleDateString()}
         />
 
-        <LineInfo label="Salário Base">
-          R${' '}
-          <FormattedNumber
-            value={staff.baseSalary}
-            minimumFractionDigits={2}
-            maximumFractionDigits={2}
-            currency="BRL"
-          />
-        </LineInfo>
+        {managerAccessLevel && (
+          <LineInfo label="Salário Base">
+            R${' '}
+            <FormattedNumber
+              value={staff.baseSalary}
+              minimumFractionDigits={2}
+              maximumFractionDigits={2}
+              currency="BRL"
+            />
+          </LineInfo>
+        )}
 
         <LineInfo
           label="Carga Horária"
@@ -52,34 +59,40 @@ export function StaffDetailsCard({ staff }: StaffDetailsCardProps) {
           data={CnpjCpfFormatter(staff.cpf)}
         />
 
-        <LineInfo label="Bônus anual">
-          R${' '}
-          <FormattedNumber
-            value={staff.baseSalary / 10}
-            minimumFractionDigits={2}
-            maximumFractionDigits={2}
-            currency="BRL"
-          />
-        </LineInfo>
+        {managerAccessLevel && (
+          <LineInfo label="Bônus anual">
+            R${' '}
+            <FormattedNumber
+              value={staff.baseSalary / 10}
+              minimumFractionDigits={2}
+              maximumFractionDigits={2}
+              currency="BRL"
+            />
+          </LineInfo>
+        )}
 
-        <LineInfo
-          label={'Horas Trabalhadas'}
-          data={`${hourFormatter(
-            staff.workLoadCompleted,
-          )}h / ${weeklyWorkLoadInHours}h`}
-        />
+        {managerAccessLevel && (
+          <LineInfo
+            label={'Horas Trabalhadas'}
+            data={`${hourFormatter(
+              staff.workLoadCompleted,
+            )}h / ${weeklyWorkLoadInHours}h`}
+          />
+        )}
       </HStack>
 
       <HStack w="100%" gap="2rem" justify="space-between">
         <LineInfo label={'ID'} data={staff.id} />
 
-        <LineInfo
-          label={'Próximas férias'}
-          data={dayjs(staff.createdAt)
-            .add(1, 'year')
-            .toDate()
-            .toLocaleDateString()}
-        />
+        {managerAccessLevel && (
+          <LineInfo
+            label={'Próximas férias'}
+            data={dayjs(staff.createdAt)
+              .add(1, 'year')
+              .toDate()
+              .toLocaleDateString()}
+          />
+        )}
 
         <LineInfo label={'De Plantão'} data={dutyFormatter(staff.onDuty)} />
       </HStack>

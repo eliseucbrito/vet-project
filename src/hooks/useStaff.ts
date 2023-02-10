@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { api } from '../services/api'
-import { Staff, StaffRequest } from './useClinicData'
+import { Staff } from './useClinicData'
 
 export async function getStaff(): Promise<Staff[]> {
   const { data } = await api.get('/api/staff/v1')
+
+  console.log(data)
 
   const staff = data.map((user) => {
     return {
@@ -14,7 +16,10 @@ export async function getStaff(): Promise<Staff[]> {
       createdAt: user.created_at,
       cpf: user.cpf,
       fullName: user.full_name,
-      role: user.role,
+      role: {
+        code: user.role.id,
+        description: user.role.description,
+      },
       onDuty: user.on_duty,
     }
   })

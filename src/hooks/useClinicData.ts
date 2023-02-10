@@ -55,13 +55,16 @@ export type Staff = {
   cpf: string
   fullName: string
   onDuty: boolean
-  role:
-    | 'CEO'
-    | 'GENERAL_MANAGER'
-    | 'MANAGER'
-    | 'VETERINARY'
-    | 'ASSISTANT'
-    | 'INTERN'
+  role: {
+    code: number
+    description:
+      | 'CEO'
+      | 'GENERAL_MANAGER'
+      | 'MANAGER'
+      | 'VETERINARY'
+      | 'ASSISTANT'
+      | 'INTERN'
+  }
 }
 
 export type ServiceRequest = {

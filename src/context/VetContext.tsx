@@ -2,7 +2,7 @@
 import { useRouter } from 'next/router'
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { Service } from '../hooks/useClinicData'
-import { parseCookies, setCookie } from 'nookies'
+import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import { StaffDetailsType } from '../hooks/useStaffDetails'
 import { api } from '../services/api'
 import { z } from 'zod'
@@ -12,7 +12,10 @@ export interface User {
   id: number
   avatarUrl: string
   fullName: string
-  role: string
+  role: {
+    code: number
+    description: string
+  }
 }
 
 type SignInCredentials = {
@@ -23,6 +26,7 @@ type SignInCredentials = {
 type VetContextData = {
   user: User | undefined
   servicesCategorized: any
+  logout(): void
   signIn(credentials: SignInCredentials): Promise<void>
 }
 
@@ -112,7 +116,10 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
             id: data.id,
             avatarUrl: data.avatar_url,
             fullName: data.full_name,
-            role: data.role,
+            role: {
+              code: data.role.id,
+              description: data.description,
+            },
           }
 
           setUser(user)
@@ -120,8 +127,14 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
     }
   }, [])
 
+  function logout() {
+    destroyCookie(undefined, 'vet.token')
+    setUser(undefined)
+    router.push('/')
+  }
+
   return (
-    <VetContext.Provider value={{ user, signIn, servicesCategorized }}>
+    <VetContext.Provider value={{ user, signIn, servicesCategorized, logout }}>
       {children}
     </VetContext.Provider>
   )

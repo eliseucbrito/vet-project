@@ -9,6 +9,17 @@ import {
   Avatar,
   Box,
   Spinner,
+  Popover,
+  PopoverTrigger,
+  Button,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverFooter,
+  PopoverHeader,
+  Portal,
+  ButtonGroup,
 } from '@chakra-ui/react'
 import Image from 'next/image'
 import * as img from '../../assets/assets'
@@ -24,19 +35,29 @@ import {
 import { FaUserMd } from 'react-icons/fa'
 import { TbPaw } from 'react-icons/tb'
 import { CgLogOut } from 'react-icons/cg'
-import { useContext, useState } from 'react'
+import { MutableRefObject, useContext, useRef, useState } from 'react'
 import { NavItem } from './NavItem'
 import { VetContext } from '../../context/VetContext'
 import { nameFormatter } from '../../utils/nameFormatter'
 import { useRouter } from 'next/router'
+import { destroyCookie } from 'nookies'
+import { roleFormatter } from '../../utils/roleFormatter'
 
 export function Sidebar() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const { user } = useContext(VetContext)
+  const { user, logout } = useContext(VetContext)
+  const router = useRouter()
+  const initialFocusRef = useRef() as MutableRefObject<HTMLButtonElement>
 
   function handleSidebarState() {
     setSidebarOpen(!sidebarOpen)
   }
+
+  function handleLogout() {
+    logout()
+  }
+
+  const userAccessLevel = user === undefined ? 0 : user.role.code
 
   return (
     <Stack
@@ -84,9 +105,11 @@ export function Sidebar() {
           <NavItem isOpen={sidebarOpen} href="/services" icon={FiFolder}>
             Atendimentos
           </NavItem>
-          <NavItem isOpen={sidebarOpen} href="/reports" icon={FiPieChart}>
-            Relatórios
-          </NavItem>
+          {userAccessLevel >= 4 && (
+            <NavItem isOpen={sidebarOpen} href="/reports" icon={FiPieChart}>
+              Relatórios
+            </NavItem>
+          )}
           <NavItem isOpen={sidebarOpen} href="/calendar" icon={FiCalendar}>
             Calendário
           </NavItem>
@@ -100,35 +123,65 @@ export function Sidebar() {
         h="4.5rem"
         justify="space-between"
       >
-        {user === undefined ? (
-          <Spinner />
-        ) : (
-          <>
-            <Box alignItems="center" display={sidebarOpen ? 'flex' : 'none'}>
-              <Avatar src={user?.avatarUrl} borderRadius={12} />
-              <VStack ml="2" align="start" sx={{ lineHeight: 0.75 }}>
-                <Text
-                  fontSize="1rem"
-                  overflow="hidden"
-                  textOverflow="ellipsis"
-                  whiteSpace="nowrap"
-                  mr="2"
-                >
-                  {nameFormatter(user!.fullName)}
-                </Text>
-                <Text fontSize="0.875rem">{user?.role}</Text>
-              </VStack>
-            </Box>
-            <Icon
-              marginLeft="auto"
-              cursor="pointer"
-              onClick={() => alert('deslogou')}
-              as={CgLogOut}
-              boxSize="24px"
-              margin={sidebarOpen ? '0' : '0 auto'}
-            />
-          </>
+        {user !== undefined && (
+          <Box alignItems="center" display={sidebarOpen ? 'flex' : 'none'}>
+            <Avatar src={user?.avatarUrl} borderRadius={12} />
+            <VStack ml="2" align="start" sx={{ lineHeight: 0.75 }}>
+              <Text
+                fontSize="1rem"
+                overflow="hidden"
+                textOverflow="ellipsis"
+                whiteSpace="nowrap"
+                mr="2"
+              >
+                {nameFormatter(user!.fullName)}
+              </Text>
+              <Text fontSize="0.875rem">
+                {roleFormatter(user!.role.description).role}
+              </Text>
+            </VStack>
+          </Box>
         )}
+        <Box w="100%">
+          <Popover
+            initialFocusRef={initialFocusRef}
+            placement="bottom"
+            colorScheme="red"
+          >
+            {({ isOpen, onClose }) => (
+              <>
+                <PopoverTrigger>
+                  <Button
+                    variant="unstyled"
+                    display="flex"
+                    marginLeft="auto"
+                    margin={sidebarOpen ? '0' : '0 auto'}
+                  >
+                    <CgLogOut size="1.5rem" />
+                  </Button>
+                </PopoverTrigger>
+                <Portal>
+                  <PopoverContent bg="white">
+                    <PopoverHeader border="none">
+                      <Text fontWeight={600}>Sair</Text>
+                    </PopoverHeader>
+                    <PopoverContent border="none" px={2}>
+                      Confirmar logout
+                    </PopoverContent>
+                    <PopoverFooter border="none" alignSelf="end">
+                      <ButtonGroup>
+                        <Button onClick={onClose}>Cancelar</Button>
+                        <Button onClick={handleLogout} bg="green.600">
+                          Confirmar
+                        </Button>
+                      </ButtonGroup>
+                    </PopoverFooter>
+                  </PopoverContent>
+                </Portal>
+              </>
+            )}
+          </Popover>
+        </Box>
       </Flex>
     </Stack>
   )

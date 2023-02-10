@@ -13,6 +13,7 @@ import { Sidebar } from '../components/navigation/Sidebar'
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const loginPage = router.asPath === '/'
 
   useEffect(() => {
     const handleStart = (url: string) => setLoading(true)
@@ -35,14 +36,14 @@ export default function App({ Component, pageProps }: AppProps) {
         <VetContextProvider>
           <ChakraProvider theme={defaultTheme}>
             <Hydrate state={pageProps.dehydratedState}>
-              {loading ? (
+              {loading && loginPage ? (
                 <Flex w="100vw" h="100vh" justify="center" align="center">
                   <Spinner />
                 </Flex>
               ) : (
                 <Flex w="100vw" h="100vh">
                   {router.asPath !== '/' && <Sidebar />}
-                  <Component {...pageProps} />
+                  {loading ? <Spinner /> : <Component {...pageProps} />}
                 </Flex>
               )}
             </Hydrate>

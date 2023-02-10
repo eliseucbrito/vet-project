@@ -54,7 +54,7 @@ export function RoleHistoricCard({
                 Antigo Cargo
               </Text>
               <Text fontSize="1rem" fontWeight={600}>
-                {roleFormatter(lastRole!.role).role}
+                {roleFormatter(lastRole!.role.description).role}
               </Text>
             </Box>
             <Stack direction="row" h="6rem" p={4}>
@@ -68,7 +68,7 @@ export function RoleHistoricCard({
             {index !== roleHistoricLastIndex ? 'Novo Cargo' : 'Cargo'}
           </Text>
           <Text fontSize="1rem" fontWeight={600}>
-            {roleFormatter(role.role).role}
+            {roleFormatter(role.role.description).role}
           </Text>
         </Box>
         <Stack direction="row" h="6rem" p={4}>

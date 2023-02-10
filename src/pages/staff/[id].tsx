@@ -6,6 +6,7 @@ import {
   HStack,
   Spinner,
   Text,
+  useConst,
   VStack,
 } from '@chakra-ui/react'
 import { GetServerSideProps } from 'next'
@@ -22,19 +23,21 @@ import { StaffDetailsCard } from '../../components/DetailsCard/StaffDetailsCard'
 import { ActivityCard } from '../../components/DetailsCard/ActivityCard'
 import { StaffHistoricCard } from '../../components/StaffHistoricCard/StaffHistoricCard'
 import Link from 'next/link'
-import { parseCookies } from 'nookies'
+import { useContext } from 'react'
+import { VetContext } from '../../context/VetContext'
 
 interface StaffDetailsProps {
   staffSSR: StaffDetailsType
   id: string
 }
 
-export default function StaffDetails({ staffSSR, id }: StaffDetailsProps) {
-  const router = useRouter()
+export default function StaffDetails({ id }: StaffDetailsProps) {
+  const { user } = useContext(VetContext)
+  const { data: staff } = useStaffDetails(id)
 
-  const { data: staff } = useStaffDetails(id, {
-    initialData: staffSSR,
-  })
+  console.log(staff)
+
+  const managerAccessLevel = user !== undefined ? user?.role.code >= 4 : false
 
   return (
     <Box
@@ -86,46 +89,48 @@ export default function StaffDetails({ staffSSR, id }: StaffDetailsProps) {
               roleHistoric={staff.roleHistoric}
             />
 
-            <VStack
-              bg="white"
-              p="1rem"
-              borderRadius={12}
-              gap={1}
-              align="start"
-              w="max-content"
-            >
-              <Text fontSize="1rem" whiteSpace="normal">
-                Documentos
-              </Text>
-              <Divider />
-              <Text
-                as={Link}
-                lineHeight={1}
-                fontSize="1rem"
-                color="black"
-                p="0.25rem"
-                href={'/exams'}
-                _hover={{ color: 'gray.600' }}
-                transition="color 0.2s"
-                whiteSpace="normal"
+            {managerAccessLevel && (
+              <VStack
+                bg="white"
+                p="1rem"
+                borderRadius={12}
+                gap={1}
+                align="start"
+                w="max-content"
               >
-                Identidade
-              </Text>
+                <Text fontSize="1rem" whiteSpace="normal">
+                  Documentos
+                </Text>
+                <Divider />
+                <Text
+                  as={Link}
+                  lineHeight={1}
+                  fontSize="1rem"
+                  color="black"
+                  p="0.25rem"
+                  href={'/exams'}
+                  _hover={{ color: 'gray.600' }}
+                  transition="color 0.2s"
+                  whiteSpace="normal"
+                >
+                  Identidade
+                </Text>
 
-              <Text
-                as={Link}
-                lineHeight={1}
-                fontSize="1rem"
-                color="black"
-                p="0.25rem"
-                href={'/exams'}
-                _hover={{ color: 'gray.600' }}
-                transition="color 0.2s"
-                whiteSpace="nowrap"
-              >
-                Carteira de Trabalho
-              </Text>
-            </VStack>
+                <Text
+                  as={Link}
+                  lineHeight={1}
+                  fontSize="1rem"
+                  color="black"
+                  p="0.25rem"
+                  href={'/exams'}
+                  _hover={{ color: 'gray.600' }}
+                  transition="color 0.2s"
+                  whiteSpace="nowrap"
+                >
+                  Carteira de Trabalho
+                </Text>
+              </VStack>
+            )}
           </Flex>
         </>
       )}

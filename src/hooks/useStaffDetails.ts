@@ -18,7 +18,20 @@ export type RoleHistoricDetails = {
   promotedBy: {
     id: number
     fullName: string
-    role:
+    role: {
+      code: number
+      description:
+        | 'CEO'
+        | 'GENERAL_MANAGER'
+        | 'MANAGER'
+        | 'VETERINARY'
+        | 'ASSISTANT'
+        | 'INTERN'
+    }
+  }
+  role: {
+    code: number
+    description:
       | 'CEO'
       | 'GENERAL_MANAGER'
       | 'MANAGER'
@@ -26,13 +39,6 @@ export type RoleHistoricDetails = {
       | 'ASSISTANT'
       | 'INTERN'
   }
-  role:
-    | 'CEO'
-    | 'GENERAL_MANAGER'
-    | 'MANAGER'
-    | 'VETERINARY'
-    | 'ASSISTANT'
-    | 'INTERN'
 }
 
 export type StaffServicesDetails = {
@@ -63,13 +69,16 @@ export type StaffDetailsType = {
   cpf: string
   fullName: string
   onDuty: boolean
-  role:
-    | 'CEO'
-    | 'GENERAL_MANAGER'
-    | 'MANAGER'
-    | 'VETERINARY'
-    | 'ASSISTANT'
-    | 'INTERN'
+  role: {
+    code: number
+    description:
+      | 'CEO'
+      | 'GENERAL_MANAGER'
+      | 'MANAGER'
+      | 'VETERINARY'
+      | 'ASSISTANT'
+      | 'INTERN'
+  }
   weeklyWorkLoad: number // in minutes
   workLoadCompleted: number
   reports: ReportDetails[]
@@ -108,7 +117,10 @@ export async function getStaffDetails(id: string): Promise<StaffDetailsType> {
       promotedBy: {
         id: obj.promoter.id,
         fullName: obj.promoter.full_name,
-        role: obj.promoter.role,
+        role: {
+          code: obj.promoter.role.id,
+          description: obj.promoter.description,
+        },
       },
       role: obj.role,
     }
@@ -139,7 +151,10 @@ export async function getStaffDetails(id: string): Promise<StaffDetailsType> {
     cpf: staffData.cpf,
     fullName: staffData.full_name,
     onDuty: staffData.on_duty,
-    role: staffData.staff_role,
+    role: {
+      code: staffData.role.id,
+      description: staffData.role.description,
+    },
     weeklyWorkLoad: staffData.weekly_work_load,
     workLoadCompleted: staffData.work_load_completed,
     reports,

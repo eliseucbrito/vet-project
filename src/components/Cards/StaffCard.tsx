@@ -18,7 +18,16 @@ interface StaffCardProps {
   avatarUrl: string
   fullName: string
   email: string
-  role: string
+  role: {
+    code: number
+    description:
+      | 'CEO'
+      | 'GENERAL_MANAGER'
+      | 'MANAGER'
+      | 'VETERINARY'
+      | 'ASSISTANT'
+      | 'INTERN'
+  }
   id: number
   onDuty: boolean
 }
@@ -32,8 +41,9 @@ export function StaffCard({
   id,
   onDuty,
 }: StaffCardProps) {
-  const roleFormatted = roleFormatter(role)?.role
-  const roleExplained = roleFormatter(role)?.explanation
+  console.log(role)
+  const roleFormatted = roleFormatter(role.description).role
+  const roleExplained = roleFormatter(role.description)?.explanation
 
   return (
     <Box w="17rem" bg="white" p="1rem" borderRadius="2xl">

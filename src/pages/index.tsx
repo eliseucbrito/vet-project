@@ -15,6 +15,7 @@ import {
   InputRightElement,
   Button,
   Icon,
+  Spinner,
 } from '@chakra-ui/react'
 import Image from 'next/image'
 import * as img from '../assets/assets'
@@ -50,6 +51,8 @@ export default function Login({ staff }: LoginProps) {
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
 
+  const { user } = useContext(VetContext)
+
   const isWideVersion = useBreakpointValue({
     base: false,
     md: true,
@@ -58,7 +61,7 @@ export default function Login({ staff }: LoginProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginData>({
     resolver: zodResolver(LoginSchema),
   })
@@ -66,8 +69,6 @@ export default function Login({ staff }: LoginProps) {
   function handleSignIn(credentials: LoginData) {
     signIn(credentials)
   }
-
-  console.log('ERROS LOGIN ', errors)
 
   return (
     <Flex
@@ -117,9 +118,13 @@ export default function Login({ staff }: LoginProps) {
                 <FormControl isRequired w="100%">
                   <FormLabel htmlFor="email-input">E-mail</FormLabel>
                   <Input
-                    focusBorderColor="green.600"
+                    // focusBorderColor="green.600"
                     id="email-input"
                     type="text"
+                    _focus={{
+                      'box-shadow': '0 0.2rem #dfd9d9',
+                      scale: 10,
+                    }}
                     bg={['none', 'white']}
                     {...register('email')}
                   />
@@ -180,7 +185,12 @@ export default function Login({ staff }: LoginProps) {
                   </ChakraLink>
                 </Stack>
 
-                <VETbutton type="submit" variant="DefaultButton" bg="green.600">
+                <VETbutton
+                  isLoading={user !== undefined}
+                  type="submit"
+                  variant="DefaultButton"
+                  bg="green.600"
+                >
                   ENTRAR
                 </VETbutton>
               </form>

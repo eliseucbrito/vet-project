@@ -11,7 +11,7 @@ export default function Exams() {
 
   const emergencys: Service[] = []
   service?.servicesArray.map((service) => {
-    if (service.type === 'EXAM') emergencys.push(service)
+    if (service.type === 'EMERGENCY') emergencys.push(service)
   })
 
   return (

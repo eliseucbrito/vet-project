@@ -9,7 +9,7 @@ export default function Surgerys() {
 
   const surgerys: Service[] = []
   service?.servicesArray.map((service) => {
-    if (service.type === 'EXAM') surgerys.push(service)
+    if (service.type === 'SURGERY') surgerys.push(service)
   })
 
   return (
