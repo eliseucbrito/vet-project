@@ -106,8 +106,6 @@ export function NewServiceModal() {
     },
   )
 
-  console.log(errors)
-
   async function handleCreateNewService(service: newServiceModalData) {
     await createNewService.mutateAsync(service)
   }

@@ -8,13 +8,9 @@ import {
   Flex,
   Avatar,
   Box,
-  Spinner,
   Popover,
   PopoverTrigger,
   Button,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
   PopoverContent,
   PopoverFooter,
   PopoverHeader,
@@ -40,13 +36,11 @@ import { NavItem } from './NavItem'
 import { VetContext } from '../../context/VetContext'
 import { nameFormatter } from '../../utils/nameFormatter'
 import { useRouter } from 'next/router'
-import { destroyCookie } from 'nookies'
 import { roleFormatter } from '../../utils/roleFormatter'
 
 export function Sidebar() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { user, logout } = useContext(VetContext)
-  const router = useRouter()
   const initialFocusRef = useRef() as MutableRefObject<HTMLButtonElement>
 
   function handleSidebarState() {
@@ -99,15 +93,12 @@ export function Sidebar() {
           <NavItem isOpen={sidebarOpen} href="/staff" icon={FaUserMd}>
             Staff
           </NavItem>
-          <NavItem isOpen={sidebarOpen} href="/settings" icon={FiSettings}>
-            Ajustes
-          </NavItem>
           <NavItem isOpen={sidebarOpen} href="/services" icon={FiFolder}>
             Atendimentos
           </NavItem>
           {userAccessLevel >= 4 && (
-            <NavItem isOpen={sidebarOpen} href="/reports" icon={FiPieChart}>
-              Relatórios
+            <NavItem isOpen={sidebarOpen} href="/finance" icon={FiPieChart}>
+              Financeiro
             </NavItem>
           )}
           <NavItem isOpen={sidebarOpen} href="/calendar" icon={FiCalendar}>

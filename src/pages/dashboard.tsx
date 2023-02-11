@@ -33,8 +33,6 @@ export default function Dashboard() {
   const [hasNotification, setHasNotification] = useState(true)
   const { user } = useContext(VetContext)
 
-  console.log(user)
-
   return (
     <Box h="100vh" w="100%" p={['0 1rem', '0.25rem 1rem 1rem 2.5rem']}>
       {user === undefined ? (

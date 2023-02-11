@@ -1,12 +1,9 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable array-callback-return */
-import { useRouter } from 'next/router'
+import Router from 'next/router'
 import { createContext, ReactNode, useEffect, useState } from 'react'
-import { Service } from '../hooks/useClinicData'
 import { destroyCookie, parseCookies, setCookie } from 'nookies'
-import { StaffDetailsType } from '../hooks/useStaffDetails'
 import { api } from '../services/api'
-import { z } from 'zod'
-import { GetServerSideProps } from 'next'
 
 export interface User {
   id: number
@@ -21,6 +18,7 @@ export interface User {
 type SignInCredentials = {
   email: string
   password: string
+  remember: boolean
 }
 
 type VetContextData = {
@@ -36,9 +34,14 @@ interface VetContextProviderProps {
   children: ReactNode
 }
 
+export function signOut() {
+  destroyCookie(undefined, 'vet.token')
+  destroyCookie(undefined, 'vet.refreshToken')
+  Router.push('/')
+}
+
 export function VetContextProvider({ children }: VetContextProviderProps) {
   const [user, setUser] = useState<User | undefined>()
-  const router = useRouter()
 
   const servicesCategorized = {
     exams: [],
@@ -47,7 +50,7 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
     medicalCare: [],
   }
 
-  async function signIn({ email, password }: SignInCredentials) {
+  async function signIn({ email, password, remember }: SignInCredentials) {
     const { data } = await api.post(
       '/auth/signin',
       {
@@ -67,13 +70,15 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
     api.defaults.headers.Authorization = `Bearer ${token}`
 
     if (authenticated) {
+      // 30 days : 5 min
+      const maxAgeValue = remember ? 60 * 60 * 24 * 30 : 60 * 5
       setCookie(undefined, 'vet.token', token, {
-        maxAge: 60 * 60 * 24 * 30, // 30 days
+        maxAge: maxAgeValue,
         path: '/',
       })
 
       setCookie(undefined, 'vet.refreshToken', refreshToken, {
-        maxAge: 60 * 60 * 24 * 30, // 30 days
+        maxAge: maxAgeValue,
         path: '/',
       })
 
@@ -94,13 +99,17 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
           }
 
           setUser(user)
-          router.push('/dashboard')
+          Router.push('/dashboard')
         })
     }
   }
 
   useEffect(() => {
     const { 'vet.token': token } = parseCookies()
+
+    if (token === undefined) {
+      Router.push('/')
+    }
 
     if (token) {
       api
@@ -124,13 +133,15 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
 
           setUser(user)
         })
+        .catch(() => {
+          signOut()
+        })
     }
   }, [])
 
   function logout() {
-    destroyCookie(undefined, 'vet.token')
     setUser(undefined)
-    router.push('/')
+    signOut()
   }
 
   return (

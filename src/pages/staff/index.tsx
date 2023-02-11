@@ -1,17 +1,7 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  Image as ChakraImage,
-  Wrap,
-  WrapItem,
-  HStack,
-} from '@chakra-ui/react'
-import { Sidebar } from '../../components/navigation/Sidebar'
+import { Box, Flex, Heading, Wrap, WrapItem, HStack } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useStaff } from '../../hooks/useStaff'
-import { dutyFormatter } from '../../utils/dutyFormatter'
 import { StaffCard } from '../../components/Cards/StaffCard'
 import { SmallSearchBar } from '../../components/defaults/SmallSearchBar'
 import { FilterButton } from '../../components/defaults/FilterButton'

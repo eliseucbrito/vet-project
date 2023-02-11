@@ -1,4 +1,4 @@
-import { ChakraProvider, Flex, Image, Spinner } from '@chakra-ui/react'
+import { ChakraProvider, Flex, Spinner } from '@chakra-ui/react'
 import { Hydrate, QueryClientProvider } from '@tanstack/react-query'
 import type { AppProps } from 'next/app'
 import { IntlProvider } from 'react-intl'
@@ -9,6 +9,9 @@ import { defaultTheme } from '../styles/theme/defaultTheme'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Sidebar } from '../components/navigation/Sidebar'
+import { parseCookies } from 'nookies'
+import { NextResponse } from 'next/server'
+import { loadGetInitialProps } from 'next/dist/shared/lib/utils'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()

@@ -35,8 +35,6 @@ export default function StaffDetails({ id }: StaffDetailsProps) {
   const { user } = useContext(VetContext)
   const { data: staff } = useStaffDetails(id)
 
-  console.log(staff)
-
   const managerAccessLevel = user !== undefined ? user?.role.code >= 4 : false
 
   return (

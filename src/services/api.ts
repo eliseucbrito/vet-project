@@ -2,6 +2,7 @@
 /* eslint-disable n/handle-callback-err */
 import axios, { AxiosError, AxiosHeaders } from 'axios'
 import { parseCookies, setCookie } from 'nookies'
+import { signOut } from '../context/VetContext'
 
 let cookies = parseCookies()
 let isRefreshing = false
@@ -22,7 +23,6 @@ api.interceptors.response.use(
     return response
   },
   (error: AxiosError<{ message: string }>) => {
-    console.log('ERROR REQ', error)
     if (error.response?.status === 401) {
       if (error.response.data?.message === 'token.expired') {
         cookies = parseCookies()
@@ -40,15 +40,14 @@ api.interceptors.response.use(
             })
             .then((response) => {
               const { accessToken, refreshToken } = response.data
-              console.log(response.data)
 
               setCookie(undefined, 'vet.token', accessToken, {
-                maxAge: 60 * 60 * 24 * 30, // 30 days
+                maxAge: 60 * 5, // 5 minutes
                 path: '/',
               })
 
               setCookie(undefined, 'vet.refreshToken', refreshToken, {
-                maxAge: 60 * 60 * 24 * 30, // 30 days
+                maxAge: 60 * 5, // 5 minutes
                 path: '/',
               })
 
@@ -85,8 +84,10 @@ api.interceptors.response.use(
           })
         })
       } else {
-        console.log('DESLOGAR')
+        signOut()
       }
+
+      return Promise.reject(error)
     }
   },
 )

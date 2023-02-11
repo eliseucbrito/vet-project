@@ -41,7 +41,6 @@ export function StaffCard({
   id,
   onDuty,
 }: StaffCardProps) {
-  console.log(role)
   const roleFormatted = roleFormatter(role.description).role
   const roleExplained = roleFormatter(role.description)?.explanation
 

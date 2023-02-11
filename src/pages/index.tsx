@@ -43,6 +43,7 @@ const LoginSchema = z.object({
     .min(8, { message: 'O Email é obrigatório' })
     .transform((email) => email.toLowerCase()),
   password: z.string().min(6, { message: 'O tamanho mínimo é 6 caracteres' }),
+  remember: z.boolean().default(false),
 })
 
 type LoginData = z.infer<typeof LoginSchema>
@@ -171,7 +172,9 @@ export default function Login({ staff }: LoginProps) {
                   direction={['column', 'row']}
                   marginY="1rem"
                 >
-                  <Checkbox colorScheme="green">Lembrar-me</Checkbox>
+                  <Checkbox colorScheme="green" {...register('remember')}>
+                    Lembrar-me
+                  </Checkbox>
                   <ChakraLink as={Link} href="/recover">
                     <Text
                       as="span"

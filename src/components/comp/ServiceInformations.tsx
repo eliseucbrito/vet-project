@@ -10,8 +10,6 @@ interface ServiceInformationsProps {
 }
 
 export function ServiceInformations({ service }: ServiceInformationsProps) {
-  console.log(service)
-
   return (
     <VStack
       w="100%"
