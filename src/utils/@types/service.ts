@@ -1,5 +1,5 @@
-import { PatientReq } from './patient'
-import { ReducedStaff } from './reducedStaff'
+import { Patient, PatientReq } from './patient'
+import { ReducedStaff, ReducedStaffReq } from './reducedStaff'
 import { Role } from './staff'
 
 export enum ServiceTypes {
@@ -28,7 +28,7 @@ export type ServiceReq = {
   description: string
   price: number
   patient: PatientReq
-  staff: ReducedStaff
+  staff: ReducedStaffReq
   type: ServiceTypes
   status: ServiceStatus
   city: 'TRINDADE_PE' | 'ARARIPINA_PE' | 'OURICURI_PE'
@@ -41,11 +41,33 @@ export type Service = {
   title: string
   description: string
   price: number
-  patient: PatientReq
-  staff: {
-    id: number
-    fullName: string
-    role: Role
+  patient: Patient
+  staff: ReducedStaff
+  type: ServiceTypes
+  status: ServiceStatus
+  city: 'TRINDADE_PE' | 'ARARIPINA_PE' | 'OURICURI_PE'
+}
+
+export type ServiceReducedReq = {
+  id: number
+  created_at: string
+  service_date: string
+  patient: {
+    name: string
+    kind: string
+  }
+  type: ServiceTypes
+  status: ServiceStatus
+  city: 'TRINDADE_PE' | 'ARARIPINA_PE' | 'OURICURI_PE'
+}
+
+export type ServiceReduced = {
+  id: number
+  createdAt: string
+  serviceDate: string
+  patient: {
+    name: string
+    kind: string
   }
   type: ServiceTypes
   status: ServiceStatus

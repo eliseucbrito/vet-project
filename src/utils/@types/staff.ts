@@ -1,3 +1,5 @@
+import { RoleHistoric, RoleHistoricReq } from './roleHistoric'
+
 export enum StaffRoles {
   'CEO',
   'GENERAL_MANAGER',
@@ -25,6 +27,7 @@ export type StaffReq = {
   weekly_work_load: number
   work_load_completed: number | null
   role: Role
+  role_historic: RoleHistoricReq[]
 }
 
 export type Staff = {

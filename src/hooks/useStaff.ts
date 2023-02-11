@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { api } from '../services/api'
+import { api } from '../services/apiClient'
 import { Staff } from './useClinicData'
 
 export async function getStaff(): Promise<Staff[]> {

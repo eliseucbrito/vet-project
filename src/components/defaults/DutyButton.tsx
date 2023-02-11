@@ -13,7 +13,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useContext, useState } from 'react'
 import { VetContext } from '../../context/VetContext'
 import { useStaffDetails } from '../../hooks/useStaffDetails'
-import { api } from '../../services/api'
+import { api } from '../../services/apiClient'
 import { queryClient } from '../../services/react-query'
 
 export function DutyButton() {

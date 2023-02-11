@@ -24,6 +24,7 @@ import { Header } from '../components/dashboard/Header/Header'
 import { ClinicDataCards } from '../components/dashboard/ClinicDataCards/ClinicDataCards'
 import { NewReportModal } from '../components/Modals/NewReportModal'
 import { VetContext } from '../context/VetContext'
+import { withSSRAuth } from '../utils/auth/withSSRAuth'
 
 export default function Dashboard() {
   const isWideVersion = useBreakpointValue({
@@ -113,3 +114,9 @@ export default function Dashboard() {
     </Box>
   )
 }
+
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+  return {
+    props: {},
+  }
+})

@@ -1,10 +1,6 @@
 /* eslint-disable array-callback-return */
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { GetServerSidePropsContext, PreviewData } from 'next'
-import { parseCookies } from 'nookies'
-import { ParsedUrlQuery } from 'querystring'
-import { string } from 'zod'
-import { api } from '../services/api'
+import { api } from '../services/apiClient'
 
 export type ReportDetails = {
   id: number

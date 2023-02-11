@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
-import { api } from '../services/api'
+import { api } from '../services/apiClient'
 import { ReportRequest, Service, ServiceRequest } from './useClinicData'
 
 type weekDayFinanceArray = {}

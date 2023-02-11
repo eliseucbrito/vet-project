@@ -1,5 +1,5 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { api } from '../services/api'
+import { api } from '../services/apiClient'
 import { PatientRequest } from './useClinicData'
 
 export type PatientDetails = {

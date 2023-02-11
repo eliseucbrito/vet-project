@@ -1,4 +1,4 @@
-import { StaffReq } from './staff'
+import { Staff, StaffReq } from './staff'
 
 export enum RoomType {
   'CLINIC',
@@ -22,5 +22,5 @@ export type Room = {
   inUse: boolean
   name: string
   type: RoomType
-  staff: StaffReq
+  staff: Staff
 }

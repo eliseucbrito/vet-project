@@ -30,7 +30,7 @@ import dayjs from 'dayjs'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { api } from '../../services/api'
+import { api } from '../../services/apiClient'
 import { queryClient } from '../../services/react-query'
 
 const newServiceModalSchema = z.object({

@@ -22,7 +22,7 @@ import { useForm } from 'react-hook-form'
 import { FiEdit } from 'react-icons/fi'
 import { z } from 'zod'
 import { logoImg } from '../../assets/assets'
-import { api } from '../../services/api'
+import { api } from '../../services/apiClient'
 import { queryClient } from '../../services/react-query'
 
 interface EditableCardProps {

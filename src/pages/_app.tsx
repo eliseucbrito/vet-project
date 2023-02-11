@@ -46,7 +46,13 @@ export default function App({ Component, pageProps }: AppProps) {
               ) : (
                 <Flex w="100vw" h="100vh">
                   {router.asPath !== '/' && <Sidebar />}
-                  {loading ? <Spinner /> : <Component {...pageProps} />}
+                  {loading ? (
+                    <Flex w="100vw" h="100vh" justify="center" align="center">
+                      <Spinner />
+                    </Flex>
+                  ) : (
+                    <Component {...pageProps} />
+                  )}
                 </Flex>
               )}
             </Hydrate>

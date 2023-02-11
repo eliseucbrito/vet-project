@@ -31,6 +31,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai'
+import { withSSRGuest } from '../utils/auth/withSSRGuest'
 
 interface LoginProps {
   staff: StaffDetailsType
@@ -241,19 +242,8 @@ export default function Login({ staff }: LoginProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const cookies = parseCookies(ctx)
-
-  if (cookies['vet.token']) {
-    return {
-      redirect: {
-        destination: '/dashboard',
-        permanent: false,
-      },
-    }
-  }
-
+export const getServerSideProps = withSSRGuest(async (ctx) => {
   return {
     props: {},
   }
-}
+})

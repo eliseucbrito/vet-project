@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
-import { api } from '../services/api'
+import { api } from '../services/apiClient'
 
 export type ClinicData = {
   clients: {

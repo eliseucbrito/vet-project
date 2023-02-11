@@ -18,7 +18,7 @@ import {
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { api } from '../../services/api'
+import { api } from '../../services/apiClient'
 import { useMutation } from '@tanstack/react-query'
 import { queryClient } from '../../services/react-query'
 
