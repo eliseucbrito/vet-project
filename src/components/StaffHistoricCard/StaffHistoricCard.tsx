@@ -1,36 +1,14 @@
-import {
-  VStack,
-  HStack,
-  Divider,
-  Flex,
-  Stack,
-  Box,
-  Text,
-} from '@chakra-ui/react'
-import dayjs from 'dayjs'
+import { VStack, HStack, Divider, Box, Text } from '@chakra-ui/react'
 import { useState } from 'react'
-import { ServiceDetails } from '../../hooks/usePatientDetails'
-import {
-  RoleHistoricDetails,
-  StaffServicesDetails,
-} from '../../hooks/useStaffDetails'
-import { kindFormatter } from '../../utils/kindFormatter'
-import { roleFormatter } from '../../utils/roleFormatter'
-import { serviceTypeFormatter } from '../../utils/serviceTypeFormatter'
-import { sityFormatter } from '../../utils/sityFormatter'
-import { statusFormatter } from '../../utils/statusFormatter'
-import { CheckBar } from '../defaults/CheckBar'
-import { FormattedNumber } from 'react-intl'
 import { FilterButton } from '../defaults/FilterButton'
-import { nameFormatter } from '../../utils/nameFormatter'
-import Link from 'next/link'
-import { hourFormatter } from '../../utils/hourFormatter'
 import { RoleHistoricCard } from './RoleHistoricCard'
 import { StaffServicesHistoricCard } from './StaffServicesHistoricCard'
+import { ServiceReduced } from '../../utils/@types/service'
+import { RoleHistoric } from '../../utils/@types/roleHistoric'
 
 interface TrajectoryCardProps {
-  services: StaffServicesDetails[]
-  roleHistoric: RoleHistoricDetails[]
+  services: ServiceReduced[]
+  roleHistoric: RoleHistoric[]
 }
 
 export function StaffHistoricCard({
@@ -38,6 +16,8 @@ export function StaffHistoricCard({
   roleHistoric,
 }: TrajectoryCardProps) {
   const [displayedData, setDisplayedData] = useState(1)
+
+  console.log('ROLE HISTORIC', roleHistoric)
 
   const roleHistoricLastIndex = roleHistoric.length - 1
 

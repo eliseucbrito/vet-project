@@ -45,12 +45,12 @@ export function setupAPIClient(ctx: GetServerSidePropsContext | undefined) {
                 const { accessToken, refreshToken } = response.data
 
                 setCookie(ctx, 'vet.token', accessToken, {
-                  maxAge: 60 * 5, // 5 minutes
+                  maxAge: 60 * 60 * 24, // 24h
                   path: '/',
                 })
 
                 setCookie(ctx, 'vet.refreshToken', refreshToken, {
-                  maxAge: 60 * 5, // 5 minutes
+                  maxAge: 60 * 60 * 24, // 24h
                   path: '/',
                 })
 

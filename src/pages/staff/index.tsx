@@ -49,7 +49,7 @@ export default function Staff() {
                     avatarUrl={staff.avatarUrl}
                     email={staff.email}
                     fullName={staff.fullName}
-                    role={staff.role}
+                    role={staff.role.description.toString()}
                     id={staff.id}
                     onDuty={staff.onDuty}
                   />

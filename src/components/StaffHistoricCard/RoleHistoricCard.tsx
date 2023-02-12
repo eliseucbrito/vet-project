@@ -2,14 +2,14 @@ import { Box, Divider, Flex, HStack, Stack, Text } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import Link from 'next/link'
 import { FormattedNumber } from 'react-intl'
-import { RoleHistoricDetails } from '../../hooks/useStaffDetails'
+import { RoleHistoric } from '../../utils/@types/roleHistoric'
 import { nameFormatter } from '../../utils/nameFormatter'
 import { roleFormatter } from '../../utils/roleFormatter'
 import { CheckBar } from '../defaults/CheckBar'
 
 interface RoleHistoricCardProps {
-  role: RoleHistoricDetails
-  lastRole: RoleHistoricDetails | undefined
+  role: RoleHistoric
+  lastRole: RoleHistoric | undefined
   arrayLength: number
   index: number
 }
@@ -54,7 +54,7 @@ export function RoleHistoricCard({
                 Antigo Cargo
               </Text>
               <Text fontSize="1rem" fontWeight={600}>
-                {roleFormatter(lastRole!.role.description).role}
+                {roleFormatter(lastRole!.role).role}
               </Text>
             </Box>
             <Stack direction="row" h="6rem" p={4}>
@@ -68,7 +68,7 @@ export function RoleHistoricCard({
             {index !== roleHistoricLastIndex ? 'Novo Cargo' : 'Cargo'}
           </Text>
           <Text fontSize="1rem" fontWeight={600}>
-            {roleFormatter(role.role.description).role}
+            {roleFormatter(role.role).role}
           </Text>
         </Box>
         <Stack direction="row" h="6rem" p={4}>
@@ -131,11 +131,11 @@ export function RoleHistoricCard({
             </Text>
             <Text
               as={Link}
-              href={`/staff/${role.promotedBy.id}`}
+              href={`/staff/${role.promoter.id}`}
               fontSize="1rem"
               fontWeight={600}
             >
-              {nameFormatter(role.promotedBy.fullName)}
+              {nameFormatter(role.promoter.fullName)}
             </Text>
           </Box>
         </Flex>

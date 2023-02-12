@@ -15,27 +15,19 @@ import {
   InputRightElement,
   Button,
   Icon,
-  Spinner,
 } from '@chakra-ui/react'
 import Image from 'next/image'
 import * as img from '../assets/assets'
 import { MdOutlineLogin } from 'react-icons/md'
 import Link from 'next/link'
 import { Button as VETbutton } from '../components/defaults/Button'
-import { StaffDetailsType } from '../hooks/useStaffDetails'
 import { useContext, useState } from 'react'
 import { VetContext } from '../context/VetContext'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { GetServerSideProps } from 'next'
-import { parseCookies } from 'nookies'
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai'
 import { withSSRGuest } from '../utils/auth/withSSRGuest'
-
-interface LoginProps {
-  staff: StaffDetailsType
-}
 
 const LoginSchema = z.object({
   email: z
@@ -49,7 +41,7 @@ const LoginSchema = z.object({
 
 type LoginData = z.infer<typeof LoginSchema>
 
-export default function Login({ staff }: LoginProps) {
+export default function Login() {
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
 
@@ -80,7 +72,7 @@ export default function Login({ staff }: LoginProps) {
       w="100%"
       h="100%"
     >
-      <Box w="100%" h="100vh" py="2.5rem" px={['1rem', '5rem']}>
+      <Box w="100%" h="100vh" py="1rem" px={['1rem', '5rem']}>
         <ChakraImage marginBottom="2rem" as={Image} src={img.logoImg} alt="" />
         {!isWideVersion && (
           <Image

@@ -5,7 +5,10 @@ import { StaffDetails } from '../@types/staffDetails'
 import { roleHistoricMapper } from './roleHistoricMapper'
 
 export function staffDetailsMapper(req: StaffReq) {
-  const roleHistoric = roleHistoricMapper(req.role_historic)
+  const roleHistoric: RoleHistoric[] = req.role_historic.map((rolePos) => {
+    const role = roleHistoricMapper(rolePos)
+    return role
+  })
 
   const staffDetails: StaffDetails = {
     id: req.id,

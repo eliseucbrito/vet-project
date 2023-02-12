@@ -1,4 +1,4 @@
-import { ChakraProvider, Flex, Spinner } from '@chakra-ui/react'
+import { Box, ChakraProvider, Flex, Spinner } from '@chakra-ui/react'
 import { Hydrate, QueryClientProvider } from '@tanstack/react-query'
 import type { AppProps } from 'next/app'
 import { IntlProvider } from 'react-intl'
@@ -51,7 +51,16 @@ export default function App({ Component, pageProps }: AppProps) {
                       <Spinner />
                     </Flex>
                   ) : (
-                    <Component {...pageProps} />
+                    <>
+                      <Box
+                        w="100%"
+                        h="100vh"
+                        // ['0 1rem', '0.25rem 1rem 1rem 2.5rem']
+                        overflow="auto"
+                      >
+                        <Component {...pageProps} />
+                      </Box>
+                    </>
                   )}
                 </Flex>
               )}

@@ -6,17 +6,12 @@ import {
   HStack,
   Spinner,
   Text,
-  useConst,
   VStack,
 } from '@chakra-ui/react'
 import { GetServerSideProps } from 'next'
-import { useRouter } from 'next/router'
+import {} from 'next/router'
 import { FaUserMd } from 'react-icons/fa'
-import {
-  getStaffDetails,
-  StaffDetailsType,
-  useStaffDetails,
-} from '../../hooks/useStaffDetails'
+import { useStaffDetails } from '../../hooks/useStaffDetails'
 import { nameFormatter } from '../../utils/nameFormatter'
 import { StaffCard } from '../../components/Cards/StaffCard'
 import { StaffDetailsCard } from '../../components/DetailsCard/StaffDetailsCard'
@@ -25,6 +20,7 @@ import { StaffHistoricCard } from '../../components/StaffHistoricCard/StaffHisto
 import Link from 'next/link'
 import { useContext } from 'react'
 import { VetContext } from '../../context/VetContext'
+import { StaffDetails as StaffDetailsType } from '../../utils/@types/staffDetails'
 
 interface StaffDetailsProps {
   staffSSR: StaffDetailsType
@@ -34,6 +30,8 @@ interface StaffDetailsProps {
 export default function StaffDetails({ id }: StaffDetailsProps) {
   const { user } = useContext(VetContext)
   const { data: staff } = useStaffDetails(id)
+
+  console.log('STAFF LOG DETAILS', staff)
 
   const managerAccessLevel = user !== undefined ? user?.role.code >= 4 : false
 
@@ -72,7 +70,7 @@ export default function StaffDetails({ id }: StaffDetailsProps) {
                 avatarUrl={staff.avatarUrl}
                 fullName={staff.fullName}
                 email={staff.email}
-                role={staff.role}
+                role={staff.role.description.toString()}
                 id={staff.id}
                 onDuty={staff.onDuty}
               />

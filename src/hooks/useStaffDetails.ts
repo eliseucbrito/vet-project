@@ -8,6 +8,7 @@ import { StaffReq } from '../utils/@types/staff'
 import { StaffDetails } from '../utils/@types/staffDetails'
 import { roleHistoricMapper } from '../utils/mappers/roleHistoricMapper'
 import { serviceMapper } from '../utils/mappers/serviceMapper'
+import { staffDetailsMapper } from '../utils/mappers/staffDetailsMapper'
 
 export async function getStaffDetails(id: string): Promise<StaffDetails> {
   const { data: staffData } = await api.get<StaffReq>(`/api/staff/v1/${id}`)
@@ -36,21 +37,33 @@ export async function getStaffDetails(id: string): Promise<StaffDetails> {
     }
   })
 
-  const roleHistoric: RoleHistoric[] = roleHistoricMapper(
-    staffData.role_historic,
-  )
+  console.log('ROLES ', staffData.role_historic)
+
+  const roleHistoricArray: RoleHistoric[] = []
+
+  staffData.role_historic.forEach((roleHistoric) => {
+    const role = roleHistoricMapper(roleHistoric)
+    roleHistoricArray.unshift(role)
+  })
+
+  console.log('terminou', roleHistoricArray)
 
   const services = staffServices.map((service) => {
     const serviceConverted = serviceMapper(service)
 
-    return service
+    return serviceConverted
   })
 
+  const staffConverted = staffDetailsMapper(staffData)
+
   const staff: StaffDetails = {
+    ...staffConverted,
     reports,
     services,
-    roleHistoric,
+    roleHistoric: roleHistoricArray,
   }
+
+  console.log(staff)
 
   return staff
 }
