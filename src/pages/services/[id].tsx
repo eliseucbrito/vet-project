@@ -16,19 +16,29 @@ import {
   Box,
 } from '@chakra-ui/react'
 import { GetServerSideProps } from 'next'
-import { useServices } from '../../hooks/useServices'
+import { getServices, useServices } from '../../hooks/useServices'
 import { EditableCard } from '../../components/comp/EditableCard'
 import * as img from '../../assets/assets'
 import { ServiceInformations } from '../../components/comp/ServiceInformations'
+import { setupAPIClient } from '../../services/api'
+import { Service } from '../../utils/@types/service'
 
 interface ServiceDetailsProps {
   id: string
+  serviceSSR: Service
 }
 
-export default function ServiceDetails({ id }: ServiceDetailsProps) {
-  const { data: service } = useServices(id)
+export default function ServiceDetails({
+  id,
+  serviceSSR,
+}: ServiceDetailsProps) {
+  const { data: service } = useServices(id, {
+    initialData: serviceSSR,
+  })
 
-  const title = service?.service?.type === 'EXAM' ? 'Exame de' : 'Razão'
+  const serviceDetails = service!.serviceDetails!
+
+  const title = serviceDetails.type.toString() === 'EXAM' ? 'Exame de' : 'Razão'
 
   return (
     <VStack
@@ -43,74 +53,69 @@ export default function ServiceDetails({ id }: ServiceDetailsProps) {
         },
       }}
     >
-      {service?.service === undefined ? (
-        <Spinner />
-      ) : (
-        <>
-          <Heading
-            fontWeight={600}
-            fontSize="1.5rem"
-            color="green.900"
-            lineHeight={1}
-            pb="2rem"
-          >
-            Atendimento N° {id}
-          </Heading>
+      <Heading
+        fontWeight={600}
+        fontSize="1.5rem"
+        color="green.900"
+        lineHeight={1}
+        pb="2rem"
+      >
+        Atendimento N° {id}
+      </Heading>
 
-          <ServiceInformations service={service.service!} />
-          <VStack w="100%">
-            <Text
-              textAlign="center"
-              w="100%"
-              fontSize="1.25rem"
-              fontWeight={600}
-              bg="blue.300"
-            >
-              Detalhes
-            </Text>
-            <VStack w="100%" align="start" borderBottom="1px">
-              <Text fontSize="1.125rem" fontWeight={600}>
-                {title}
-              </Text>
-              <Text>{service.service?.title}</Text>
-            </VStack>
+      <ServiceInformations service={serviceDetails} />
+      <VStack w="100%">
+        <Text
+          textAlign="center"
+          w="100%"
+          fontSize="1.25rem"
+          fontWeight={600}
+          bg="blue.300"
+        >
+          Detalhes
+        </Text>
+        <VStack w="100%" align="start" borderBottom="1px">
+          <Text fontSize="1.125rem" fontWeight={600}>
+            {title}
+          </Text>
+          <Text>{serviceDetails.title}</Text>
+        </VStack>
 
-            <VStack w="100%" align="start" borderBottom="1px">
-              <Text fontSize="1.125rem" fontWeight={600}>
-                Descrição
-              </Text>
-              <Text>{service.service?.description}</Text>
-            </VStack>
+        <VStack w="100%" align="start" borderBottom="1px">
+          <Text fontSize="1.125rem" fontWeight={600}>
+            Descrição
+          </Text>
+          <Text>{serviceDetails.description}</Text>
+        </VStack>
 
-            <Box
-              p="1rem"
-              bg="white"
-              borderRadius={12}
-              w="100%"
-              h="100%"
-              minH="20rem"
-            >
-              {service.service === undefined ? null : (
-                <EditableCard
-                  id={service.service!.id}
-                  title="Resultado do Exame"
-                  value={service.service!.description}
-                />
-              )}
-            </Box>
-          </VStack>
-        </>
-      )}
+        <Box
+          p="1rem"
+          bg="white"
+          borderRadius={12}
+          w="100%"
+          h="100%"
+          minH="20rem"
+        >
+          <EditableCard
+            id={serviceDetails.id}
+            title="Resultado do Exame"
+            value={serviceDetails.description}
+          />
+        </Box>
+      </VStack>
     </VStack>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const id = String(params!.id)
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const id = String(ctx.params!.id)
+  const response = await getServices(id, ctx)
+  const serviceSSR = response.serviceDetails
 
   return {
     props: {
       id,
+      serviceSSR,
     },
   }
 }

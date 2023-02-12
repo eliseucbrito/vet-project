@@ -1,25 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
 import { api } from '../services/apiClient'
-import { Staff } from './useClinicData'
+import { Staff, StaffReq } from '../utils/@types/staff'
+import { staffMapper } from '../utils/mappers/staffMapper'
 
 export async function getStaff(): Promise<Staff[]> {
-  const { data } = await api.get('/api/staff/v1')
+  const { data } = await api.get<StaffReq[]>('/api/staff/v1')
 
   const staff = data.map((user) => {
-    return {
-      id: user.id,
-      avatarUrl: user.avatar_url,
-      email: user.email,
-      baseSalary: user.base_salary,
-      createdAt: user.created_at,
-      cpf: user.cpf,
-      fullName: user.full_name,
-      role: {
-        code: user.role.id,
-        description: user.role.description,
-      },
-      onDuty: user.on_duty,
-    }
+    const staff = staffMapper(user)
+
+    return staff
   })
 
   return staff

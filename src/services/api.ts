@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable n/handle-callback-err */
 import axios, { AxiosError, AxiosHeaders } from 'axios'
+import { GetServerSidePropsContext } from 'next'
 import { parseCookies, setCookie } from 'nookies'
 import { signOut } from '../context/VetContext'
 
@@ -10,7 +11,7 @@ let failedRequestsQueue: {
   onFailure: (err: AxiosError<unknown, any>) => void
 }[] = []
 
-export function setupAPIClient(ctx = undefined) {
+export function setupAPIClient(ctx: GetServerSidePropsContext | undefined) {
   let cookies = parseCookies(ctx)
 
   const api = axios.create({

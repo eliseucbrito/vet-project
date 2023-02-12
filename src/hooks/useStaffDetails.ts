@@ -1,100 +1,33 @@
 /* eslint-disable array-callback-return */
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { api } from '../services/apiClient'
+import { ReportReq } from '../utils/@types/report'
+import { RoleHistoric } from '../utils/@types/roleHistoric'
+import { ServiceReq } from '../utils/@types/service'
+import { StaffReq } from '../utils/@types/staff'
+import { StaffDetails } from '../utils/@types/staffDetails'
+import { roleHistoricMapper } from '../utils/mappers/roleHistoricMapper'
+import { serviceMapper } from '../utils/mappers/serviceMapper'
 
-export type ReportDetails = {
-  id: number
-  title: string
-}
-
-export type RoleHistoricDetails = {
-  startedIn: string
-  baseSalary: number
-  weeklyWorkLoad: number
-  promotedBy: {
-    id: number
-    fullName: string
-    role: {
-      code: number
-      description:
-        | 'CEO'
-        | 'GENERAL_MANAGER'
-        | 'MANAGER'
-        | 'VETERINARY'
-        | 'ASSISTANT'
-        | 'INTERN'
-    }
-  }
-  role: {
-    code: number
-    description:
-      | 'CEO'
-      | 'GENERAL_MANAGER'
-      | 'MANAGER'
-      | 'VETERINARY'
-      | 'ASSISTANT'
-      | 'INTERN'
-  }
-}
-
-export type StaffServicesDetails = {
-  id: number
-  createdAt: string
-  patient: {
-    name: string
-    kind: string
-  }
-  type: 'EXAM' | 'MEDICAL_CARE' | 'HOME_CARE' | 'SURGERY' | 'EMERGENCY'
-  status:
-    | 'NOT_INITIALIZED'
-    | 'IN_PROGRESS'
-    | 'COMPLETED'
-    | 'SCHEDULED'
-    | 'WAITING_PAYMENT'
-    | 'PAID'
-    | 'CANCELED'
-  city: 'TRINDADE_PE' | 'ARARIPINA_PE' | 'OURICURI_PE'
-}
-
-export type StaffDetailsType = {
-  id: number
-  avatarUrl: string
-  email: string
-  baseSalary: number
-  createdAt: Date
-  cpf: string
-  fullName: string
-  onDuty: boolean
-  role: {
-    code: number
-    description:
-      | 'CEO'
-      | 'GENERAL_MANAGER'
-      | 'MANAGER'
-      | 'VETERINARY'
-      | 'ASSISTANT'
-      | 'INTERN'
-  }
-  weeklyWorkLoad: number // in minutes
-  workLoadCompleted: number
-  reports: ReportDetails[]
-  services: StaffServicesDetails[]
-  roleHistoric: RoleHistoricDetails[]
-}
-
-export async function getStaffDetails(id: string): Promise<StaffDetailsType> {
-  const { data: staffData } = await api.get(`/api/staff/v1/${id}`)
-  const { data: staffReportsData } = await api.get(`/api/reports/v1`, {
-    params: {
-      'staff-id': id,
+export async function getStaffDetails(id: string): Promise<StaffDetails> {
+  const { data: staffData } = await api.get<StaffReq>(`/api/staff/v1/${id}`)
+  const { data: staffReportsData } = await api.get<ReportReq[]>(
+    `/api/reports/v1`,
+    {
+      params: {
+        'staff-id': id,
+      },
     },
-  })
+  )
 
-  const { data: staffServices } = await api.get(`/api/services/v1`, {
-    params: {
-      'staff-id': id,
+  const { data: staffServices } = await api.get<ServiceReq[]>(
+    `/api/services/v1`,
+    {
+      params: {
+        'staff-id': id,
+      },
     },
-  })
+  )
 
   const reports = staffReportsData.map((report: any) => {
     return {
@@ -103,56 +36,17 @@ export async function getStaffDetails(id: string): Promise<StaffDetailsType> {
     }
   })
 
-  const roleHistoric: Array<RoleHistoricDetails> = []
+  const roleHistoric: RoleHistoric[] = roleHistoricMapper(
+    staffData.role_historic,
+  )
 
-  staffData.role_historic.map((obj: any) => {
-    const historic = {
-      startedIn: obj.started_in,
-      baseSalary: obj.base_salary / 1000,
-      weeklyWorkLoad: obj.weekly_work_load,
-      promotedBy: {
-        id: obj.promoter.id,
-        fullName: obj.promoter.full_name,
-        role: {
-          code: obj.promoter.role.id,
-          description: obj.promoter.description,
-        },
-      },
-      role: obj.role,
-    }
+  const services = staffServices.map((service) => {
+    const serviceConverted = serviceMapper(service)
 
-    roleHistoric.unshift(historic)
+    return service
   })
 
-  const services = staffServices.map((service: any) => {
-    return {
-      id: service.id,
-      createdAt: service.created_at,
-      patient: {
-        name: service.patient.name,
-        kind: service.patient.kind,
-      },
-      type: service.type,
-      status: service.status,
-      city: service.city,
-    }
-  })
-
-  const staff: StaffDetailsType = {
-    id: staffData.id,
-    avatarUrl: staffData.avatar_url,
-    email: staffData.email,
-    baseSalary: staffData.base_salary / 1000,
-    createdAt: staffData.created_at,
-    cpf: staffData.cpf,
-    fullName: staffData.full_name,
-    onDuty: staffData.on_duty,
-    role: {
-      code: staffData.role.id,
-      description: staffData.role.description,
-    },
-    weeklyWorkLoad: staffData.weekly_work_load,
-    workLoadCompleted: staffData.work_load_completed,
+  const staff: StaffDetails = {
     reports,
     services,
     roleHistoric,

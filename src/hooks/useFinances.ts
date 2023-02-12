@@ -2,7 +2,8 @@
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { api } from '../services/apiClient'
-import { ReportRequest, Service, ServiceRequest } from './useClinicData'
+import { ReportReq } from '../utils/@types/report'
+import { ServiceReq } from '../utils/@types/service'
 
 type weekDayFinanceArray = {}
 
@@ -16,8 +17,8 @@ export type FinancesProps = {
 }
 
 export async function getFinances(): Promise<FinancesProps> {
-  const { data: reportsData } = await api.get('/api/reports/v1')
-  const { data: servicesData } = await api.get('/api/services/v1')
+  const { data: reportsData } = await api.get<ReportReq[]>('/api/reports/v1')
+  const { data: servicesData } = await api.get<ServiceReq[]>('/api/services/v1')
 
   const weekDayFinance = [
     { weekDay: 0, incomes: 0, outcomes: 0, profits: 0 },
@@ -31,7 +32,7 @@ export async function getFinances(): Promise<FinancesProps> {
   ]
 
   reportsData.map((report, index) => {
-    if (report === undefined || report.type !== 'PAYMENT') {
+    if (report === undefined || report.type.toString() !== 'PAYMENT') {
       // eslint-disable-next-line no-useless-return
       return
     }
@@ -47,12 +48,12 @@ export async function getFinances(): Promise<FinancesProps> {
 
     if (reportDay >= oneWeekAgo && reportDay <= today) {
       const daysAgo = reportDay.diff(oneWeekAgo, 'days')
-      weekDayFinance[daysAgo].outcomes += report.payment_value / 1000
+      weekDayFinance[daysAgo].outcomes += report.payment_value! / 1000
     }
   })
 
   servicesData.map((service, index) => {
-    if (service === undefined || service.status !== 'PAID') {
+    if (service === undefined || service.status.toString() !== 'PAID') {
       // eslint-disable-next-line no-useless-return
       return
     }

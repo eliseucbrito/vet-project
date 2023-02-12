@@ -1,21 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
 import { api } from '../services/apiClient'
-import { Patient, PatientRequest } from './useClinicData'
+import { Patient, PatientReq } from '../utils/@types/patient'
+import { patientMapper } from '../utils/mappers/patientMapper'
 
 export async function getPatients(): Promise<Patient[]> {
   const { data } = await api.get('/api/patients/v1')
 
-  const patients = data.map((patient: PatientRequest) => {
-    return {
-      id: patient.id,
-      avatar_url: patient.avatar_url,
-      kind: patient.kind,
-      birth_date: patient.birth_date,
-      name: patient.name,
-      owner: patient.owner,
-      owner_contact: patient.owner_contact,
-      breed: patient.breed,
-    }
+  const patients = data.map((patient: PatientReq) => {
+    const patientConverted = patientMapper(patient)
+
+    return patientConverted
   })
 
   return patients

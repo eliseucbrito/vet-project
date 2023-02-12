@@ -3,6 +3,25 @@ import Link from 'next/link'
 import { FiFolder } from 'react-icons/fi'
 
 export default function Services() {
+  const folders = [
+    {
+      name: 'Exames',
+      href: '/services/all/exams',
+    },
+    {
+      name: 'Atendimentos',
+      href: '/services/all/medical-cares',
+    },
+    {
+      name: 'Cirurgias',
+      href: '/services/all/surgerys',
+    },
+    {
+      name: 'Emergências',
+      href: '/services/all/emergencys',
+    },
+  ]
+
   return (
     <VStack
       align="start"
@@ -18,6 +37,7 @@ export default function Services() {
       >
         Atendimentos
       </Heading>
+
       <HStack
         gap="1rem"
         w="100%"
@@ -26,33 +46,14 @@ export default function Services() {
         pt="1rem"
         flexWrap="wrap"
       >
-        <VStack as={Link} href="/services/exams" align="center">
-          <Icon as={FiFolder} boxSize="7rem" />
-          <Text fontWeight={600} lineHeight={0}>
-            Exames
-          </Text>
-        </VStack>
-
-        <VStack as={Link} href="/services/surgerys" align="center">
-          <Icon as={FiFolder} boxSize="7rem" />
-          <Text fontWeight={600} lineHeight={0}>
-            Cirurgias
-          </Text>
-        </VStack>
-
-        <VStack as={Link} href="/services/medical-cares" align="center">
-          <Icon as={FiFolder} boxSize="7rem" />
-          <Text fontWeight={600} lineHeight={0}>
-            Atendimentos
-          </Text>
-        </VStack>
-
-        <VStack as={Link} href="/services/emergencys" align="center">
-          <Icon as={FiFolder} boxSize="7rem" />
-          <Text fontWeight={600} lineHeight={0}>
-            Emergências
-          </Text>
-        </VStack>
+        {folders.map((folder) => (
+          <VStack key={folder.name} as={Link} href={folder.href} align="center">
+            <Icon as={FiFolder} boxSize="7rem" />
+            <Text fontWeight={600} lineHeight={0}>
+              {folder.name}
+            </Text>
+          </VStack>
+        ))}
       </HStack>
     </VStack>
   )
