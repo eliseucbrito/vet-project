@@ -91,15 +91,21 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
         .then((response) => {
           const data = response.data
 
-          const user = {
+          const user: User = {
             id: data.id,
             avatarUrl: data.avatar_url,
             fullName: data.full_name,
-            role: data.role,
+            role: {
+              code: data.role.id,
+              description: data.role.description,
+            },
           }
 
           setUser(user)
           Router.push('/dashboard')
+        })
+        .catch(() => {
+          Router.push('/')
         })
     }
   }
@@ -127,7 +133,7 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
             fullName: data.full_name,
             role: {
               code: data.role.id,
-              description: data.description,
+              description: data.role.description,
             },
           }
 

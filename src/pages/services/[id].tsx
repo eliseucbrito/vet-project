@@ -17,26 +17,23 @@ import {
 } from '@chakra-ui/react'
 import { GetServerSideProps } from 'next'
 import { getServices, useServices } from '../../hooks/useServices'
-import { EditableCard } from '../../components/comp/EditableCard'
+import { EditableCard } from '../../components/ServiceDetails/EditableCard'
 import * as img from '../../assets/assets'
-import { ServiceInformations } from '../../components/comp/ServiceInformations'
+import { ServiceInformations } from '../../components/ServiceDetails/ServiceInformations'
 import { setupAPIClient } from '../../services/api'
 import { Service } from '../../utils/@types/service'
+import { serviceMapper } from '../../utils/mappers/serviceMapper'
 
 interface ServiceDetailsProps {
   id: string
-  serviceSSR: Service
+  serviceDetails: Service
 }
 
 export default function ServiceDetails({
   id,
-  serviceSSR,
+  serviceDetails,
 }: ServiceDetailsProps) {
-  const { data: service } = useServices(id, {
-    initialData: serviceSSR,
-  })
-
-  const serviceDetails = service!.serviceDetails!
+  console.log(serviceDetails)
 
   const title = serviceDetails.type.toString() === 'EXAM' ? 'Exame de' : 'Razão'
 
@@ -64,6 +61,7 @@ export default function ServiceDetails({
       </Heading>
 
       <ServiceInformations service={serviceDetails} />
+
       <VStack w="100%">
         <Text
           textAlign="center"
@@ -109,13 +107,15 @@ export default function ServiceDetails({
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const id = String(ctx.params!.id)
-  const response = await getServices(id, ctx)
-  const serviceSSR = response.serviceDetails
+  const api = setupAPIClient(ctx)
+  const response = await api.get(`/api/services/v1/${id}`)
+
+  const serviceDetails = serviceMapper(response.data)
 
   return {
     props: {
       id,
-      serviceSSR,
+      serviceDetails,
     },
   }
 }

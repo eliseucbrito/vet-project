@@ -11,7 +11,7 @@ import {
   Icon,
 } from '@chakra-ui/react'
 import Link from 'next/link'
-import { Patient } from '../../hooks/useClinicData'
+import { Patient } from '../../utils/@types/patient'
 import { dutyFormatter } from '../../utils/dutyFormatter'
 import { kindFormatter } from '../../utils/kindFormatter'
 import { phoneFormatter } from '../../utils/phoneFormatter'

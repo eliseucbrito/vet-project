@@ -28,13 +28,13 @@ export async function getServices(
   })
   // }
 
-  // if (id !== undefined) {
-  //   const apiV2 = setupAPIClient(ctx)
-  //   const response = await apiV2.get(`/api/services/v1/${id}`)
+  if (id !== undefined) {
+    const response = await api.get(`/api/services/v1/${id}`)
 
-  //   console.log(response)
-  //   serviceDetails = serviceMapper(response.data)
-  // }
+    serviceDetails = serviceMapper(response.data)
+  }
+
+  console.log(serviceDetails)
 
   return {
     servicesArray,

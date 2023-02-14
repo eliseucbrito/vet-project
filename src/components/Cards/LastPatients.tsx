@@ -7,8 +7,6 @@ import {
   Th,
   Thead,
   Tr,
-  useBreakpointValue,
-  Image as ChakraImage,
   Box,
   Skeleton,
   Icon,
@@ -21,14 +19,9 @@ import { kindFormatter } from '../../utils/kindFormatter'
 import Link from 'next/link'
 
 export function LastPatients() {
-  const isWideVersion = useBreakpointValue({
-    base: false,
-    lg: true,
-  })
-
   const skeletonArray = Array.from(Array(10))
 
-  const { data: services, isLoading, isLoadingError } = useServices()
+  const { data: services, isLoading } = useServices()
 
   return (
     <Box
@@ -170,11 +163,13 @@ export function LastPatients() {
                           content: '""',
                           width: '0.5rem',
                           height: '0.5rem',
-                          backgroundColor: `${statusColor(service.status)}`,
+                          backgroundColor: `${statusColor(
+                            service.status.toString(),
+                          )}`,
                           borderRadius: '100%',
                         }}
                       >
-                        {statusFormatter(service.status)}
+                        {statusFormatter(service.status.toString())}
                       </Text>
                     </Td>
                   </Tr>

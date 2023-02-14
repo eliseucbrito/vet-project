@@ -16,7 +16,7 @@ import { DrawerBar } from '../components/navigation/DrawerBar'
 import { DrawerTodo } from '../components/navigation/DrawerTodo'
 import { useContext, useState } from 'react'
 import { SearchBarPatients } from '../components/navigation/SearchBarPatients'
-import { TodoBlock } from '../components/Cards/Todo'
+import { NextPatients } from '../components/Cards/NextPatients'
 import { Reports } from '../components/Cards/Reports'
 import { LastPatients } from '../components/Cards/LastPatients'
 import { FinancialStatics } from '../components/Cards/FinancialStatistics'
@@ -86,9 +86,7 @@ export default function Dashboard() {
               </GridItem>
               <GridItem w="100%">
                 <VStack h="100%" justify="space-between">
-                  <Show breakpoint="(min-height: 700px)">
-                    <TodoBlock />
-                  </Show>
+                  {user.role.description === 'VETERINARY' && <NextPatients />}
                   <VStack w="100%">
                     <Flex
                       bg="white"

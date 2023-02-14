@@ -1,9 +1,11 @@
 /* eslint-disable array-callback-return */
 import { VStack, Heading, Divider } from '@chakra-ui/react'
 import { GetServerSideProps } from 'next'
-import { ServicesList } from '../../../components/comp/ServicesList'
+import { ServicesList } from '../../../components/ServiceDetails/ServicesList'
 import { useServices, getServices } from '../../../hooks/useServices'
-import { Service } from '../../../utils/@types/service'
+import { setupAPIClient } from '../../../services/api'
+import { Service, ServiceReq } from '../../../utils/@types/service'
+import { serviceMapper } from '../../../utils/mappers/serviceMapper'
 import { serviceTypeFormatter } from '../../../utils/serviceTypeFormatter'
 import { slugToServiceType } from '../../../utils/slugToServiceType'
 
@@ -16,7 +18,9 @@ export default function ServicePerType({
   servicesSSR,
   slug,
 }: ServicePerTypeProps) {
-  const { data: service } = useServices()
+  const { data: service } = useServices(undefined, {
+    initialData: servicesSSR,
+  })
 
   let folderName
   const serviceType = slugToServiceType(slug)
@@ -69,15 +73,21 @@ export default function ServicePerType({
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const slug = String(ctx.params!.slug)
-  // const response = await getServices()
-  console.log(slug)
+  const api = setupAPIClient(ctx)
+  const { data } = await api.get('/api/services/v1')
 
-  // const servicesSSR = response.servicesArray
+  const servicesSSR: Service[] = []
+
+  data.map((service: ServiceReq) => {
+    const serviceConverted: Service = serviceMapper(service)
+
+    servicesSSR.push(serviceConverted)
+  })
 
   return {
     props: {
       slug,
-      // servicesSSR,
+      servicesSSR,
     },
   }
 }

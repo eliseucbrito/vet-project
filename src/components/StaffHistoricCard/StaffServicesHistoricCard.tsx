@@ -8,7 +8,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
-import { StaffServicesDetails } from '../../hooks/useStaffDetails'
+import { Service } from '../../utils/@types/service'
 import { kindFormatter } from '../../utils/kindFormatter'
 import { serviceTypeFormatter } from '../../utils/serviceTypeFormatter'
 
@@ -17,7 +17,7 @@ import { statusFormatter } from '../../utils/statusFormatter'
 import { CheckBar } from '../defaults/CheckBar'
 
 interface StaffServicesProps {
-  service: StaffServicesDetails
+  service: Service
 }
 
 export function StaffServicesHistoricCard({ service }: StaffServicesProps) {
@@ -44,7 +44,7 @@ export function StaffServicesHistoricCard({ service }: StaffServicesProps) {
             {dayjs(service.createdAt).format("D MMM [']YY")}
           </Text>
           <Text fontSize="0.75rem" lineHeight={0} whiteSpace="nowrap">
-            {statusFormatter(service.status)}
+            {statusFormatter(service.status.toString())}
           </Text>
         </VStack>
         <Stack direction="row" h="6rem" p={4}>
@@ -54,7 +54,7 @@ export function StaffServicesHistoricCard({ service }: StaffServicesProps) {
         <Box>
           <Text fontSize="1rem">Tipo de atendimento</Text>
           <Text fontSize="1rem" fontWeight={600}>
-            {serviceTypeFormatter(service.type)}
+            {serviceTypeFormatter(service.type.toString())}
           </Text>
         </Box>
         <Stack direction="row" h="6rem" p={4}>

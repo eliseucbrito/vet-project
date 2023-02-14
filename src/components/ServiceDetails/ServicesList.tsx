@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import Link from 'next/link'
-import { Service } from '../../hooks/useClinicData'
+import { Service } from '../../utils/@types/service'
 import { kindFormatter } from '../../utils/kindFormatter'
 import { nameFormatter } from '../../utils/nameFormatter'
 import { statusFormatter } from '../../utils/statusFormatter'
@@ -52,12 +52,12 @@ export function ServicesList({ exams }: ExamsProps) {
                 </Td>
                 <Td>{exam.patient.owner}</Td>
                 <Td>
-                  {exam.status === 'SCHEDULED'
+                  {exam.status.toString() === 'SCHEDULED'
                     ? exam.serviceDate
                     : dayjs(exam.createdAt).format('DD[/]MM[/]YYYY HH:mm')}
                 </Td>
                 <Td>{nameFormatter(exam.staff.fullName)}</Td>
-                <Td>{statusFormatter(exam.status)}</Td>
+                <Td>{statusFormatter(exam.status.toString())}</Td>
               </Tr>
             )
           })}
