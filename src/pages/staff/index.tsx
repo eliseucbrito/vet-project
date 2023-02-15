@@ -1,4 +1,12 @@
-import { Box, Flex, Heading, Wrap, WrapItem, HStack } from '@chakra-ui/react'
+import {
+  Box,
+  Flex,
+  Heading,
+  Wrap,
+  WrapItem,
+  HStack,
+  Text,
+} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useStaff } from '../../hooks/useStaff'
@@ -6,9 +14,14 @@ import { StaffCard } from '../../components/Cards/StaffCard'
 import { SmallSearchBar } from '../../components/defaults/SmallSearchBar'
 import { FilterButton } from '../../components/defaults/FilterButton'
 import { SortByButton } from '../../components/defaults/SortByButton'
+import { useContext } from 'react'
+import { VetContext } from '../../context/VetContext'
 
 export default function Staff() {
+  const { user } = useContext(VetContext)
   const { data: staff } = useStaff()
+
+  console.log(user)
 
   const router = useRouter()
 
@@ -34,7 +47,12 @@ export default function Staff() {
       <Box pt="2rem">
         <HStack w="100%" justify="space-between">
           <SmallSearchBar />
-          <Flex gap={2}>
+          <Flex gap={2} align="center">
+            {user!.role.code <= 2 && (
+              <Text as={Link} href={'/staff/create'} fontWeight={600}>
+                Registrar novo
+              </Text>
+            )}
             <SortByButton />
             <FilterButton />
           </Flex>

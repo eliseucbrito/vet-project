@@ -85,7 +85,7 @@ export default function Login() {
             }}
           />
         )}
-        <Box display="flex" alignItems="center" w="100%" h="100vh">
+        <Flex justify="center" align="center" w="100%" h="100%">
           <VStack
             w="100%"
             h="100%"
@@ -182,7 +182,7 @@ export default function Login() {
                 </Stack>
 
                 <VETbutton
-                  isLoading={user !== undefined}
+                  isLoading={isSubmitting}
                   type="submit"
                   variant="DefaultButton"
                   bg="green.600"
@@ -192,7 +192,7 @@ export default function Login() {
               </form>
             </Box>
           </VStack>
-        </Box>
+        </Flex>
       </Box>
       {isWideVersion && (
         <VStack
@@ -233,9 +233,3 @@ export default function Login() {
     </Flex>
   )
 }
-
-export const getServerSideProps = withSSRGuest(async (ctx) => {
-  return {
-    props: {},
-  }
-})

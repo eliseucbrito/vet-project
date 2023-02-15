@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-undef */
 /* eslint-disable n/handle-callback-err */
+import { useToast } from '@chakra-ui/react'
 import axios, { AxiosError, AxiosHeaders } from 'axios'
 import { GetServerSidePropsContext } from 'next'
 import { parseCookies, setCookie } from 'nookies'
@@ -26,6 +28,10 @@ export function setupAPIClient(ctx: GetServerSidePropsContext | undefined) {
       return response
     },
     (error: AxiosError<{ message: string }>) => {
+      console.log('ERROR INTERCEPTOR ', error)
+      if (error.response?.status === 400) {
+        throw error
+      }
       if (error.response?.status === 401) {
         if (error.response.data?.message === 'token.expired') {
           cookies = parseCookies(ctx)

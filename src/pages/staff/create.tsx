@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import {
   Box,
   ButtonGroup,
@@ -6,6 +7,8 @@ import {
   Heading,
   HStack,
   Input,
+  InputGroup,
+  InputLeftElement,
   useToast,
   VStack,
 } from '@chakra-ui/react'
@@ -18,6 +21,8 @@ import { queryClient } from '../../services/react-query'
 import Router from 'next/router'
 import { Button } from '../../components/defaults/Button'
 import Link from 'next/link'
+import { AxiosError } from 'axios'
+import { badGatewayFormatter } from '../../utils/errors/badGateway'
 
 const newStaffSchema = z
   .object({
@@ -48,6 +53,7 @@ const newStaffSchema = z
       ctx.addIssue({
         code: 'custom',
         message: 'The passwords did not match',
+        path: ['confirmPassword'],
       })
     }
   })
@@ -65,7 +71,7 @@ export default function CreateStaff() {
     resolver: zodResolver(newStaffSchema),
   })
 
-  console.log(errors)
+  console.log('ERROR', errors)
 
   const createNewStaff = useMutation(
     async (staff: newStaffData) => {
@@ -76,7 +82,6 @@ export default function CreateStaff() {
         .then((response) => {
           queryClient.invalidateQueries({ queryKey: ['staff'] })
           reset()
-
           toast({
             title: 'Relatório criado',
             description: (
@@ -90,14 +95,14 @@ export default function CreateStaff() {
             isClosable: true,
           })
         })
-        .catch((response) => {
-          console.log('RESPONSE ERROR', response.data)
+        .catch((error) => {
+          console.log('RESPONSE ERROR', error)
           toast({
             title: 'Staff não criado',
             description: `Ocorreu um erro no envio dos dados!
-                          ERROR: .`,
+            ERROR: ${badGatewayFormatter(error)}!`,
             status: 'error',
-            duration: 1500,
+            duration: 3000,
             isClosable: true,
           })
         })
@@ -131,28 +136,62 @@ export default function CreateStaff() {
       <form onSubmit={handleSubmit(handleCreateNewStaff)}>
         <VStack>
           <FormControl variant="floating" w="20%" isRequired>
-            <Input placeholder=" " type="text" {...register('full_name')} />
+            <Input
+              placeholder=" "
+              type="text"
+              isInvalid={!!errors.full_name}
+              {...register('full_name')}
+            />
             <FormLabel>Nome Completo</FormLabel>
           </FormControl>
 
           <FormControl variant="floating" w="20%" isRequired>
-            <Input placeholder=" " type="email" {...register('email')} />
+            <Input
+              placeholder=" "
+              type="string"
+              isInvalid={!!errors.email}
+              {...register('email')}
+            />
             <FormLabel>E-mail</FormLabel>
           </FormControl>
 
           <FormControl variant="floating" w="20%" isRequired>
-            <Input placeholder=" " type="text" {...register('cpf')} />
+            <Input
+              placeholder=" "
+              type="text"
+              isInvalid={!!errors.cpf}
+              {...register('cpf')}
+            />
             <FormLabel>CPF</FormLabel>
           </FormControl>
 
           <FormControl variant="floating" w="20%" isRequired>
-            <Input placeholder=" " type="text" {...register('role')} />
+            <Input
+              placeholder=" "
+              type="text"
+              isInvalid={!!errors.role}
+              {...register('role')}
+            />
             <FormLabel>Cargo</FormLabel>
           </FormControl>
 
           <FormControl variant="floating" w="20%" isRequired>
-            <Input placeholder=" " type="number" {...register('base_salary')} />
-            <FormLabel>Salário base</FormLabel>
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents="none"
+                color="black"
+                pl="0.125rem"
+                fontSize="1rem"
+                children="R$"
+              />
+              <Input
+                placeholder=" "
+                type="number"
+                isInvalid={!!errors.base_salary}
+                {...register('base_salary')}
+              />
+              <FormLabel>Salário base</FormLabel>
+            </InputGroup>
           </FormControl>
 
           <FormControl variant="floating" w="20%" isRequired>
@@ -172,7 +211,12 @@ export default function CreateStaff() {
           </FormControl>
 
           <FormControl variant="floating" w="20%" isRequired>
-            <Input placeholder=" " type="text" {...register('password')} />
+            <Input
+              placeholder=" "
+              type="text"
+              isInvalid={!!errors.password || !!errors.confirmPassword}
+              {...register('password')}
+            />
             <FormLabel>Senha</FormLabel>
           </FormControl>
 
@@ -180,6 +224,10 @@ export default function CreateStaff() {
             <Input
               placeholder=" "
               type="text"
+              isInvalid={
+                errors.password !== undefined ||
+                errors.confirmPassword !== undefined
+              }
               {...register('confirmPassword')}
             />
             <FormLabel>Confirmar senha</FormLabel>

@@ -26,21 +26,19 @@ import {
   FiMenu,
   FiPieChart,
   FiSearch,
-  FiSettings,
 } from 'react-icons/fi'
 import { FaUserMd } from 'react-icons/fa'
 import { TbPaw } from 'react-icons/tb'
 import { CgLogOut } from 'react-icons/cg'
 import { MutableRefObject, useContext, useRef, useState } from 'react'
 import { NavItem } from './NavItem'
-import { VetContext } from '../../context/VetContext'
+import { signOut, VetContext } from '../../context/VetContext'
 import { nameFormatter } from '../../utils/nameFormatter'
-import { useRouter } from 'next/router'
 import { roleFormatter } from '../../utils/roleFormatter'
 
 export function Sidebar() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const { user, logout } = useContext(VetContext)
+  const { user } = useContext(VetContext)
   const initialFocusRef = useRef() as MutableRefObject<HTMLButtonElement>
 
   function handleSidebarState() {
@@ -48,7 +46,7 @@ export function Sidebar() {
   }
 
   function handleLogout() {
-    logout()
+    signOut()
   }
 
   const userAccessLevel = user === undefined ? 0 : user.role.code
