@@ -33,8 +33,6 @@ export default function ServiceDetails({
   id,
   serviceDetails,
 }: ServiceDetailsProps) {
-  console.log(serviceDetails)
-
   const title = serviceDetails.type.toString() === 'EXAM' ? 'Exame de' : 'Razão'
 
   return (
@@ -95,6 +93,7 @@ export default function ServiceDetails({
           minH="20rem"
         >
           <EditableCard
+            staffId={serviceDetails.staff.id}
             id={serviceDetails.id}
             title="Resultado do Exame"
             value={serviceDetails.description}

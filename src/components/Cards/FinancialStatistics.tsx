@@ -167,7 +167,7 @@ export function FinancialStatics({ type }: BillingStaticsProps) {
   return isLoading ? (
     <Spinner />
   ) : (
-    <Flex direction={['column', 'row']} justify="space-between">
+    <Flex w="100%" direction={['column', 'row']} justify="space-between">
       <HStack
         bg="white"
         w="100%"
@@ -181,7 +181,7 @@ export function FinancialStatics({ type }: BillingStaticsProps) {
           series={type === 'incomes' ? seriesIncomes : seriesOutcomes}
           type="area"
           height="40%"
-          width="70%"
+          width="100%"
         />
         <Box p="1rem 1rem 1rem 0">
           <Text fontSize="0.75rem" color="gray.200" minW="max-content">

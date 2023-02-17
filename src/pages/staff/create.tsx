@@ -2,8 +2,6 @@
 import {
   Box,
   ButtonGroup,
-  FormControl,
-  FormLabel,
   Heading,
   HStack,
   Input,
@@ -18,11 +16,12 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { api } from '../../services/apiClient'
 import { queryClient } from '../../services/react-query'
-import Router from 'next/router'
 import { Button } from '../../components/defaults/Button'
 import Link from 'next/link'
-import { AxiosError } from 'axios'
 import { badGatewayFormatter } from '../../utils/errors/badGateway'
+import { vet2 } from '../../assets/assets'
+import Image from 'next/image'
+import { CustomFormControl } from '../../components/Form/CustomFormControl'
 
 const newStaffSchema = z
   .object({
@@ -133,121 +132,124 @@ export default function CreateStaff() {
       >
         Novo Staff
       </Heading>
-      <form onSubmit={handleSubmit(handleCreateNewStaff)}>
-        <VStack>
-          <FormControl variant="floating" w="20%" isRequired>
-            <Input
-              placeholder=" "
-              type="text"
-              isInvalid={!!errors.full_name}
-              {...register('full_name')}
-            />
-            <FormLabel>Nome Completo</FormLabel>
-          </FormControl>
-
-          <FormControl variant="floating" w="20%" isRequired>
-            <Input
-              placeholder=" "
-              type="string"
-              isInvalid={!!errors.email}
-              {...register('email')}
-            />
-            <FormLabel>E-mail</FormLabel>
-          </FormControl>
-
-          <FormControl variant="floating" w="20%" isRequired>
-            <Input
-              placeholder=" "
-              type="text"
-              isInvalid={!!errors.cpf}
-              {...register('cpf')}
-            />
-            <FormLabel>CPF</FormLabel>
-          </FormControl>
-
-          <FormControl variant="floating" w="20%" isRequired>
-            <Input
-              placeholder=" "
-              type="text"
-              isInvalid={!!errors.role}
-              {...register('role')}
-            />
-            <FormLabel>Cargo</FormLabel>
-          </FormControl>
-
-          <FormControl variant="floating" w="20%" isRequired>
-            <InputGroup>
-              <InputLeftElement
-                pointerEvents="none"
-                color="black"
-                pl="0.125rem"
-                fontSize="1rem"
-                children="R$"
+      <HStack h="100%" w="100%" align="start" justify="space-between" pt="2rem">
+        <VStack
+          as="form"
+          onSubmit={handleSubmit(handleCreateNewStaff)}
+          gap={3}
+          w="100%"
+          h="100%"
+          pt="7rem"
+        >
+          <HStack w="100%">
+            <CustomFormControl label="Nome Completo" {...register('full_name')}>
+              <Input
+                placeholder=" "
+                type="text"
+                isInvalid={!!errors.full_name}
+                {...register('full_name')}
               />
+            </CustomFormControl>
+
+            <CustomFormControl label="E-mail">
+              <Input
+                placeholder=" "
+                type="text"
+                isInvalid={!!errors.email}
+                {...register('email')}
+              />
+            </CustomFormControl>
+          </HStack>
+
+          <HStack w="100%">
+            <CustomFormControl label="CPF">
+              <Input
+                placeholder=" "
+                type="text"
+                isInvalid={!!errors.cpf}
+                {...register('cpf')}
+              />
+            </CustomFormControl>
+
+            <CustomFormControl label="Cargo">
+              <Input
+                placeholder=" "
+                type="text"
+                isInvalid={!!errors.role}
+                {...register('role')}
+              />
+            </CustomFormControl>
+          </HStack>
+
+          <HStack w="100%">
+            <CustomFormControl label="Salário Base">
+              <InputGroup>
+                <InputLeftElement
+                  pointerEvents="none"
+                  color="black"
+                  pl="0.125rem"
+                  fontSize="1rem"
+                  children="R$"
+                />
+                <Input
+                  placeholder=" "
+                  type="number"
+                  isInvalid={!!errors.base_salary}
+                  {...register('base_salary')}
+                />
+              </InputGroup>
+            </CustomFormControl>
+
+            <CustomFormControl label="Carga Horária">
               <Input
                 placeholder=" "
                 type="number"
-                isInvalid={!!errors.base_salary}
-                {...register('base_salary')}
+                {...register('weekly_work_load')}
               />
-              <FormLabel>Salário base</FormLabel>
-            </InputGroup>
-          </FormControl>
+            </CustomFormControl>
+          </HStack>
 
-          <FormControl variant="floating" w="20%" isRequired>
-            <Input
-              placeholder=" "
-              type="number"
-              {...register('weekly_work_load')}
-            />
-            <FormLabel>
-              Carga horária <strong>semanal</strong>
-            </FormLabel>
-          </FormControl>
+          <HStack w="100%">
+            <CustomFormControl label="Senha">
+              <Input
+                placeholder=" "
+                type="text"
+                isInvalid={!!errors.password || !!errors.confirmPassword}
+                {...register('password')}
+              />
+            </CustomFormControl>
 
-          <FormControl variant="floating" w="20%">
-            <Input placeholder=" " type="text" {...register('avatar_url')} />
-            <FormLabel>Foto de perfil</FormLabel>
-          </FormControl>
+            <CustomFormControl label="Confirmar Senha">
+              <Input
+                placeholder=" "
+                type="text"
+                isInvalid={
+                  errors.password !== undefined ||
+                  errors.confirmPassword !== undefined
+                }
+                {...register('confirmPassword')}
+              />
+            </CustomFormControl>
+          </HStack>
 
-          <FormControl variant="floating" w="20%" isRequired>
-            <Input
-              placeholder=" "
-              type="text"
-              isInvalid={!!errors.password || !!errors.confirmPassword}
-              {...register('password')}
-            />
-            <FormLabel>Senha</FormLabel>
-          </FormControl>
-
-          <FormControl variant="floating" w="20%" isRequired>
-            <Input
-              placeholder=" "
-              type="text"
-              isInvalid={
-                errors.password !== undefined ||
-                errors.confirmPassword !== undefined
-              }
-              {...register('confirmPassword')}
-            />
-            <FormLabel>Confirmar senha</FormLabel>
-          </FormControl>
+          <ButtonGroup alignSelf="end">
+            <Button variant="ghost" mr={3}>
+              Cancelar
+            </Button>
+            <Button
+              bg="green.600"
+              _hover={{ background: 'green.800' }}
+              color="white"
+              type="submit"
+              isLoading={createNewStaff.isLoading}
+            >
+              Concluir
+            </Button>
+          </ButtonGroup>
         </VStack>
-        <ButtonGroup>
-          <Button variant="ghost" mr={3}>
-            Cancelar
-          </Button>
-          <Button
-            bg="green.600"
-            _hover={{ background: 'green.800' }}
-            color="white"
-            type="submit"
-            isLoading={createNewStaff.isLoading}
-          >
-            Concluir
-          </Button>
-        </ButtonGroup>
-      </form>
+
+        <Image alt="" src={vet2} />
+      </HStack>
     </Box>
   )
 }

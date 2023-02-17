@@ -3,22 +3,24 @@ import dayjs from 'dayjs'
 import { useContext } from 'react'
 import { FormattedNumber } from 'react-intl'
 import { VetContext } from '../../context/VetContext'
-import { StaffDetailsType } from '../../hooks/useStaffDetails'
+import { StaffDetails } from '../../utils/@types/staffDetails'
 import { CnpjCpfFormatter } from '../../utils/CnpjCpfFormatter'
 import { dutyFormatter } from '../../utils/dutyFormatter'
 import { hourFormatter } from '../../utils/hourFormatter'
 import { LineInfo } from '../Cards/LineInfo'
 
 interface StaffDetailsCardProps {
-  staff: StaffDetailsType
+  staff: StaffDetails
 }
 
 export function StaffDetailsCard({ staff }: StaffDetailsCardProps) {
   const { user } = useContext(VetContext)
   const weeklyWorkLoadInHours = staff.weeklyWorkLoad / 60
-  const hoursLeft = staff.weeklyWorkLoad - staff.workLoadCompleted
+  const hoursWorked =
+    staff.workLoadCompleted !== null ? staff.workLoadCompleted : 0
 
-  const managerAccessLevel = user !== undefined ? user?.role.code >= 4 : false
+  const generalManagerAccessLevel =
+    user !== undefined ? user?.role.code <= 2 : false
 
   return (
     <VStack
@@ -35,7 +37,7 @@ export function StaffDetailsCard({ staff }: StaffDetailsCardProps) {
           data={new Date(staff.createdAt).toLocaleDateString()}
         />
 
-        {managerAccessLevel && (
+        {generalManagerAccessLevel && (
           <LineInfo label="Salário Base">
             R${' '}
             <FormattedNumber
@@ -59,7 +61,7 @@ export function StaffDetailsCard({ staff }: StaffDetailsCardProps) {
           data={CnpjCpfFormatter(staff.cpf)}
         />
 
-        {managerAccessLevel && (
+        {generalManagerAccessLevel && (
           <LineInfo label="Bônus anual">
             R${' '}
             <FormattedNumber
@@ -71,28 +73,22 @@ export function StaffDetailsCard({ staff }: StaffDetailsCardProps) {
           </LineInfo>
         )}
 
-        {managerAccessLevel && (
-          <LineInfo
-            label={'Horas Trabalhadas'}
-            data={`${hourFormatter(
-              staff.workLoadCompleted,
-            )}h / ${weeklyWorkLoadInHours}h`}
-          />
-        )}
+        <LineInfo
+          label={'Horas Trabalhadas'}
+          data={`${hourFormatter(hoursWorked)}h / ${weeklyWorkLoadInHours}h`}
+        />
       </HStack>
 
       <HStack w="100%" gap="2rem" justify="space-between">
         <LineInfo label={'ID'} data={staff.id} />
 
-        {managerAccessLevel && (
-          <LineInfo
-            label={'Próximas férias'}
-            data={dayjs(staff.createdAt)
-              .add(1, 'year')
-              .toDate()
-              .toLocaleDateString()}
-          />
-        )}
+        <LineInfo
+          label={'Próximas férias'}
+          data={dayjs(staff.createdAt)
+            .add(1, 'year')
+            .toDate()
+            .toLocaleDateString()}
+        />
 
         <LineInfo label={'De Plantão'} data={dutyFormatter(staff.onDuty)} />
       </HStack>

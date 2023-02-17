@@ -78,16 +78,18 @@ export default function Dashboard() {
                 <VStack>
                   <SearchBarPatients />
                   <LastPatients />
-                  <HStack justify="space-between" w="100%">
-                    <FinancialStatics type="incomes" />
-                    <FinancialStatics type="outcomes" />
-                  </HStack>
                 </VStack>
               </GridItem>
               <GridItem w="100%">
                 <VStack h="100%" justify="space-between">
                   {user.role.description === 'VETERINARY' && <NextPatients />}
                   <VStack w="100%">
+                    {user.role.code <= 2 && (
+                      <VStack>
+                        <FinancialStatics type="incomes" />
+                        <FinancialStatics type="outcomes" />
+                      </VStack>
+                    )}
                     <Flex
                       bg="white"
                       w="100%"

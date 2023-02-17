@@ -15,9 +15,8 @@ let failedRequestsQueue: {
 
 export function setupAPIClient(ctx: GetServerSidePropsContext | undefined) {
   let cookies = parseCookies(ctx)
-
   const api = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'http://localhost:80',
     headers: {
       Authorization: `Bearer ${cookies['vet.token']}`,
     },

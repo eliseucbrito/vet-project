@@ -12,6 +12,7 @@ import veterinary from '../assets/veterinary.svg'
 import userMd from '../assets/userMd.svg'
 import coverMobile from '../assets/coverMobile.svg'
 import chart from '../assets/chart.svg'
+import vetRegister from '../assets/vet-register.svg'
 
 export const avatarImg = avatar
 export const dogAvatar = dogicon
@@ -27,3 +28,4 @@ export const userMdImg = userMd
 export const coverMobileImg = coverMobile
 export const dogImg = dog
 export const chartImg = chart
+export const vet2 = vetRegister

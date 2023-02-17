@@ -33,7 +33,8 @@ export default function StaffDetails({ id }: StaffDetailsProps) {
 
   console.log('STAFF LOG DETAILS', staff)
 
-  const managerAccessLevel = user !== undefined ? user?.role.code >= 4 : false
+  const generalManagerAccessLevel =
+    user !== undefined ? user?.role.code <= 2 : false
 
   return (
     <Box
@@ -85,7 +86,7 @@ export default function StaffDetails({ id }: StaffDetailsProps) {
               roleHistoric={staff.roleHistoric}
             />
 
-            {managerAccessLevel && (
+            {generalManagerAccessLevel && (
               <VStack
                 bg="white"
                 p="1rem"

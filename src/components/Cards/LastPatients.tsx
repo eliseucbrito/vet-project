@@ -28,7 +28,6 @@ export function LastPatients() {
       mt="0.5rem"
       w="100%"
       overflowX="scroll"
-      overflowY="scroll"
       sx={{
         '&::-webkit-scrollbar': {
           width: '16px',
@@ -37,18 +36,6 @@ export function LastPatients() {
         },
         '&::-webkit-scrollbar-thumb': {
           backgroundColor: `rgba(0, 0, 0, 0.05)`,
-        },
-
-        '@media screen and (max-height: 1000px)': {
-          height: '60vh',
-        },
-
-        '@media screen and (max-height: 900px)': {
-          height: '50vh',
-        },
-
-        '@media screen and (max-height: 800px)': {
-          height: '40vh',
         },
       }}
     >

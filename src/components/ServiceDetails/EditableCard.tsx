@@ -18,14 +18,17 @@ import {
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { FiEdit } from 'react-icons/fi'
 import { z } from 'zod'
 import { logoImg } from '../../assets/assets'
+import { VetContext } from '../../context/VetContext'
 import { api } from '../../services/apiClient'
 import { queryClient } from '../../services/react-query'
 
 interface EditableCardProps {
+  staffId: number
   title: string
   value: string
   id: number
@@ -40,7 +43,8 @@ const editableCardSchema = z.object({
 
 type editableCardData = z.infer<typeof editableCardSchema>
 
-export function EditableCard({ title, value, id }: EditableCardProps) {
+export function EditableCard({ title, value, id, staffId }: EditableCardProps) {
+  const { user } = useContext(VetContext)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const {
@@ -91,6 +95,8 @@ export function EditableCard({ title, value, id }: EditableCardProps) {
     await submitNewDescription.mutateAsync(data)
   }
 
+  const userCanEdit = user?.id === staffId
+
   return (
     <Box w="100%">
       <Text
@@ -100,13 +106,15 @@ export function EditableCard({ title, value, id }: EditableCardProps) {
         alignContent="center"
       >
         {title}
-        <Icon
-          cursor="pointer"
-          pl={2}
-          as={FiEdit}
-          boxSize="1.5rem"
-          onClick={onOpen}
-        />
+        {userCanEdit && (
+          <Icon
+            cursor="pointer"
+            pl={2}
+            as={FiEdit}
+            boxSize="1.5rem"
+            onClick={onOpen}
+          />
+        )}
       </Text>
       <Text
         textDecorationLine={'underline'}
@@ -126,31 +134,33 @@ export function EditableCard({ title, value, id }: EditableCardProps) {
         {value}
       </Text>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{title}</ModalHeader>
-          <ModalCloseButton />
+      {userCanEdit && (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>{title}</ModalHeader>
+            <ModalCloseButton />
 
-          <form onSubmit={handleSubmit(handleSubmitNewDescription)}>
-            <ModalBody>
-              <Editable defaultValue={value} startWithEditView={true}>
-                <EditablePreview />
-                <EditableTextarea {...register('description')} />
-              </Editable>
-            </ModalBody>
+            <form onSubmit={handleSubmit(handleSubmitNewDescription)}>
+              <ModalBody>
+                <Editable defaultValue={value} startWithEditView={true}>
+                  <EditablePreview />
+                  <EditableTextarea {...register('description')} />
+                </Editable>
+              </ModalBody>
 
-            <ModalFooter>
-              <Button variant="ghost" onClick={onClose}>
-                Cancelar
-              </Button>
-              <Button bg="green.600" type="submit">
-                Confirmar
-              </Button>
-            </ModalFooter>
-          </form>
-        </ModalContent>
-      </Modal>
+              <ModalFooter>
+                <Button variant="ghost" onClick={onClose}>
+                  Cancelar
+                </Button>
+                <Button bg="green.600" type="submit">
+                  Confirmar
+                </Button>
+              </ModalFooter>
+            </form>
+          </ModalContent>
+        </Modal>
+      )}
     </Box>
   )
 }

@@ -71,7 +71,7 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
 
     if (authenticated) {
       // 30 days : 5 min
-      const maxAgeValue = remember ? 60 * 60 * 24 * 30 : 60 * 5
+      const maxAgeValue = remember ? 60 * 60 * 24 * 30 : 60 * 60 * 24
       setCookie(undefined, 'vet.token', token, {
         maxAge: maxAgeValue,
         path: '/',
