@@ -25,7 +25,7 @@ import { CustomFormControl } from '../../components/Form/CustomFormControl'
 
 const newStaffSchema = z
   .object({
-    full_name: z.string().min(6, {
+    fullName: z.string().min(6, {
       message: 'Você deve colocar o nome completo do empregado(a)!',
     }),
     email: z
@@ -35,11 +35,11 @@ const newStaffSchema = z
       .transform((email) => email.toLowerCase()),
     cpf: z.string().min(11, { message: 'O padrão de CPF contém 11 números!' }),
     role: z.string({ required_error: 'O cargo é obrigatório!' }),
-    base_salary: z.coerce
+    baseSalary: z.coerce
       .number()
       .transform((salaryInReal) => salaryInReal * 1000),
-    weekly_work_load: z.coerce.number().transform((hours) => hours * 60),
-    avatar_url: z.string().optional(),
+    weeklyWorkLoad: z.coerce.number().transform((hours) => hours * 60),
+    avatarUrl: z.string().optional(),
     password: z
       .string()
       .min(6, { message: 'A senha deve conter no mínimo 6 caracteres!' }),
@@ -138,12 +138,12 @@ export default function CreateStaff() {
           pt="7rem"
         >
           <HStack w="100%">
-            <CustomFormControl label="Nome Completo" {...register('full_name')}>
+            <CustomFormControl label="Nome Completo">
               <Input
                 placeholder=" "
                 type="text"
-                isInvalid={!!errors.full_name}
-                {...register('full_name')}
+                isInvalid={!!errors.fullName}
+                {...register('fullName')}
               />
             </CustomFormControl>
 
@@ -190,8 +190,8 @@ export default function CreateStaff() {
                 <Input
                   placeholder=" "
                   type="number"
-                  isInvalid={!!errors.base_salary}
-                  {...register('base_salary')}
+                  isInvalid={!!errors.baseSalary}
+                  {...register('baseSalary')}
                 />
               </InputGroup>
             </CustomFormControl>
@@ -200,7 +200,7 @@ export default function CreateStaff() {
               <Input
                 placeholder=" "
                 type="number"
-                {...register('weekly_work_load')}
+                {...register('weeklyWorkLoad')}
               />
             </CustomFormControl>
           </HStack>

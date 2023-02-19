@@ -56,9 +56,7 @@ export function NewPatientModal() {
     async (patient: newPatientModalData) => {
       const response = await api.post('/api/patients/v1/create', {
         ...patient,
-        avatar_url: 'https://source.unsplash.com/random',
-        birth_date: patient.birthDate,
-        owner_contact: patient.ownerContact,
+        avatarUrl: 'https://source.unsplash.com/random',
       })
 
       return response.data

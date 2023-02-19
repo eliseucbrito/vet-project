@@ -64,7 +64,7 @@ export function NewReportModal() {
     async (report: newReportModalData) => {
       const response = await api.post('/api/reports/v1/create', {
         ...report,
-        payment_value: report.price,
+        paymentValue: report.price,
         staff_id: 1,
       })
 
