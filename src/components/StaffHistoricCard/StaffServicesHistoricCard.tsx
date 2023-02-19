@@ -8,7 +8,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
-import { Service } from '../../utils/@types/service'
+import { Service, ServiceReduced } from '../../utils/@types/service'
 import { kindFormatter } from '../../utils/kindFormatter'
 import { serviceTypeFormatter } from '../../utils/serviceTypeFormatter'
 
@@ -17,7 +17,7 @@ import { statusFormatter } from '../../utils/statusFormatter'
 import { CheckBar } from '../defaults/CheckBar'
 
 interface StaffServicesProps {
-  service: Service
+  service: ServiceReduced
 }
 
 export function StaffServicesHistoricCard({ service }: StaffServicesProps) {

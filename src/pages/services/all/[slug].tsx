@@ -4,8 +4,7 @@ import { GetServerSideProps } from 'next'
 import { ServicesList } from '../../../components/ServiceDetails/ServicesList'
 import { useServices, getServices } from '../../../hooks/useServices'
 import { setupAPIClient } from '../../../services/api'
-import { Service, ServiceReq } from '../../../utils/@types/service'
-import { serviceMapper } from '../../../utils/mappers/serviceMapper'
+import { Service } from '../../../utils/@types/service'
 import { serviceTypeFormatter } from '../../../utils/serviceTypeFormatter'
 import { slugToServiceType } from '../../../utils/slugToServiceType'
 
@@ -78,8 +77,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const servicesSSR: Service[] = []
 
-  data.map((service: ServiceReq) => {
-    const serviceConverted: Service = serviceMapper(service)
+  data.map((service: Service) => {
+    const serviceConverted: Service = {
+      ...service,
+    }
 
     servicesSSR.push(serviceConverted)
   })

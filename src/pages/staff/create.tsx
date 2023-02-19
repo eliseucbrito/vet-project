@@ -70,8 +70,6 @@ export default function CreateStaff() {
     resolver: zodResolver(newStaffSchema),
   })
 
-  console.log('ERROR', errors)
-
   const createNewStaff = useMutation(
     async (staff: newStaffData) => {
       const response = await api
@@ -95,7 +93,6 @@ export default function CreateStaff() {
           })
         })
         .catch((error) => {
-          console.log('RESPONSE ERROR', error)
           toast({
             title: 'Staff não criado',
             description: `Ocorreu um erro no envio dos dados!
@@ -113,7 +110,6 @@ export default function CreateStaff() {
   )
 
   async function handleCreateNewStaff(staff: newStaffData) {
-    console.log(staff)
     await createNewStaff.mutateAsync(staff)
   }
 

@@ -31,8 +31,6 @@ export default function StaffDetails({ id }: StaffDetailsProps) {
   const { user } = useContext(VetContext)
   const { data: staff } = useStaffDetails(id)
 
-  console.log('STAFF LOG DETAILS', staff)
-
   const generalManagerAccessLevel =
     user !== undefined ? user?.role.code <= 2 : false
 
@@ -77,7 +75,7 @@ export default function StaffDetails({ id }: StaffDetailsProps) {
               />
 
               <StaffDetailsCard staff={staff} />
-              <ActivityCard reports={staff.reports} services={staff.services} />
+              {/* <ActivityCard reports={staff.reports} services={staff.services} /> */}
             </HStack>
           </Flex>
           <Flex justify="space-between" h="100%" w="100%" gap="1rem">

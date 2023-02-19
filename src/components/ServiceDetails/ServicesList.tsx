@@ -43,13 +43,7 @@ export function ServicesList({ exams }: ExamsProps) {
                   <Link href={`/services/${exam.id}`}>{exam.id}</Link>
                 </Td>
                 <Td>{exam.patient.name}</Td>
-                <Td>
-                  <Icon
-                    as={kindFormatter(exam.patient.kind)?.icon}
-                    boxSize="1.5rem"
-                    color="yellow.500"
-                  />
-                </Td>
+                <Td></Td>
                 <Td>{exam.patient.owner}</Td>
                 <Td>
                   {exam.status.toString() === 'SCHEDULED'

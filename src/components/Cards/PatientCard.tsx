@@ -86,16 +86,7 @@ export function PatientCard({ size, ...patient }: PatientCardProps) {
             <Text fontWeight={600}>ID</Text>
             <Text>{patient.id}</Text>
           </VStack>
-          <VStack align="center" gap={0}>
-            <Text fontWeight={600} lineHeight={1}>
-              Tipo
-            </Text>
-            <Icon
-              as={kindFormatter(patient.kind)?.icon}
-              boxSize="1.5rem"
-              color="yellow.500"
-            />
-          </VStack>
+          <VStack align="center" gap={0}></VStack>
         </HStack>
       )}
       {size === 'lg' && (

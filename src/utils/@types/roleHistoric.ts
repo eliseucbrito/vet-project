@@ -1,12 +1,4 @@
-import { ReducedStaff, ReducedStaffReq } from './reducedStaff'
-
-export type RoleHistoricReq = {
-  started_in: string
-  role: string
-  base_salary: number
-  weekly_work_load: number
-  promoter: ReducedStaffReq
-}
+import { ReducedStaff } from './reducedStaff'
 
 export type RoleHistoric = {
   startedIn: string

@@ -55,9 +55,6 @@ export function LastPatients() {
               <Text>ID</Text>
             </Th>
             <Th>
-              <Text>Tipo</Text>
-            </Th>
-            <Th>
               <Text>Responsável</Text>
             </Th>
             <Th>
@@ -123,13 +120,7 @@ export function LastPatients() {
                     <Td>
                       <Link href={`/services/${service.id}`}>{service.id}</Link>
                     </Td>
-                    <Td>
-                      <Icon
-                        as={kindFormatter(service.patient.kind).icon}
-                        color="yellow.base"
-                        boxSize="1.5rem"
-                      />
-                    </Td>
+
                     <Td>
                       <Text>{service.patient.owner}</Text>
                     </Td>

@@ -1,29 +1,31 @@
 /* eslint-disable array-callback-return */
 import { Divider, HStack, Text, VStack } from '@chakra-ui/react'
 import Link from 'next/link'
-import { Service } from '../../hooks/useClinicData'
-import { ServiceDetails } from '../../hooks/usePatientDetails'
+import { Service } from '../../utils/@types/service'
 import { Button } from '../defaults/Button'
 
 interface PatientReportsCardProps {
-  services: ServiceDetails[]
+  services: Service[]
 }
 
 export function PatientReportsCard({ services }: PatientReportsCardProps) {
   const examsArray = services.filter((service) => {
-    if (service.type === 'EXAM') {
+    if (service.type.toString() === 'EXAM') {
       return service
     }
   })
 
   const medicalCareArray = services.filter((service) => {
-    if (service.type === 'HOME_CARE' || service.type === 'MEDICAL_CARE') {
+    if (
+      service.type.toString() === 'HOME_CARE' ||
+      service.type.toString() === 'MEDICAL_CARE'
+    ) {
       return service
     }
   })
 
   const surgeriesArray = services.filter((service) => {
-    if (service.type === 'SURGERY') {
+    if (service.type.toString() === 'SURGERY') {
       return service
     }
   })
@@ -77,7 +79,7 @@ export function PatientReportsCard({ services }: PatientReportsCardProps) {
               transition="color 0.2s"
               whiteSpace="normal"
             >
-              {medicalCare.type === 'MEDICAL_CARE'
+              {medicalCare.type.toString() === 'MEDICAL_CARE'
                 ? 'Atendimento'
                 : 'Atendimento Domiciliar'}
             </Text>

@@ -92,12 +92,10 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
           const data = response.data
 
           const user: User = {
-            id: data.id,
-            avatarUrl: data.avatar_url,
-            fullName: data.full_name,
+            ...data,
             role: {
               code: data.role.id,
-              description: data.role.description,
+              ...data.role,
             },
           }
 
@@ -127,13 +125,11 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
         .then((response) => {
           const data = response.data
 
-          const user = {
-            id: data.id,
-            avatarUrl: data.avatar_url,
-            fullName: data.full_name,
+          const user: User = {
+            ...data,
             role: {
               code: data.role.id,
-              description: data.role.description,
+              ...data.role,
             },
           }
 

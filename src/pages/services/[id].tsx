@@ -22,7 +22,6 @@ import * as img from '../../assets/assets'
 import { ServiceInformations } from '../../components/ServiceDetails/ServiceInformations'
 import { setupAPIClient } from '../../services/api'
 import { Service } from '../../utils/@types/service'
-import { serviceMapper } from '../../utils/mappers/serviceMapper'
 
 interface ServiceDetailsProps {
   id: string
@@ -109,7 +108,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const api = setupAPIClient(ctx)
   const response = await api.get(`/api/services/v1/${id}`)
 
-  const serviceDetails = serviceMapper(response.data)
+  const serviceDetails: Service = {
+    ...response.data,
+  }
 
   return {
     props: {

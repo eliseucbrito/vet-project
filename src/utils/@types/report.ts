@@ -1,5 +1,4 @@
-import { ReducedStaff, ReducedStaffReq } from './reducedStaff'
-import { Staff, StaffReq } from './staff'
+import { ReducedStaff } from './reducedStaff'
 
 export enum ReportType {
   'PAYMENT',
@@ -12,12 +11,12 @@ export enum ReportType {
 export type ReportReq = {
   id: number
   approved: boolean | null
-  created_at: string
+  createdAt: string
   description: string
   title: string
   type: ReportType
-  staff: ReducedStaffReq
-  payment_value: number | null
+  staff: ReducedStaff
+  paymentValue: number | null
 }
 
 export type Report = {

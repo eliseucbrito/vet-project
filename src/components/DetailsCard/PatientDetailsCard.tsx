@@ -1,13 +1,13 @@
 import { VStack, HStack } from '@chakra-ui/react'
 import dayjs from 'dayjs'
-import { PatientDetails } from '../../hooks/usePatientDetails'
+import { Patient } from '../../utils/@types/patient'
 import { ageFormatter } from '../../utils/ageFormatter'
 import { kindFormatter } from '../../utils/kindFormatter'
 import { nameFormatter } from '../../utils/nameFormatter'
 import { LineInfo } from '../Cards/LineInfo'
 
 interface PatientDetailsCardProps {
-  patient: PatientDetails
+  patient: Patient
   totalServices: number
 }
 

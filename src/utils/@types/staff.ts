@@ -1,4 +1,4 @@
-import { RoleHistoric, RoleHistoricReq } from './roleHistoric'
+import { RoleHistoric } from './roleHistoric'
 
 export enum StaffRoles {
   'CEO',
@@ -15,21 +15,6 @@ export type Role = {
   authority: StaffRoles
 }
 
-export type StaffReq = {
-  id: number
-  avatar_url: string
-  email: string
-  base_salary: number
-  created_at: string
-  cpf: string
-  full_name: string
-  on_duty: boolean
-  weekly_work_load: number
-  work_load_completed: number | null
-  role: Role
-  role_historic: RoleHistoricReq[]
-}
-
 export type Staff = {
   id: number
   avatarUrl: string
@@ -42,4 +27,5 @@ export type Staff = {
   weeklyWorkLoad: number
   workLoadCompleted: number | null
   role: Role
+  role_historic: RoleHistoric[]
 }

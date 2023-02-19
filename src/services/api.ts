@@ -27,7 +27,6 @@ export function setupAPIClient(ctx: GetServerSidePropsContext | undefined) {
       return response
     },
     (error: AxiosError<{ message: string }>) => {
-      console.log('ERROR INTERCEPTOR ', error)
       if (error.response?.status === 400) {
         throw error
       }

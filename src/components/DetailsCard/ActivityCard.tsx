@@ -13,14 +13,12 @@ import {
 import { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import { FiChevronDown } from 'react-icons/fi'
-import {
-  ReportDetails,
-  StaffServicesDetails,
-} from '../../hooks/useStaffDetails'
+import { Report } from '../../utils/@types/report'
+import { ServiceReduced } from '../../utils/@types/service'
 
 interface ActivityCardProps {
-  reports: ReportDetails[]
-  services: StaffServicesDetails[]
+  reports: Report[]
+  services: ServiceReduced[]
 }
 
 export function ActivityCard({ reports, services }: ActivityCardProps) {

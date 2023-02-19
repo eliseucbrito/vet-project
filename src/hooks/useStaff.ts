@@ -1,21 +1,20 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { api } from '../services/apiClient'
-import { Staff, StaffReq } from '../utils/@types/staff'
-import { staffMapper } from '../utils/mappers/staffMapper'
+import { Staff } from '../utils/@types/staff'
 
 export async function getStaff(): Promise<Staff[]> {
-  const { data } = await api.get<StaffReq[]>('/api/staff/v1')
+  const { data } = await api.get<Staff[]>('/api/staff/v1')
 
   const staff = data.map((user) => {
-    const staff = staffMapper(user)
-
-    return staff
+    return {
+      ...user,
+    }
   })
 
   return staff
 }
 
-export function useStaff() {
+export function useStaff(options?: UseQueryOptions) {
   return useQuery(['staff'], getStaff, {
     staleTime: 1000 * 60 * 60,
   })

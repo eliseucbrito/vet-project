@@ -1,8 +1,7 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { api } from '../services/apiClient'
 import { Patient } from '../utils/@types/patient'
-import { Service, ServiceReq } from '../utils/@types/service'
-import { patientMapper } from '../utils/mappers/patientMapper'
+import { Service } from '../utils/@types/service'
 
 export type PatientServicesType = {
   patient: Patient
@@ -12,7 +11,7 @@ export type PatientServicesType = {
 export async function getPatientsDetails(
   id: string,
 ): Promise<PatientServicesType> {
-  const { data } = await api.get<ServiceReq[]>(`/api/services/v1`, {
+  const { data } = await api.get<Service[]>(`/api/services/v1`, {
     params: {
       'patient-id': id,
     },
@@ -20,33 +19,33 @@ export async function getPatientsDetails(
 
   const patient: Patient = {
     id: data[0].patient.id,
-    avatarUrl: data[0].patient.avatar_url,
+    avatarUrl: data[0].patient.avatarUrl,
     kind: data[0].patient.kind,
-    birthDate: data[0].patient.birth_date,
+    birthDate: data[0].patient.birthDate,
     name: data[0].patient.name,
     owner: data[0].patient.owner,
-    ownerContact: data[0].patient.owner_contact,
+    ownerContact: data[0].patient.ownerContact,
     breed: data[0].patient.breed,
-    createdAt: data[0].patient.created_at,
+    createdAt: data[0].patient.createdAt,
   }
 
   const ServicesArray: Service[] = data.map((data) => {
     return {
       description: data.description,
       id: data.id,
-      createdAt: data.created_at,
+      createdAt: data.createdAt,
       status: data.status,
       type: data.type,
       city: data.city,
       patient,
       staff: {
         id: data.staff.id,
-        fullName: data.staff.full_name,
+        fullName: data.staff.fullName,
         role: data.staff.role,
-        avatarUrl: data.staff.avatar_url,
+        avatarUrl: data.staff.avatarUrl,
       },
       price: data.price,
-      serviceDate: data.service_date,
+      serviceDate: data.serviceDate,
       title: data.title,
     }
   })

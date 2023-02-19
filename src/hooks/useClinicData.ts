@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { api } from '../services/apiClient'
 import { Room, RoomReq } from '../utils/@types/room'
-import { ServiceReq } from '../utils/@types/service'
-import { Staff, StaffReq } from '../utils/@types/staff'
+import { Service } from '../utils/@types/service'
+import { Staff } from '../utils/@types/staff'
 
 export type ClinicData = {
   clients: {
@@ -25,16 +25,16 @@ export async function getClinicData(): Promise<ClinicData> {
   const { data: staffData } = await api.get('/api/staff/v1')
   const { data: roomsData } = await api.get('/api/rooms/v1')
 
-  const services: [] = servicesData.map((service: ServiceReq) => {
+  const services: [] = servicesData.map((service: Service) => {
     return {
-      createdAt: service.created_at,
+      createdAt: service.createdAt,
     }
   })
 
   let servicesTodayQnt = 0
 
-  services.forEach((service: ServiceReq) => {
-    const serviceDate = dayjs(new Date(service.created_at))
+  services.forEach((service: Service) => {
+    const serviceDate = dayjs(new Date(service.createdAt))
     const isToday = serviceDate.get('date') === dayjs(new Date()).get('date')
 
     if (isToday) servicesTodayQnt++
@@ -42,9 +42,9 @@ export async function getClinicData(): Promise<ClinicData> {
     return servicesTodayQnt
   })
 
-  const allStaff: [] = staffData.map((staff: StaffReq) => {
+  const allStaff: [] = staffData.map((staff: Staff) => {
     return {
-      onDuty: staff.on_duty,
+      onDuty: staff.onDuty,
     }
   })
 

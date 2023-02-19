@@ -13,8 +13,6 @@ export function NextPatients() {
   const { user } = useContext(VetContext)
   const { data: staffDetails } = useStaffDetails(String(user!.id!))
 
-  console.log(user)
-
   const nextPatients: PatientDetails[] | undefined = staffDetails?.services.map(
     (service) => {
       return {

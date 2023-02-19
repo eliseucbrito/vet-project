@@ -5,32 +5,13 @@ import {
   Divider,
   HStack,
   VStack,
-  Avatar,
-  Tag,
-  Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Stack,
   Box,
-  Text,
-  Grid,
-  GridItem,
 } from '@chakra-ui/react'
 import { GetServerSideProps } from 'next'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { FaUserMd } from 'react-icons/fa'
-import { FiChevronRight, FiChevronDown, FiFilePlus } from 'react-icons/fi'
 import { PatientCard } from '../../components/Cards/PatientCard'
 import { ServicesDetailsCard } from '../../components/DetailsCard/ServicesDetailsCard'
-import { Sidebar } from '../../components/navigation/Sidebar'
-import {
-  getPatientsDetails,
-  PatientServicesType,
-  usePatientDetails,
-} from '../../hooks/usePatientDetails'
+import { usePatientDetails } from '../../hooks/usePatientDetails'
 import { PatientDetailsCard } from '../../components/DetailsCard/PatientDetailsCard'
 import { PatientReportsCard } from '../../components/DetailsCard/PatientReportsCard'
 import { DocumentsCard } from '../../components/DetailsCard/DocumentsCard'

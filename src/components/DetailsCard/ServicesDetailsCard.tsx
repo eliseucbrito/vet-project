@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import { ReactNode } from 'react'
-import { ServiceDetails } from '../../hooks/usePatientDetails'
+import { Service } from '../../utils/@types/service'
 import { nameFormatter } from '../../utils/nameFormatter'
 import { roleFormatter } from '../../utils/roleFormatter'
 import { serviceTypeFormatter } from '../../utils/serviceTypeFormatter'
@@ -22,7 +22,7 @@ import { DetailsCard } from './DetailsCard'
 
 interface DetailsCardProps {
   title: string
-  services: ServiceDetails[]
+  services: Service[]
 }
 
 export function ServicesDetailsCard({ title, services }: DetailsCardProps) {
@@ -95,7 +95,7 @@ export function ServicesDetailsCard({ title, services }: DetailsCardProps) {
                       {dayjs(service.createdAt).format("D MMM [']YY")}
                     </Text>
                     <Text fontSize="0.75rem" lineHeight={0} whiteSpace="nowrap">
-                      {statusFormatter(service.status)}
+                      {statusFormatter(service.status.toString())}
                     </Text>
                   </VStack>
                   <Stack direction="row" h="6rem" p={4}>
@@ -125,7 +125,7 @@ export function ServicesDetailsCard({ title, services }: DetailsCardProps) {
                   <Box>
                     <Text fontSize="1rem">Tipo do Atendimento</Text>
                     <Text fontWeight={600}>
-                      {serviceTypeFormatter(service.type)}
+                      {serviceTypeFormatter(service.type.toString())}
                     </Text>
                   </Box>
                   <Stack direction="row" h="6rem" p={4}>

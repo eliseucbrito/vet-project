@@ -38,7 +38,7 @@ export function Reports() {
                 >
                   {report.title}
                 </Text>
-                {report.type === 'PAYMENT' ? (
+                {report.type.toString() === 'PAYMENT' ? (
                   <FcSalesPerformance size={20} />
                 ) : (
                   <FcDocument size={20} />

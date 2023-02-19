@@ -17,8 +17,6 @@ export function StaffHistoricCard({
 }: TrajectoryCardProps) {
   const [displayedData, setDisplayedData] = useState(1)
 
-  console.log('ROLE HISTORIC', roleHistoric)
-
   const roleHistoricLastIndex = roleHistoric.length - 1
 
   return (

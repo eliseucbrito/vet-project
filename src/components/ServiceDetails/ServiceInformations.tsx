@@ -1,5 +1,5 @@
 import { Box, Divider, HStack, Text, VStack } from '@chakra-ui/react'
-import { Service } from '../../hooks/useClinicData'
+import { Service } from '../../utils/@types/service'
 import { kindFormatter } from '../../utils/kindFormatter'
 import { phoneFormatter } from '../../utils/phoneFormatter'
 import { serviceTypeFormatter } from '../../utils/serviceTypeFormatter'
@@ -83,7 +83,7 @@ export function ServiceInformations({ service }: ServiceInformationsProps) {
           <Divider orientation="vertical" h="1rem" borderColor="black" />
           <Box>
             <span>Serviço</span>
-            <Text>{serviceTypeFormatter(service.type)}</Text>
+            <Text>{serviceTypeFormatter(service.type.toString())}</Text>
           </Box>
         </HStack>
 

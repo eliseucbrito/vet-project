@@ -3,8 +3,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { GetServerSidePropsContext } from 'next'
 import { setupAPIClient } from '../services/api'
 import { api } from '../services/apiClient'
-import { Service, ServiceReq } from '../utils/@types/service'
-import { serviceMapper } from '../utils/mappers/serviceMapper'
+import { Service } from '../utils/@types/service'
 
 export type getServicesType = {
   servicesArray: Service[]
@@ -21,8 +20,10 @@ export async function getServices(
   // if (id) {
   const { data } = await api.get('/api/services/v1')
 
-  data.map((service: ServiceReq) => {
-    const serviceConverted: Service = serviceMapper(service)
+  data.map((service: Service) => {
+    const serviceConverted: Service = {
+      ...service,
+    }
 
     servicesArray.push(serviceConverted)
   })
@@ -31,10 +32,10 @@ export async function getServices(
   if (id !== undefined) {
     const response = await api.get(`/api/services/v1/${id}`)
 
-    serviceDetails = serviceMapper(response.data)
+    serviceDetails = {
+      ...response.data,
+    }
   }
-
-  console.log(serviceDetails)
 
   return {
     servicesArray,

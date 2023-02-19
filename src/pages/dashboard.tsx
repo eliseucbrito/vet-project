@@ -8,7 +8,6 @@ import {
   VStack,
   Grid,
   GridItem,
-  Show,
   Spinner,
 } from '@chakra-ui/react'
 import { FiBell } from 'react-icons/fi'

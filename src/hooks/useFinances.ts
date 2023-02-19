@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { api } from '../services/apiClient'
 import { ReportReq } from '../utils/@types/report'
-import { ServiceReq } from '../utils/@types/service'
+import { Service } from '../utils/@types/service'
 
 type weekDayFinanceArray = {}
 
@@ -18,7 +18,7 @@ export type FinancesProps = {
 
 export async function getFinances(): Promise<FinancesProps> {
   const { data: reportsData } = await api.get<ReportReq[]>('/api/reports/v1')
-  const { data: servicesData } = await api.get<ServiceReq[]>('/api/services/v1')
+  const { data: servicesData } = await api.get<Service[]>('/api/services/v1')
 
   const weekDayFinance = [
     { weekDay: 0, incomes: 0, outcomes: 0, profits: 0 },
@@ -37,7 +37,7 @@ export async function getFinances(): Promise<FinancesProps> {
       return
     }
 
-    const reportDay = dayjs(report.created_at)
+    const reportDay = dayjs(report.createdAt)
     const oneWeekAgo = dayjs(new Date())
       .subtract(7, 'day')
       .set('hours', 0)
@@ -48,7 +48,7 @@ export async function getFinances(): Promise<FinancesProps> {
 
     if (reportDay >= oneWeekAgo && reportDay <= today) {
       const daysAgo = reportDay.diff(oneWeekAgo, 'days')
-      weekDayFinance[daysAgo].outcomes += report.payment_value! / 1000
+      weekDayFinance[daysAgo].outcomes += report.paymentValue! / 1000
     }
   })
 
@@ -58,7 +58,7 @@ export async function getFinances(): Promise<FinancesProps> {
       return
     }
 
-    const serviceDay = dayjs(service.created_at)
+    const serviceDay = dayjs(service.createdAt)
     const oneWeekAgo = dayjs(new Date())
       .subtract(7, 'day')
       .set('hours', 0)
