@@ -9,14 +9,11 @@ import { defaultTheme } from '../styles/theme/defaultTheme'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Sidebar } from '../components/navigation/Sidebar'
-import { parseCookies } from 'nookies'
-import { NextResponse } from 'next/server'
-import { loadGetInitialProps } from 'next/dist/shared/lib/utils'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const loginPage = router.asPath === '/'
+  const loginPage = router.asPath === '/login'
 
   useEffect(() => {
     const handleStart = (url: string) => setLoading(true)
@@ -45,7 +42,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 </Flex>
               ) : (
                 <Flex w="100vw" h="100vh">
-                  {router.asPath !== '/' && <Sidebar />}
+                  {!loginPage && <Sidebar />}
                   {loading ? (
                     <Flex w="100vw" h="100vh" justify="center" align="center">
                       <Spinner />

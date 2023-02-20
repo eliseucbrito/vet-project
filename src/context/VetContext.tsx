@@ -37,7 +37,7 @@ interface VetContextProviderProps {
 export function signOut() {
   destroyCookie(undefined, 'vet.token')
   destroyCookie(undefined, 'vet.refreshToken')
-  Router.push('/')
+  Router.push('/login')
 }
 
 export function VetContextProvider({ children }: VetContextProviderProps) {
@@ -103,7 +103,7 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
           Router.push('/dashboard')
         })
         .catch(() => {
-          Router.push('/')
+          Router.push('/login')
         })
     }
   }
@@ -111,9 +111,9 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
   useEffect(() => {
     const { 'vet.token': token } = parseCookies()
 
-    if (token === undefined) {
-      Router.push('/')
-    }
+    // if (token === undefined) {
+    //   Router.push('/login')
+    // }
 
     if (token) {
       api

@@ -13,14 +13,14 @@ export function withSSRAuth<P extends { [key: string]: any }>(
   ): Promise<GetServerSidePropsResult<P>> => {
     const cookies = parseCookies(ctx)
 
-    if (!cookies['vet.token']) {
-      return {
-        redirect: {
-          destination: '/',
-          permanent: false,
-        },
-      }
-    }
+    // if (!cookies['vet.token']) {
+    //   return {
+    //     redirect: {
+    //       destination: '/',
+    //       permanent: false,
+    //     },
+    //   }
+    // }
 
     return await fn(ctx)
   }
