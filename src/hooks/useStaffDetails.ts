@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { api } from '../services/apiClient'
-import { ReportReq } from '../utils/@types/report'
+import { Report } from '../utils/@types/report'
 import { RoleHistoric } from '../utils/@types/roleHistoric'
 import { Service } from '../utils/@types/service'
 import { Staff } from '../utils/@types/staff'
@@ -10,7 +10,7 @@ import { roleHistoricMapper } from '../utils/mappers/roleHistoricMapper'
 
 export async function getStaffDetails(id: string): Promise<StaffDetails> {
   const { data: staffData } = await api.get<Staff>(`/api/staff/v1/${id}`)
-  const { data: staffReportsData } = await api.get<ReportReq[]>(
+  const { data: staffReportsData } = await api.get<Report[]>(
     `/api/reports/v1`,
     {
       params: {

@@ -8,17 +8,6 @@ export enum ReportType {
   'REJECTED',
 }
 
-export type ReportReq = {
-  id: number
-  approved: boolean | null
-  createdAt: string
-  description: string
-  title: string
-  type: ReportType
-  staff: ReducedStaff
-  paymentValue: number | null
-}
-
 export type Report = {
   id: number
   approved: boolean | null
@@ -27,5 +16,5 @@ export type Report = {
   title: string
   type: ReportType
   staff: ReducedStaff
-  price: number | null
+  paymentValue: number | null
 }

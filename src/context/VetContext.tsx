@@ -70,7 +70,7 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
     api.defaults.headers.Authorization = `Bearer ${token}`
 
     if (authenticated) {
-      // 30 days : 5 min
+      // 30 days : 24h
       const maxAgeValue = remember ? 60 * 60 * 24 * 30 : 60 * 60 * 24
       setCookie(undefined, 'vet.token', token, {
         maxAge: maxAgeValue,

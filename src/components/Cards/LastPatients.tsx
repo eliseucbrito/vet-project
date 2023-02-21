@@ -9,13 +9,11 @@ import {
   Tr,
   Box,
   Skeleton,
-  Icon,
 } from '@chakra-ui/react'
 import { useServices } from '../../hooks/useServices'
 import { statusFormatter } from '../../utils/statusFormatter'
 import { sityFormatter } from '../../utils/sityFormatter'
 import { statusColor } from '../../utils/statusColor'
-import { kindFormatter } from '../../utils/kindFormatter'
 import Link from 'next/link'
 
 export function LastPatients() {
@@ -120,7 +118,6 @@ export function LastPatients() {
                     <Td>
                       <Link href={`/services/${service.id}`}>{service.id}</Link>
                     </Td>
-
                     <Td>
                       <Text>{service.patient.owner}</Text>
                     </Td>

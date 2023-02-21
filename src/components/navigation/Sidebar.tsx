@@ -21,11 +21,14 @@ import Image from 'next/image'
 import * as img from '../../assets/assets'
 import {
   FiCalendar,
+  FiClipboard,
+  FiFileText,
   FiFolder,
   FiGrid,
   FiMenu,
   FiPieChart,
   FiSearch,
+  FiUsers,
 } from 'react-icons/fi'
 import { FaUserMd } from 'react-icons/fa'
 import { TbPaw } from 'react-icons/tb'
@@ -88,13 +91,18 @@ export function Sidebar() {
           <NavItem isOpen={sidebarOpen} href="/patients" icon={TbPaw}>
             Pacientes
           </NavItem>
-          <NavItem isOpen={sidebarOpen} href="/staff" icon={FaUserMd}>
+          <NavItem isOpen={sidebarOpen} href="/staff" icon={FiUsers}>
             Staff
           </NavItem>
           <NavItem isOpen={sidebarOpen} href="/services" icon={FiFolder}>
             Atendimentos
           </NavItem>
-          {userAccessLevel >= 4 && (
+          {userAccessLevel <= 2 && (
+            <NavItem isOpen={sidebarOpen} href="/reports" icon={FiClipboard}>
+              Relatórios
+            </NavItem>
+          )}
+          {userAccessLevel <= 2 && (
             <NavItem isOpen={sidebarOpen} href="/finance" icon={FiPieChart}>
               Financeiro
             </NavItem>

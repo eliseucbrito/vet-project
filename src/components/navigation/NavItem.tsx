@@ -29,12 +29,12 @@ export function NavItem({
   const isActive = asPath === href
 
   return (
-    <Flex w="100%">
-      <ChakraLink as={Link} href={href} w="100%" passHref>
+    <Link href={href} style={{ width: '100%' }} passHref>
+      <Flex w="100%">
         <Box
           bg={isActive ? 'green.300' : ''}
           borderRadius="12px"
-          _hover={{ textDecor: 'none', background: 'green.300' }}
+          _hover={{ textDecorationLine: 'none', background: 'green.300' }}
           w="100%"
           display="flex"
           alignItems="center"
@@ -52,7 +52,7 @@ export function NavItem({
             {children}
           </Text>
         </Box>
-      </ChakraLink>
-    </Flex>
+      </Flex>
+    </Link>
   )
 }

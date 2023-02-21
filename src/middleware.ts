@@ -4,8 +4,14 @@ export function middleware(req: NextRequest) {
   const token = req ? req.cookies.get('vet.token')?.value : null
   const { pathname } = req.nextUrl
 
-  // if is logged and page not is login
+  console.log('PATH ', pathname)
+
+  if (pathname === '/') {
+    return NextResponse.redirect(new URL('/login', req.url))
+  }
+
   if (token && !pathname.includes('/login')) {
+    // if is logged and page not is login
     return NextResponse.next()
   }
 
