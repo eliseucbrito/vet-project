@@ -23,6 +23,8 @@ interface ServicesDetailsProps {
 }
 
 export function ServicesDetails({ services }: ServicesDetailsProps) {
+  const servicesIsEmpty = services.length === 0
+
   return (
     <Flex
       w="100%"
@@ -47,99 +49,109 @@ export function ServicesDetails({ services }: ServicesDetailsProps) {
           <FilterButton />
         </HStack>
         <Divider mb={3} />
-        <VStack p={2} gap="1rem" h="100%">
-          {services.map((service) => (
-            <Flex
-              key={service.id}
-              as={Link}
-              href={`/services/${service.id}`}
-              h="100%"
-              w="100%"
-              gap="2rem"
-              align="center"
-              justify="space-between"
-            >
-              <CheckBar
-                variable={service.status}
-                requirement={'COMPLETED'}
-                LineBackground={'blue'}
-                CircleBackground={'white'}
-                borderColorIfTrue={'blue'}
-                borderColorIfFalse={'green.600'}
-              />
-              <HStack
-                w="100%"
-                bg="white"
+        {servicesIsEmpty ? (
+          <Flex w="100%" justify="center">
+            <Text fontWeight={600}>Ainda não realizou nenhum atendimento</Text>
+          </Flex>
+        ) : (
+          <VStack p={2} gap="1rem" h="100%">
+            {services.map((service) => (
+              <Flex
+                key={service.id}
+                as={Link}
+                href={`/services/${service.id}`}
                 h="100%"
-                py={2}
-                px={5}
-                borderRadius={12}
+                w="100%"
+                gap="2rem"
+                align="center"
                 justify="space-between"
               >
-                <VStack align="start">
-                  <Text
-                    fontSize="1.75rem"
-                    lineHeight={0.75}
-                    whiteSpace="nowrap"
-                  >
-                    {dayjs(service.createdAt).format("D MMM [']YY")}
-                  </Text>
-                  <Text fontSize="0.75rem" lineHeight={0.5} whiteSpace="nowrap">
-                    {statusFormatter(service.status.toString())}
-                  </Text>
-                </VStack>
-                <Stack direction="row" h="6rem" p={4}>
-                  <Divider orientation="vertical" />
-                </Stack>
+                <CheckBar
+                  variable={service.status}
+                  requirement={'COMPLETED'}
+                  LineBackground={'blue'}
+                  CircleBackground={'white'}
+                  borderColorIfTrue={'blue'}
+                  borderColorIfFalse={'green.600'}
+                />
+                <HStack
+                  w="100%"
+                  bg="white"
+                  h="100%"
+                  py={2}
+                  px={5}
+                  borderRadius={12}
+                  justify="space-between"
+                >
+                  <VStack align="start">
+                    <Text
+                      fontSize="1.75rem"
+                      lineHeight={0.75}
+                      whiteSpace="nowrap"
+                    >
+                      {dayjs(service.createdAt).format("D MMM [']YY")}
+                    </Text>
+                    <Text
+                      fontSize="0.75rem"
+                      lineHeight={0.5}
+                      whiteSpace="nowrap"
+                    >
+                      {statusFormatter(service.status.toString())}
+                    </Text>
+                  </VStack>
+                  <Stack direction="row" h="6rem" p={4}>
+                    <Divider orientation="vertical" />
+                  </Stack>
 
-                <Box>
-                  <Text fontSize="1rem">ID do Atendimento</Text>
-                  <Text fontSize="1rem" fontWeight={600}>
-                    {service.id}
-                  </Text>
-                </Box>
-                <Stack direction="row" h="6rem" p={4}>
-                  <Divider orientation="vertical" />
-                </Stack>
+                  <Box>
+                    <Text fontSize="1rem">ID do Atendimento</Text>
+                    <Text fontSize="1rem" fontWeight={600}>
+                      {service.id}
+                    </Text>
+                  </Box>
+                  <Stack direction="row" h="6rem" p={4}>
+                    <Divider orientation="vertical" />
+                  </Stack>
 
-                <Box>
-                  <Text fontSize="1rem">Cidade</Text>
-                  <Text fontSize="1rem" fontWeight={600}>
-                    {sityFormatter(service.city)}
-                  </Text>
-                </Box>
-                <Stack direction="row" h="6rem" p={4}>
-                  <Divider orientation="vertical" />
-                </Stack>
+                  <Box>
+                    <Text fontSize="1rem">Cidade</Text>
+                    <Text fontSize="1rem" fontWeight={600}>
+                      {sityFormatter(service.city)}
+                    </Text>
+                  </Box>
+                  <Stack direction="row" h="6rem" p={4}>
+                    <Divider orientation="vertical" />
+                  </Stack>
 
-                <Box>
-                  <Text fontSize="1rem">Tipo do Atendimento</Text>
-                  <Text fontWeight={600}>
-                    {serviceTypeFormatter(service.type.toString())}
-                  </Text>
-                </Box>
-                <Stack direction="row" h="6rem" p={4}>
-                  <Divider orientation="vertical" />
-                </Stack>
+                  <Box>
+                    <Text fontSize="1rem">Tipo do Atendimento</Text>
+                    <Text fontWeight={600}>
+                      {serviceTypeFormatter(service.type.toString())}
+                    </Text>
+                  </Box>
+                  <Stack direction="row" h="6rem" p={4}>
+                    <Divider orientation="vertical" />
+                  </Stack>
 
-                <Box>
-                  <Text fontSize="1rem">Médico(a)</Text>
-                  <Text fontWeight={600}>
-                    {nameFormatter(service.staff.fullName)}
-                  </Text>
-                </Box>
-                <Stack direction="row" h="6rem" p={4}>
-                  <Divider orientation="vertical" />
-                </Stack>
+                  <Box>
+                    <Text fontSize="1rem">Médico(a)</Text>
+                    <Text fontWeight={600}>
+                      {nameFormatter(service.staff.fullName)}
+                    </Text>
+                  </Box>
+                  <Stack direction="row" h="6rem" p={4}>
+                    <Divider orientation="vertical" />
+                  </Stack>
 
-                <Box>
-                  <Text fontSize="1rem">Assistente</Text>
-                  <Text fontWeight={600}>FALTA CRIAR</Text>
-                </Box>
-              </HStack>
-            </Flex>
-          ))}
-        </VStack>
+                  <Box>
+                    <Text fontSize="1rem">Assistente</Text>
+                    <Text fontWeight={600}>FALTA CRIAR</Text>
+                  </Box>
+                </HStack>
+              </Flex>
+            ))}
+          </VStack>
+        )}
       </Box>
     </Flex>
   )

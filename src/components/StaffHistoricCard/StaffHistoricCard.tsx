@@ -1,4 +1,4 @@
-import { VStack, HStack, Divider, Box, Text } from '@chakra-ui/react'
+import { VStack, HStack, Divider, Box, Text, Flex } from '@chakra-ui/react'
 import { useState } from 'react'
 import { FilterButton } from '../defaults/FilterButton'
 import { RoleHistoricCard } from './RoleHistoricCard'
@@ -18,6 +18,8 @@ export function StaffHistoricCard({
   const [displayedData, setDisplayedData] = useState(1)
 
   const roleHistoricLastIndex = roleHistoric.length - 1
+  const servicesIsEmpty = services.length === 0
+  const roleHistoricIsEmpty = roleHistoric.length === 0
 
   return (
     <VStack
@@ -65,19 +67,25 @@ export function StaffHistoricCard({
           </HStack>
 
           <Divider mb={3} />
-          <VStack h="100%" p={2} gap={4}>
-            {roleHistoric.map((role, index) => {
-              return (
-                <RoleHistoricCard
-                  key={index}
-                  role={role}
-                  lastRole={roleHistoric[index + 1]}
-                  arrayLength={roleHistoric.length}
-                  index={index}
-                />
-              )
-            })}
-          </VStack>
+          {roleHistoricIsEmpty ? (
+            <Flex w="100%" justify="center">
+              <Text fontWeight={600}>Sem dados no momento</Text>
+            </Flex>
+          ) : (
+            <VStack h="100%" p={2} gap={4}>
+              {roleHistoric.map((role, index) => {
+                return (
+                  <RoleHistoricCard
+                    key={index}
+                    role={role}
+                    lastRole={roleHistoric[index + 1]}
+                    arrayLength={roleHistoric.length}
+                    index={index}
+                  />
+                )
+              })}
+            </VStack>
+          )}
         </Box>
       ) : (
         <Box
@@ -93,13 +101,24 @@ export function StaffHistoricCard({
           </HStack>
 
           <Divider mb={3} />
-          <VStack p={2} gap="1rem" h="100%">
-            {services.map((service) => {
-              return (
-                <StaffServicesHistoricCard key={service.id} service={service} />
-              )
-            })}
-          </VStack>
+          {servicesIsEmpty ? (
+            <Flex w="100%" justify="center">
+              <Text fontWeight={600}>
+                Ainda não realizou nenhum atendimento
+              </Text>
+            </Flex>
+          ) : (
+            <VStack p={2} gap="1rem" h="100%">
+              {services.map((service) => {
+                return (
+                  <StaffServicesHistoricCard
+                    key={service.id}
+                    service={service}
+                  />
+                )
+              })}
+            </VStack>
+          )}
         </Box>
       )}
     </VStack>
