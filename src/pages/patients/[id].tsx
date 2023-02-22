@@ -11,11 +11,12 @@ import { GetServerSideProps } from 'next'
 import { FaUserMd } from 'react-icons/fa'
 import { PatientCard } from '../../components/Cards/PatientCard'
 import { ServicesDetailsCard } from '../../components/DetailsCard/ServicesDetailsCard'
-import { usePatientDetails } from '../../hooks/usePatientDetails'
 import { PatientDetailsCard } from '../../components/DetailsCard/PatientDetailsCard'
 import { PatientReportsCard } from '../../components/DetailsCard/PatientReportsCard'
 import { DocumentsCard } from '../../components/DetailsCard/DocumentsCard'
 import { ErrorOrLoadingMessage } from '../../components/ErrorOrLoadingMessage'
+import { usePatientDetails } from '../../hooks/usePatients'
+import { ServicesDetails } from '../../components/PatientDetails/ServicesDetails'
 
 interface PatientDetailsProps {
   id: string
@@ -52,7 +53,6 @@ export default function PatientDetails({ id }: PatientDetailsProps) {
             display="flex"
             gap="0.5rem"
           >
-            <FaUserMd />
             {data.patient.name}
           </Heading>
           <Divider mt="1rem" orientation="horizontal" />
@@ -71,7 +71,7 @@ export default function PatientDetails({ id }: PatientDetailsProps) {
             }}
           >
             <VStack h="100%" w="100%" align="start" gap={1}>
-              <HStack h="100%" w="100%" align="start">
+              <HStack w="100%" maxH="max-content" align="start">
                 <PatientCard
                   size="lg"
                   {...data.patient}
@@ -85,14 +85,10 @@ export default function PatientDetails({ id }: PatientDetailsProps) {
                   totalServices={data.services.length}
                 />
 
-                <PatientReportsCard services={data.services} />
+                <DocumentsCard />
               </HStack>
               <HStack justify="space-between" w="100%" gap="1rem">
-                <ServicesDetailsCard
-                  services={data.services}
-                  title="Serviços"
-                />
-                <DocumentsCard />
+                <ServicesDetails services={data.services} />
               </HStack>
             </VStack>
           </HStack>

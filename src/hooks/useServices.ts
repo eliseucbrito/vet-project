@@ -18,10 +18,10 @@ export async function getServices(): Promise<Service[]> {
 }
 
 export async function getServiceDetails(id: string): Promise<Service> {
-  const response = await api.get(`/api/services/v1/${id}`)
+  const { data } = await api.get(`/api/services/v1/${id}`)
 
   const serviceDetails = {
-    ...response.data,
+    ...data,
   }
 
   return serviceDetails

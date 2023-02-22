@@ -24,8 +24,7 @@ interface PatientCardProps extends Patient {
 export function PatientCard({ size, ...patient }: PatientCardProps) {
   return (
     <Box
-      w="17rem"
-      minW="17rem"
+      w="max-content"
       bg="white"
       p="1rem"
       borderLeftRadius="2xl"

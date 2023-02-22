@@ -18,7 +18,7 @@ export function CheckBar({
   borderColorIfTrue,
 }: CheckBarProps) {
   return (
-    <VStack justify="center" bg={LineBackground} h="120%" w="0.25rem">
+    <VStack justify="center" bg={LineBackground} h="130%" w="0.25rem">
       <Box
         h="20px"
         w="20px"

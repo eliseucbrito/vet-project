@@ -8,6 +8,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
+import Link from 'next/link'
 import { ReactNode } from 'react'
 import { Service } from '../../utils/@types/service'
 import { nameFormatter } from '../../utils/nameFormatter'
@@ -79,6 +80,8 @@ export function ServicesDetailsCard({ title, services }: DetailsCardProps) {
                 w="100%"
                 align="center"
                 gap="2rem"
+                as={Link}
+                href={`/services/${service.id}`}
               >
                 <CheckBar
                   variable={'COMPLETED'}
@@ -146,9 +149,6 @@ export function ServicesDetailsCard({ title, services }: DetailsCardProps) {
                     <Text fontSize="1rem">Assistente</Text>
                     <Text fontWeight={600}>FALTA CRIAR</Text>
                   </Box>
-                  <Stack direction="row" h="6rem" p={4}>
-                    <Divider orientation="vertical" />
-                  </Stack>
                 </HStack>
               </Flex>
             )
