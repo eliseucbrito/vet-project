@@ -8,7 +8,8 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
-import { Service, ServiceReduced } from '../../utils/@types/service'
+import Link from 'next/link'
+import { ServiceReduced } from '../../utils/@types/service'
 import { kindFormatter } from '../../utils/kindFormatter'
 import { serviceTypeFormatter } from '../../utils/serviceTypeFormatter'
 
@@ -24,6 +25,8 @@ export function StaffServicesHistoricCard({ service }: StaffServicesProps) {
   return (
     <Flex
       key={service.id}
+      as={Link}
+      href={`/services/${service.id}`}
       justify="space-between"
       w="100%"
       align="center"
@@ -38,7 +41,15 @@ export function StaffServicesHistoricCard({ service }: StaffServicesProps) {
         borderColorIfFalse={'green.600'}
       />
 
-      <HStack w="max-content" bg="white" p="1rem" borderRadius={12}>
+      <HStack
+        w="100%"
+        bg="white"
+        h="100%"
+        py={2}
+        px={5}
+        borderRadius={12}
+        justify="space-between"
+      >
         <VStack align="flex-start" justify="center">
           <Text fontSize="1.75rem" whiteSpace="nowrap">
             {dayjs(service.createdAt).format("D MMM [']YY")}
@@ -105,7 +116,7 @@ export function StaffServicesHistoricCard({ service }: StaffServicesProps) {
         <Box>
           <Text fontSize="1rem">Assistente</Text>
           <Text fontSize="1rem" fontWeight={600}>
-            XXXXXX XXXX
+            ---------
           </Text>
         </Box>
       </HStack>

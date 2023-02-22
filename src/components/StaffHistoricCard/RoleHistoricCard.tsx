@@ -25,21 +25,28 @@ export function RoleHistoricCard({
   return (
     <Flex
       key={role.startedIn}
-      justify="flex-start"
+      justify="space-between"
       w="100%"
       align="center"
       gap="2rem"
     >
       <CheckBar
-        variable={'COMPLETED'}
-        requirement={'COMPLETED'}
+        variable={index === 0}
+        requirement={false}
         LineBackground={'blue'}
         CircleBackground={'white'}
         borderColorIfTrue={'blue'}
         borderColorIfFalse={'green.600'}
       />
 
-      <HStack w="max-content" bg="white" p="1rem" borderRadius={12}>
+      <HStack
+        w="100%"
+        bg="white"
+        justify="space-between"
+        py={2}
+        px={5}
+        borderRadius={12}
+      >
         <Text fontSize="1.75rem" whiteSpace="nowrap">
           {dayjs(role.startedIn).format("D MMM [']YY")}
         </Text>

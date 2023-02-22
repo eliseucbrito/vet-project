@@ -90,7 +90,7 @@ export default function StaffDetails({ id }: StaffDetailsProps) {
               roleHistoric={staff.roleHistoric}
             />
 
-            {generalManagerAccessLevel && (
+            {/* {generalManagerAccessLevel && (
               <VStack
                 bg="white"
                 p="1rem"
@@ -131,7 +131,7 @@ export default function StaffDetails({ id }: StaffDetailsProps) {
                   Carteira de Trabalho
                 </Text>
               </VStack>
-            )}
+            )} */}
           </Flex>
         </>
       )}

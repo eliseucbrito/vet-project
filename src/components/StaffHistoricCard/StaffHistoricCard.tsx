@@ -27,17 +27,7 @@ export function StaffHistoricCard({
       p="1rem"
       borderRadius={12}
       w="100%"
-      overflow="auto"
-      sx={{
-        '&::-webkit-scrollbar': {
-          width: '12px',
-          borderRadius: '8px',
-          backgroundColor: `rgba(0, 0, 0, 0.1)`,
-        },
-        '&::-webkit-scrollbar-thumb': {
-          backgroundColor: `rgba(0, 0, 0, 0.05)`,
-        },
-      }}
+      overflowX="auto"
     >
       <HStack bg="gray.300" p="0.5rem" borderRadius={6}>
         <Text
@@ -62,30 +52,20 @@ export function StaffHistoricCard({
         </Text>
       </HStack>
       {displayedData === 1 ? (
-        <Box bg="gray.300" w="100%" p="1rem 2rem" borderRadius={6}>
+        <Box
+          overflow="clip"
+          bg="gray.300"
+          w="100%"
+          p="1rem 2rem"
+          borderRadius={6}
+        >
           <HStack w="100%" justify="space-between" pb={1}>
             <Text fontWeight={600}>Trajetória resumida</Text>
             <FilterButton />
           </HStack>
 
-          <Divider />
-          <VStack
-            overflow="auto"
-            w="100%"
-            h="100%"
-            p={2}
-            mt={4}
-            sx={{
-              '&::-webkit-scrollbar': {
-                width: '12px',
-                borderRadius: '8px',
-                backgroundColor: `rgba(0, 0, 0, 0.1)`,
-              },
-              '&::-webkit-scrollbar-thumb': {
-                backgroundColor: `rgba(0, 0, 0, 0.05)`,
-              },
-            }}
-          >
+          <Divider mb={3} />
+          <VStack h="100%" p={2} gap={4}>
             {roleHistoric.map((role, index) => {
               return (
                 <RoleHistoricCard
@@ -100,30 +80,20 @@ export function StaffHistoricCard({
           </VStack>
         </Box>
       ) : (
-        <Box bg="gray.300" w="100%" p="1rem 2rem" borderRadius={6}>
+        <Box
+          overflow="clip"
+          bg="gray.300"
+          w="100%"
+          p="1rem 2rem"
+          borderRadius={6}
+        >
           <HStack w="100%" justify="space-between" pb={1}>
             <Text fontWeight={600}>Resumo dos Atendimentos</Text>
             <FilterButton />
           </HStack>
 
-          <Divider />
-          <VStack
-            overflowX="auto"
-            h="100%"
-            w="100%"
-            p={2}
-            mt={4}
-            sx={{
-              '&::-webkit-scrollbar': {
-                width: '12px',
-                borderRadius: '8px',
-                backgroundColor: `rgba(0, 0, 0, 0.1)`,
-              },
-              '&::-webkit-scrollbar-thumb': {
-                backgroundColor: `rgba(0, 0, 0, 0.05)`,
-              },
-            }}
-          >
+          <Divider mb={3} />
+          <VStack p={2} gap="1rem" h="100%">
             {services.map((service) => {
               return (
                 <StaffServicesHistoricCard key={service.id} service={service} />

@@ -60,7 +60,7 @@ export function ServicesDetails({ services }: ServicesDetailsProps) {
               justify="space-between"
             >
               <CheckBar
-                variable={'COMPLETED'}
+                variable={service.status}
                 requirement={'COMPLETED'}
                 LineBackground={'blue'}
                 CircleBackground={'white'}

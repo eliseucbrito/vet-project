@@ -73,7 +73,7 @@ export default function StaffList({ staffSSR }: StaffProps) {
               <FilterButton />
             </Flex>
           </HStack>
-          <Wrap justify="space-between" spacing="1.5rem" pt="1rem">
+          <Wrap justify="center" spacing="1.5rem" pt="1rem">
             {staff?.map((staff) => {
               return (
                 <WrapItem key={staff.id}>
