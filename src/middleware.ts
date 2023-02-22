@@ -4,8 +4,6 @@ export function middleware(req: NextRequest) {
   const token = req ? req.cookies.get('vet.token')?.value : null
   const { pathname } = req.nextUrl
 
-  console.log('PATH ', pathname)
-
   if (pathname === '/') {
     return NextResponse.redirect(new URL('/login', req.url))
   }

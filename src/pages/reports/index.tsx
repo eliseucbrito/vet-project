@@ -11,14 +11,15 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
+import { ErrorOrLoadingMessage } from '../../components/ErrorOrLoadingMessage'
 import { useReports } from '../../hooks/useReports'
 import { nameFormatter } from '../../utils/nameFormatter'
 import { reportTypeFormatter } from '../../utils/reportTypeFormatter'
 
 export default function Reports() {
-  const { data } = useReports()
+  const { data, isError, isFetching, isSuccess } = useReports()
 
-  console.log(data)
+  const isEmpty = data !== undefined && !(data.length > 0)
 
   return (
     <VStack
@@ -35,8 +36,14 @@ export default function Reports() {
       >
         Relatórios
       </Heading>
-      {data === undefined ? (
-        <Text>Não existem relatórios ainda</Text>
+      {!isSuccess || isEmpty ? (
+        <ErrorOrLoadingMessage
+          isError={isError}
+          isLoading={isFetching}
+          isEmpty={isEmpty}
+          errorMessage="Relatórios não encontrados"
+          emptyMessage="Ainda não existem relatórios registrados"
+        />
       ) : (
         <Table>
           <Thead>

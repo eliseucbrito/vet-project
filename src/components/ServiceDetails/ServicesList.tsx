@@ -28,7 +28,6 @@ export function ServicesList({ exams }: ExamsProps) {
           <Tr>
             <Th>ID</Th>
             <Th>Paciente</Th>
-            <Th>Espécie</Th>
             <Th>Responsável</Th>
             <Th>Data</Th>
             <Th>Médico</Th>
@@ -43,7 +42,6 @@ export function ServicesList({ exams }: ExamsProps) {
                   <Link href={`/services/${exam.id}`}>{exam.id}</Link>
                 </Td>
                 <Td>{exam.patient.name}</Td>
-                <Td></Td>
                 <Td>{exam.patient.owner}</Td>
                 <Td>
                   {exam.status.toString() === 'SCHEDULED'

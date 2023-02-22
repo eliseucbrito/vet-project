@@ -21,6 +21,7 @@ import Link from 'next/link'
 import { useContext } from 'react'
 import { VetContext } from '../../context/VetContext'
 import { StaffDetails as StaffDetailsType } from '../../utils/@types/staffDetails'
+import { ErrorOrLoadingMessage } from '../../components/ErrorOrLoadingMessage'
 
 interface StaffDetailsProps {
   staffSSR: StaffDetailsType
@@ -29,7 +30,7 @@ interface StaffDetailsProps {
 
 export default function StaffDetails({ id }: StaffDetailsProps) {
   const { user } = useContext(VetContext)
-  const { data: staff } = useStaffDetails(id)
+  const { data: staff, isFetching, isError, isSuccess } = useStaffDetails(id)
 
   const generalManagerAccessLevel =
     user !== undefined ? user?.role.code <= 2 : false
@@ -43,10 +44,15 @@ export default function StaffDetails({ id }: StaffDetailsProps) {
         },
       }}
       w="100%"
+      h="100%"
       p={['0 1rem', '1rem 1.5rem 1rem 3rem']}
     >
-      {staff === undefined ? (
-        <Spinner />
+      {!staff || !isSuccess ? (
+        <ErrorOrLoadingMessage
+          isError={isError}
+          isLoading={isFetching}
+          errorMessage="Staff não encontrado"
+        />
       ) : (
         <>
           <Heading
@@ -78,7 +84,7 @@ export default function StaffDetails({ id }: StaffDetailsProps) {
               {/* <ActivityCard reports={staff.reports} services={staff.services} /> */}
             </HStack>
           </Flex>
-          <Flex justify="space-between" h="100%" w="100%" gap="1rem">
+          <Flex justify="space-between" w="100%" gap="1rem">
             <StaffHistoricCard
               services={staff.services}
               roleHistoric={staff.roleHistoric}

@@ -176,13 +176,15 @@ export function FinancialStatics({ type }: BillingStaticsProps) {
         borderRadius={12}
         justify="space-between"
       >
-        <Chart
-          options={type === 'incomes' ? chartIncomes : chartOutcomes}
-          series={type === 'incomes' ? seriesIncomes : seriesOutcomes}
-          type="area"
-          height="40%"
-          width="100%"
-        />
+        <Box>
+          <Chart
+            options={type === 'incomes' ? chartIncomes : chartOutcomes}
+            series={type === 'incomes' ? seriesIncomes : seriesOutcomes}
+            type="area"
+            height="40%"
+            width="100%"
+          />
+        </Box>
         <Box p="1rem 1rem 1rem 0">
           <Text fontSize="0.75rem" color="gray.200" minW="max-content">
             {type === 'incomes'

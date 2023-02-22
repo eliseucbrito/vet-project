@@ -5,46 +5,36 @@ import { setupAPIClient } from '../services/api'
 import { api } from '../services/apiClient'
 import { Service } from '../utils/@types/service'
 
-export type getServicesType = {
-  servicesArray: Service[]
-  serviceDetails: Service | undefined
-}
-
-export async function getServices(
-  id?: string,
-  ctx?: GetServerSidePropsContext,
-): Promise<getServicesType> {
-  const servicesArray: Array<Service> = []
-  let serviceDetails: Service | undefined
-
-  // if (id) {
+export async function getServices(): Promise<Service[]> {
   const { data } = await api.get('/api/services/v1')
 
-  data.map((service: Service) => {
-    const serviceConverted: Service = {
+  const services = data.map((service: Service) => {
+    return {
       ...service,
     }
-
-    servicesArray.push(serviceConverted)
   })
-  // }
 
-  if (id !== undefined) {
-    const response = await api.get(`/api/services/v1/${id}`)
-
-    serviceDetails = {
-      ...response.data,
-    }
-  }
-
-  return {
-    servicesArray,
-    serviceDetails,
-  }
+  return services
 }
 
-export function useServices(id?: string, options?: UseQueryOptions) {
-  return useQuery(['services', id], () => getServices(id), {
+export async function getServiceDetails(id: string): Promise<Service> {
+  const response = await api.get(`/api/services/v1/${id}`)
+
+  const serviceDetails = {
+    ...response.data,
+  }
+
+  return serviceDetails
+}
+
+export function useServices(options?: UseQueryOptions) {
+  return useQuery(['services'], getServices, {
+    staleTime: 1000 * 60 * 60,
+  })
+}
+
+export function useServiceDetails(id: string, options?: UseQueryOptions) {
+  return useQuery(['service', id], () => getServiceDetails(id), {
     staleTime: 1000 * 60 * 60,
   })
 }

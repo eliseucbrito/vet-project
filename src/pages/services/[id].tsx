@@ -16,23 +16,37 @@ import {
   Box,
 } from '@chakra-ui/react'
 import { GetServerSideProps } from 'next'
-import { getServices, useServices } from '../../hooks/useServices'
+import {
+  getServices,
+  useServiceDetails,
+  useServices,
+} from '../../hooks/useServices'
 import { EditableCard } from '../../components/ServiceDetails/EditableCard'
 import * as img from '../../assets/assets'
 import { ServiceInformations } from '../../components/ServiceDetails/ServiceInformations'
 import { setupAPIClient } from '../../services/api'
 import { Service } from '../../utils/@types/service'
+import { ErrorOrLoadingMessage } from '../../components/ErrorOrLoadingMessage'
 
 interface ServiceDetailsProps {
   id: string
-  serviceDetails: Service
+  initialData: Service
 }
 
 export default function ServiceDetails({
   id,
-  serviceDetails,
+  initialData,
 }: ServiceDetailsProps) {
-  const title = serviceDetails.type.toString() === 'EXAM' ? 'Exame de' : 'Razão'
+  const title = initialData.type.toString() === 'EXAM' ? 'Exame de' : 'Razão'
+
+  const {
+    data: service,
+    isError,
+    isFetching,
+    isSuccess,
+  } = useServiceDetails(id, {
+    initialData,
+  })
 
   return (
     <VStack
@@ -47,58 +61,68 @@ export default function ServiceDetails({
         },
       }}
     >
-      <Heading
-        fontWeight={600}
-        fontSize="1.5rem"
-        color="green.900"
-        lineHeight={1}
-        pb="2rem"
-      >
-        Atendimento N° {id}
-      </Heading>
+      {!isSuccess ? (
+        <ErrorOrLoadingMessage
+          isError={isError}
+          isLoading={isFetching}
+          errorMessage="Serviço não encontrado"
+        />
+      ) : (
+        <>
+          <Heading
+            fontWeight={600}
+            fontSize="1.5rem"
+            color="green.900"
+            lineHeight={1}
+            pb="2rem"
+          >
+            Atendimento N° {id}
+          </Heading>
 
-      <ServiceInformations service={serviceDetails} />
+          <ServiceInformations service={service} />
 
-      <VStack w="100%">
-        <Text
-          textAlign="center"
-          w="100%"
-          fontSize="1.25rem"
-          fontWeight={600}
-          bg="blue.300"
-        >
-          Detalhes
-        </Text>
-        <VStack w="100%" align="start" borderBottom="1px">
-          <Text fontSize="1.125rem" fontWeight={600}>
-            {title}
-          </Text>
-          <Text>{serviceDetails.title}</Text>
-        </VStack>
+          <VStack w="100%">
+            <Text
+              textAlign="center"
+              w="100%"
+              fontSize="1.25rem"
+              fontWeight={600}
+              bg="blue.300"
+            >
+              Detalhes
+            </Text>
+            <VStack w="100%" align="start" borderBottom="1px">
+              <Text fontSize="1.125rem" fontWeight={600}>
+                {title}
+              </Text>
+              <Text>{service.title}</Text>
+            </VStack>
 
-        <VStack w="100%" align="start" borderBottom="1px">
-          <Text fontSize="1.125rem" fontWeight={600}>
-            Descrição
-          </Text>
-          <Text>{serviceDetails.description}</Text>
-        </VStack>
+            <VStack w="100%" align="start" borderBottom="1px">
+              <Text fontSize="1.125rem" fontWeight={600}>
+                Descrição
+              </Text>
+              <Text>{service.description}</Text>
+            </VStack>
 
-        <Box
-          p="1rem"
-          bg="white"
-          borderRadius={12}
-          w="100%"
-          h="100%"
-          minH="20rem"
-        >
-          <EditableCard
-            staffId={serviceDetails.staff.id}
-            id={serviceDetails.id}
-            title="Resultado do Exame"
-            value={serviceDetails.description}
-          />
-        </Box>
-      </VStack>
+            <Box
+              p="1rem"
+              bg="white"
+              borderRadius={12}
+              w="100%"
+              h="100%"
+              minH="20rem"
+            >
+              <EditableCard
+                staffId={service.staff.id}
+                id={service.id}
+                title="Resultado do Exame"
+                value={service.description}
+              />
+            </Box>
+          </VStack>
+        </>
+      )}
     </VStack>
   )
 }
@@ -108,14 +132,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const api = setupAPIClient(ctx)
   const response = await api.get(`/api/services/v1/${id}`)
 
-  const serviceDetails: Service = {
+  const initialData: Service = {
     ...response.data,
   }
 
   return {
     props: {
       id,
-      serviceDetails,
+      initialData,
     },
   }
 }

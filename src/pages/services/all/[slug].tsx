@@ -1,8 +1,9 @@
 /* eslint-disable array-callback-return */
-import { VStack, Heading, Divider } from '@chakra-ui/react'
+import { VStack, Heading, Divider, Text, Spinner, Flex } from '@chakra-ui/react'
 import { GetServerSideProps } from 'next'
+import { ErrorOrLoadingMessage } from '../../../components/ErrorOrLoadingMessage'
 import { ServicesList } from '../../../components/ServiceDetails/ServicesList'
-import { useServices, getServices } from '../../../hooks/useServices'
+import { useServices } from '../../../hooks/useServices'
 import { setupAPIClient } from '../../../services/api'
 import { Service } from '../../../utils/@types/service'
 import { serviceTypeFormatter } from '../../../utils/serviceTypeFormatter'
@@ -17,18 +18,23 @@ export default function ServicePerType({
   servicesSSR,
   slug,
 }: ServicePerTypeProps) {
-  const { data: service } = useServices(undefined, {
+  const {
+    data: services,
+    isFetching,
+    isError,
+    isSuccess,
+  } = useServices({
     initialData: servicesSSR,
   })
 
   let folderName
   const serviceType = slugToServiceType(slug)
 
-  const services: Service[] = []
+  const slugFormatted = slug.substring(0, slug.length - 1).toUpperCase()
 
   if (slug === 'medical-cares') {
     folderName = 'Atendimentos'
-    service?.servicesArray.map((service) => {
+    services?.map((service) => {
       if (
         service.type.toString() === 'MEDICAL_CARE' ||
         service.type.toString() === 'HOME_CARE'
@@ -36,11 +42,13 @@ export default function ServicePerType({
         services.push(service)
     })
   } else {
-    service?.servicesArray.map((service) => {
-      folderName = serviceTypeFormatter(slug) + 's'
+    services?.map((service) => {
+      folderName = serviceTypeFormatter(slugFormatted) + 's'
       if (service.type.toString() === serviceType) services.push(service)
     })
   }
+
+  const IsEmpty = services !== undefined && !(services.length > 0)
 
   return (
     <VStack
@@ -64,8 +72,16 @@ export default function ServicePerType({
       >
         {folderName}
       </Heading>
-      <Divider orientation="horizontal" />
-      <ServicesList exams={services} />
+      {!isSuccess || IsEmpty ? (
+        <ErrorOrLoadingMessage
+          isError={isError}
+          isEmpty={IsEmpty}
+          isLoading={isFetching}
+          emptyMessage={`Ainda não existem ${folderName}`}
+        />
+      ) : (
+        <ServicesList exams={services} />
+      )}
     </VStack>
   )
 }
@@ -75,14 +91,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const api = setupAPIClient(ctx)
   const { data } = await api.get('/api/services/v1')
 
-  const servicesSSR: Service[] = []
-
-  data.map((service: Service) => {
-    const serviceConverted: Service = {
+  const servicesSSR = data.map((service: Service) => {
+    return {
       ...service,
     }
-
-    servicesSSR.push(serviceConverted)
   })
 
   return {

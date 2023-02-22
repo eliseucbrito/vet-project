@@ -15,11 +15,14 @@ import { statusFormatter } from '../../utils/statusFormatter'
 import { sityFormatter } from '../../utils/sityFormatter'
 import { statusColor } from '../../utils/statusColor'
 import Link from 'next/link'
+import { ErrorOrLoadingMessage } from '../ErrorOrLoadingMessage'
 
 export function LastPatients() {
   const skeletonArray = Array.from(Array(10))
 
-  const { data: services, isLoading } = useServices()
+  const { data: services, isFetching, isError, isSuccess } = useServices()
+
+  const isEmpty = services !== undefined && !(services?.length > 0)
 
   return (
     <Box
@@ -67,89 +70,70 @@ export function LastPatients() {
           </Tr>
         </Thead>
         <Tbody>
-          {isLoading
-            ? skeletonArray.map((position, index) => {
-                return (
-                  <Tr
-                    key={index}
-                    sx={{
-                      td: {
-                        background: 'white',
-                        whiteSpace: 'nowrap',
-                        '&:first-of-type': {
-                          borderLeftRadius: '12px',
-                        },
-                        '&:last-of-type': {
-                          borderRightRadius: '12px',
-                        },
+          {!isSuccess || isEmpty ? (
+            <ErrorOrLoadingMessage
+              isError={isError}
+              isEmpty={isEmpty}
+              isLoading={isFetching}
+              emptyMessage="Ainda não existem serviços registrados"
+            />
+          ) : (
+            services?.slice(0, 10).map((service) => {
+              return (
+                <Tr
+                  key={service.id}
+                  sx={{
+                    td: {
+                      background: 'white',
+                      whiteSpace: 'nowrap',
+                      '&:first-of-type': {
+                        borderLeftRadius: '12px',
                       },
-                    }}
-                  >
-                    <Skeleton as="td" h="3rem" borderRadius={0} />
-                    <Skeleton as="td" h="3rem" borderRadius={0} />
-                    <Skeleton as="td" h="3rem" borderRadius={0} />
-                    <Skeleton as="td" h="3rem" borderRadius={0} />
-                    <Skeleton as="td" h="3rem" borderRadius={0} />
-                    <Skeleton as="td" h="3rem" borderRadius={0} />
-                    <Skeleton as="td" h="3rem" borderRadius={0} />
-                  </Tr>
-                )
-              })
-            : services?.servicesArray?.slice(0, 10).map((service) => {
-                return (
-                  <Tr
-                    key={service.id}
-                    sx={{
-                      td: {
-                        background: 'white',
-                        whiteSpace: 'nowrap',
-                        '&:first-of-type': {
-                          borderLeftRadius: '12px',
-                        },
-                        '&:last-of-type': {
-                          borderRightRadius: '12px',
-                        },
+                      '&:last-of-type': {
+                        borderRightRadius: '12px',
                       },
-                    }}
-                  >
-                    <Td>
-                      <Checkbox />
-                    </Td>
-                    <Td>
-                      <Link href={`/services/${service.id}`}>{service.id}</Link>
-                    </Td>
-                    <Td>
-                      <Text>{service.patient.owner}</Text>
-                    </Td>
-                    <Td>
-                      <Text>
-                        {new Date(service.createdAt).toLocaleDateString()}
-                      </Text>
-                    </Td>
-                    <Td>
-                      <Text>{sityFormatter(service.city)}</Text>
-                    </Td>
-                    <Td>
-                      <Text
-                        display="flex"
-                        alignItems="center"
-                        gap={1}
-                        _before={{
-                          content: '""',
-                          width: '0.5rem',
-                          height: '0.5rem',
-                          backgroundColor: `${statusColor(
-                            service.status.toString(),
-                          )}`,
-                          borderRadius: '100%',
-                        }}
-                      >
-                        {statusFormatter(service.status.toString())}
-                      </Text>
-                    </Td>
-                  </Tr>
-                )
-              })}
+                    },
+                  }}
+                >
+                  <Td>
+                    <Checkbox />
+                  </Td>
+                  <Td>
+                    <Link href={`/services/${service.id}`}>{service.id}</Link>
+                  </Td>
+                  <Td>
+                    <Text>{service.patient.owner}</Text>
+                  </Td>
+                  <Td>
+                    <Text>
+                      {new Date(service.createdAt).toLocaleDateString()}
+                    </Text>
+                  </Td>
+                  <Td>
+                    <Text>{sityFormatter(service.city)}</Text>
+                  </Td>
+                  <Td>
+                    <Text
+                      display="flex"
+                      alignItems="center"
+                      gap={1}
+                      _before={{
+                        content: '""',
+                        width: '0.5rem',
+                        height: '0.5rem',
+                        backgroundColor: `${statusColor(
+                          service.status.toString(),
+                        )}`,
+                        borderRadius: '100%',
+                      }}
+                    >
+                      {statusFormatter(service.status.toString())}
+                    </Text>
+                  </Td>
+                </Tr>
+              )
+            })
+          )}
         </Tbody>
       </Table>
     </Box>

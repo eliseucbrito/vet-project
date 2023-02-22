@@ -13,6 +13,7 @@ import userMd from '../assets/userMd.svg'
 import coverMobile from '../assets/coverMobile.svg'
 import chart from '../assets/chart.svg'
 import vetRegister from '../assets/vet-register.svg'
+import error404Image from '../assets/00667983dfd9cffca372940f71fa213e.webp'
 
 export const avatarImg = avatar
 export const dogAvatar = dogicon
@@ -29,3 +30,4 @@ export const coverMobileImg = coverMobile
 export const dogImg = dog
 export const chartImg = chart
 export const vet2 = vetRegister
+export const error404 = error404Image

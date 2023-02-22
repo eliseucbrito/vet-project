@@ -84,7 +84,7 @@ export default function Dashboard() {
                   {user.role.description === 'VETERINARY' && <NextPatients />}
                   <VStack w="100%">
                     {user.role.code <= 2 && (
-                      <VStack>
+                      <VStack w="100%">
                         <FinancialStatics type="incomes" />
                         <FinancialStatics type="outcomes" />
                       </VStack>

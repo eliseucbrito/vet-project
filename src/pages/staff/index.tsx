@@ -21,6 +21,7 @@ import { GetServerSideProps } from 'next'
 import { withSSRAuth } from '../../utils/auth/withSSRAuth'
 import { Staff } from '../../utils/@types/staff'
 import { setupAPIClient } from '../../services/api'
+import { ErrorOrLoadingMessage } from '../../components/ErrorOrLoadingMessage'
 
 interface StaffProps {
   staffSSR: Staff[]
@@ -28,15 +29,13 @@ interface StaffProps {
 
 export default function StaffList({ staffSSR }: StaffProps) {
   const { user } = useContext(VetContext)
-  const { data: staff } = useStaff({
-    initialData: staffSSR,
-  })
+  const { data: staff, isError, isFetching, isSuccess } = useStaff()
 
   const router = useRouter()
 
-  async function handleStaffDetails(id: number) {
-    await router.push(`/staff/${id}`)
-  }
+  const isEmpty = staff !== undefined && !(staff.length > 0)
+
+  const userGeneralManager = user !== undefined ? user.role.code <= 2 : false
 
   return (
     <Box
@@ -53,16 +52,19 @@ export default function StaffList({ staffSSR }: StaffProps) {
       >
         Staff
       </Heading>
-      {user === undefined ? (
-        <Flex w="100%" h="100vh" align="center" justify="center">
-          <Spinner />
-        </Flex>
+      {!isSuccess || isEmpty ? (
+        <ErrorOrLoadingMessage
+          isError={isError}
+          isEmpty={isEmpty}
+          isLoading={isFetching}
+          emptyMessage="Ainda não existe ninguém registrado"
+        />
       ) : (
         <Box pt="2rem">
           <HStack w="100%" justify="space-between">
             <SmallSearchBar />
             <Flex gap={2} align="center">
-              {user?.role.code <= 2 && (
+              {userGeneralManager && (
                 <Text as={Link} href={'/staff/create'} fontWeight={600}>
                   Registrar novo
                 </Text>

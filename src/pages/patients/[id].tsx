@@ -15,13 +15,14 @@ import { usePatientDetails } from '../../hooks/usePatientDetails'
 import { PatientDetailsCard } from '../../components/DetailsCard/PatientDetailsCard'
 import { PatientReportsCard } from '../../components/DetailsCard/PatientReportsCard'
 import { DocumentsCard } from '../../components/DetailsCard/DocumentsCard'
+import { ErrorOrLoadingMessage } from '../../components/ErrorOrLoadingMessage'
 
 interface PatientDetailsProps {
   id: string
 }
 
 export default function PatientDetails({ id }: PatientDetailsProps) {
-  const { data, isSuccess } = usePatientDetails(id)
+  const { data, isFetching, isError, isSuccess } = usePatientDetails(id)
 
   return (
     <Box
@@ -32,12 +33,15 @@ export default function PatientDetails({ id }: PatientDetailsProps) {
         },
       }}
       w="100%"
+      h="100%"
       p={['0 1rem', '1rem 1.5rem 1rem 3rem']}
     >
       {!isSuccess ? (
-        <Flex w="100%" h="100%" justify="center" align="center">
-          <Spinner />
-        </Flex>
+        <ErrorOrLoadingMessage
+          isError={isError}
+          isLoading={isFetching}
+          errorMessage="Paciente não encontrado"
+        />
       ) : (
         <>
           <Heading
