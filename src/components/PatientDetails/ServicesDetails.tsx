@@ -9,7 +9,6 @@ import {
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import Link from 'next/link'
-import { useServiceDetails } from '../../hooks/useServices'
 import { Service } from '../../utils/@types/service'
 import { nameFormatter } from '../../utils/nameFormatter'
 import { serviceTypeFormatter } from '../../utils/serviceTypeFormatter'

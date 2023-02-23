@@ -9,9 +9,10 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 import { useContext, useState } from 'react'
-import { VetContext } from '../../context/VetContext'
+import { User, VetContext } from '../../context/VetContext'
 import { useStaffDetails } from '../../hooks/useStaffDetails'
 import { api } from '../../services/apiClient'
 import { queryClient } from '../../services/react-query'
@@ -19,15 +20,16 @@ import { queryClient } from '../../services/react-query'
 export function DutyButton() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
-  const { user: UserInitialData } = useContext(VetContext)
 
-  const userID = String(UserInitialData?.id)
+  const [dutyState, setDutyState] = useState<boolean>()
 
-  const { data: user } = useStaffDetails(userID)
-
-  const onDutyUser = user?.onDuty
-
-  const [dutyState, setDutyState] = useState(onDutyUser)
+  const { data: userDetails } = useQuery<User>(['me'], async () => {
+    const { data } = await api.get<User>('/api/staff/v1/me')
+    setDutyState(data.onDuty)
+    return {
+      ...data,
+    }
+  })
 
   const buttonText =
     dutyState === true ? 'Sair do plantão' : 'Entrar no plantão'
@@ -41,20 +43,21 @@ export function DutyButton() {
       : 'Agora você pode receber clientes e suas horas serão contadas!'
 
   async function handleSetOnDuty() {
-    setDutyState(!dutyState)
     await submitOnDutyState.mutateAsync(!dutyState)
+    setDutyState(!dutyState)
   }
 
   const submitOnDutyState = useMutation(
     async (onDuty: boolean) => {
-      await api.patch(`/api/staff/v1/${1}/on-duty`, {
+      await api.patch(`/api/staff/v1/${userDetails?.id}/on-duty`, {
         on_duty: onDuty,
       })
     },
     {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['clinicData'] })
-        queryClient.invalidateQueries({ queryKey: ['staff', userID] })
+        queryClient.invalidateQueries({ queryKey: ['staff', userDetails!.id] })
+        queryClient.invalidateQueries({ queryKey: ['me'] })
         toast({
           title: toastTitle,
           description: toastDescription,
@@ -86,6 +89,7 @@ export function DutyButton() {
         fontWeight={600}
         color="white"
         onClick={onOpen}
+        isLoading={userDetails === undefined}
       >
         {buttonText}
       </Button>

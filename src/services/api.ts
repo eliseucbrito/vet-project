@@ -27,9 +27,6 @@ export function setupAPIClient(ctx: GetServerSidePropsContext | undefined) {
       return response
     },
     (error: AxiosError<{ message: string }>) => {
-      if (error.response?.status === 400) {
-        throw error
-      }
       if (error.response?.status === 401) {
         if (error.response.data?.message === 'token.expired') {
           cookies = parseCookies(ctx)
@@ -101,6 +98,8 @@ export function setupAPIClient(ctx: GetServerSidePropsContext | undefined) {
         }
 
         return Promise.reject(error)
+      } else {
+        throw error
       }
     },
   )

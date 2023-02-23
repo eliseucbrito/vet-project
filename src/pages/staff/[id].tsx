@@ -22,6 +22,8 @@ import { useContext } from 'react'
 import { VetContext } from '../../context/VetContext'
 import { StaffDetails as StaffDetailsType } from '../../utils/@types/staffDetails'
 import { ErrorOrLoadingMessage } from '../../components/ErrorOrLoadingMessage'
+import { Button } from '../../components/defaults/Button'
+import { UpdateRoleModal } from '../../components/Modals/UpdateRoleModal'
 
 interface StaffDetailsProps {
   staffSSR: StaffDetailsType
@@ -55,17 +57,20 @@ export default function StaffDetails({ id }: StaffDetailsProps) {
         />
       ) : (
         <>
-          <Heading
-            fontWeight={600}
-            fontSize="1.5rem"
-            color="green.700"
-            lineHeight={1}
-            display="flex"
-            gap="0.5rem"
-          >
-            <FaUserMd />
-            {nameFormatter(staff.fullName)}
-          </Heading>
+          <HStack w="100%" justify="space-between">
+            <Heading
+              fontWeight={600}
+              fontSize="1.5rem"
+              color="green.700"
+              lineHeight={1}
+              display="flex"
+              gap="0.5rem"
+            >
+              <FaUserMd />
+              {nameFormatter(staff.fullName)}
+            </Heading>
+            <UpdateRoleModal staff={staff} />
+          </HStack>
           <Divider mt="1rem" orientation="horizontal" />
 
           <Flex py="1.5rem" gap="1rem">

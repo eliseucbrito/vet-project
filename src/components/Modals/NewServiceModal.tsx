@@ -26,6 +26,7 @@ import {
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -94,12 +95,15 @@ export function NewServiceModal() {
           isClosable: true,
         })
       },
-      onError: () => {
+      onError: (error: AxiosError<{ message: string }>) => {
+        const errorMessage = error.response!.data.message.includes('duty')
+          ? 'Você não está de plantão'
+          : error.response!.data.message
         toast({
           title: 'Paciente não adicionado',
-          description: 'Ocorreu um erro no envio do formulário!',
+          description: `Ocorreu um erro no envio do formulário! ERROR: ${errorMessage}!`,
           status: 'error',
-          duration: 1500,
+          duration: 2000,
           isClosable: true,
         })
       },

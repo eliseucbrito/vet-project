@@ -9,6 +9,7 @@ export interface User {
   id: number
   avatarUrl: string
   fullName: string
+  onDuty: boolean
   role: {
     code: number
     description: string
@@ -110,10 +111,6 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
 
   useEffect(() => {
     const { 'vet.token': token } = parseCookies()
-
-    // if (token === undefined) {
-    //   Router.push('/login')
-    // }
 
     if (token) {
       api

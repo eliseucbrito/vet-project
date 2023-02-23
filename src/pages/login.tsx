@@ -117,7 +117,6 @@ export default function Login() {
                     type="text"
                     _focus={{
                       'box-shadow': '0 0.2rem #dfd9d9',
-                      scale: 10,
                     }}
                     bg={['none', 'white']}
                     {...register('email')}

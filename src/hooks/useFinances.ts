@@ -2,7 +2,7 @@
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { api } from '../services/apiClient'
-import { ReportReq } from '../utils/@types/report'
+import { Report } from '../utils/@types/report'
 import { Service } from '../utils/@types/service'
 
 type weekDayFinanceArray = {}
@@ -17,7 +17,7 @@ export type FinancesProps = {
 }
 
 export async function getFinances(): Promise<FinancesProps> {
-  const { data: reportsData } = await api.get<ReportReq[]>('/api/reports/v1')
+  const { data: reportsData } = await api.get<Report[]>('/api/reports/v1')
   const { data: servicesData } = await api.get<Service[]>('/api/services/v1')
 
   const weekDayFinance = [
@@ -32,10 +32,16 @@ export async function getFinances(): Promise<FinancesProps> {
   ]
 
   reportsData.map((report, index) => {
-    if (report === undefined || report.type.toString() !== 'PAYMENT') {
+    if (
+      report === undefined ||
+      report.type.toString() !== 'PAYMENT' ||
+      !report.approved
+    ) {
       // eslint-disable-next-line no-useless-return
       return
     }
+
+    console.log(report)
 
     const reportDay = dayjs(report.createdAt)
     const oneWeekAgo = dayjs(new Date())

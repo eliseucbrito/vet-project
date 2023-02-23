@@ -21,6 +21,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { api } from '../../services/apiClient'
 import { useMutation } from '@tanstack/react-query'
 import { queryClient } from '../../services/react-query'
+import { AxiosError } from 'axios'
+import { badGatewayFormatter } from '../../utils/errors/badGateway'
 
 const newPatientModalSchema = z.object({
   name: z
@@ -73,12 +75,13 @@ export function NewPatientModal() {
           isClosable: true,
         })
       },
-      onError: () => {
+      onError: (error: AxiosError<{ message: string }>) => {
+        const errorMessage = badGatewayFormatter(error)
         toast({
           title: 'Paciente não adicionado',
-          description: 'Ocorreu um erro no envio do formulário!',
+          description: `Ocorreu um erro no envio do formulário! ERROR: ${errorMessage}!`,
           status: 'error',
-          duration: 1500,
+          duration: 2000,
           isClosable: true,
         })
       },

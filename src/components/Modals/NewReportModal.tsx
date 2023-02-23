@@ -28,6 +28,8 @@ import { api } from '../../services/apiClient'
 import { QueryClient, useMutation } from '@tanstack/react-query'
 import { queryClient } from '../../services/react-query'
 import { error } from 'console'
+import { useContext } from 'react'
+import { VetContext } from '../../context/VetContext'
 
 const newReportModalSchema = z.object({
   type: z.string({ required_error: 'Tipo é obrigatório' }),
@@ -65,7 +67,6 @@ export function NewReportModal() {
       const response = await api.post('/api/reports/v1/create', {
         ...report,
         paymentValue: report.price,
-        staff_id: 1,
       })
 
       return response.data
