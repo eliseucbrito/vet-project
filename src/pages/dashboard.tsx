@@ -80,7 +80,7 @@ export default function Dashboard() {
                 </VStack>
               </GridItem>
               <GridItem w="100%">
-                <VStack h="100%" justify="space-between">
+                <VStack h="100%">
                   {user.role.description === 'VETERINARY' && <NextPatients />}
                   <VStack w="100%">
                     {user.role.code <= 2 && (

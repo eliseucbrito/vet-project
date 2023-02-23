@@ -28,7 +28,7 @@ const newPatientModalSchema = z.object({
   name: z
     .string()
     .min(3, { message: 'O nome deve conter no mínimo 3 caracteres' }),
-  kind: z.string(),
+  kind: z.string().min(1, { message: 'O tipo do paciente é obrigatório' }),
   breed: z.string().min(3),
   owner: z
     .string()
@@ -36,7 +36,10 @@ const newPatientModalSchema = z.object({
   ownerContact: z
     .string()
     .min(3, { message: 'O número deve conter 11 caracteres' }),
-  birthDate: z.string().transform((date) => date.replaceAll('-', '/')),
+  birthDate: z
+    .string()
+    .min(1, { message: 'A data de nascimento é obrigatório' })
+    .transform((date) => date.replaceAll('-', '/')),
 })
 
 type newPatientModalData = z.infer<typeof newPatientModalSchema>
@@ -121,32 +124,44 @@ export function NewPatientModal() {
             <ModalBody>
               <VStack align="center" justify="center">
                 <Avatar />
-                <Input placeholder="Nome do paciente" {...register('name')} />
+                <Input
+                  placeholder="Nome do paciente"
+                  isInvalid={!!errors.name}
+                  {...register('name')}
+                />
                 <HStack w="100%">
-                  <Select placeholder="Tipo do paciente" {...register('kind')}>
+                  <Select
+                    placeholder="Tipo do paciente"
+                    isInvalid={!!errors.kind}
+                    {...register('kind')}
+                  >
                     <option value="CAT">Gato</option>
                     <option value="DOG">Cachorro</option>
                     <option value="PARROT">Papagaio</option>
                   </Select>
                   <Input
+                    isInvalid={!!errors.breed}
                     placeholder="Raça"
                     type="text"
                     {...register('breed')}
                   />
                 </HStack>
                 <Input
+                  isInvalid={!!errors.owner}
                   placeholder="Nome do responsável"
                   {...register('owner')}
                 />
                 <HStack>
                   <Input
                     placeholder="87999999999"
+                    isInvalid={!!errors.ownerContact}
                     type="tel"
                     pattern="[0-9]{11}"
                     {...register('ownerContact')}
                   />
                   <Input
                     placeholder="Data de nascimento"
+                    isInvalid={!!errors.birthDate}
                     type="date"
                     {...register('birthDate')}
                   />
@@ -155,7 +170,14 @@ export function NewPatientModal() {
             </ModalBody>
 
             <ModalFooter>
-              <Button variant="ghost" mr={3} onClick={onClose}>
+              <Button
+                variant="ghost"
+                mr={3}
+                onClick={() => {
+                  onClose()
+                  reset()
+                }}
+              >
                 Cancelar
               </Button>
               <Button

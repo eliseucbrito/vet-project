@@ -134,8 +134,7 @@ export function NewReportModal() {
                   <VStack w="100%">
                     <Select
                       placeholder="Tipo"
-                      isInvalid={errors.type !== undefined}
-                      errorBorderColor="red"
+                      isInvalid={!!errors.type}
                       {...register('type')}
                     >
                       <option value="PAYMENT">Pagamento</option>
@@ -174,8 +173,7 @@ export function NewReportModal() {
                     variant="flushed"
                     placeholder="Titulo"
                     required
-                    isInvalid={errors.title !== undefined}
-                    errorBorderColor="red"
+                    isInvalid={!!errors.title}
                     {...register('title')}
                   />
                   {errors.title && (
@@ -183,8 +181,7 @@ export function NewReportModal() {
                   )}
                   <Textarea
                     placeholder="Descrição"
-                    isInvalid={errors.description !== undefined}
-                    errorBorderColor="red"
+                    isInvalid={!!errors.description}
                     {...register('description')}
                   />
                   {errors.description && (
@@ -196,7 +193,14 @@ export function NewReportModal() {
             </ModalBody>
 
             <ModalFooter>
-              <Button variant="ghost" mr={3} onClick={onClose}>
+              <Button
+                variant="ghost"
+                mr={3}
+                onClick={() => {
+                  onClose()
+                  reset()
+                }}
+              >
                 Cancelar
               </Button>
               <Button

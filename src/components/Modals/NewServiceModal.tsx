@@ -56,7 +56,10 @@ const newServiceModalSchema = z.object({
   description: z
     .string()
     .min(20, { message: 'A descrição deve conter no mínimo 20 caracteres' }),
-  price: z.string().transform((price) => Number(price) * 1000),
+  price: z
+    .string()
+    .min(1, { message: 'O valor do atendimento é obrigatório' })
+    .transform((price) => Number(price) * 1000),
   city: z.string().min(2, { message: 'A cidade de atendimento é obrigatória' }),
 })
 
@@ -65,7 +68,6 @@ type newServiceModalData = z.infer<typeof newServiceModalSchema>
 export function NewServiceModal() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
-  const [createdSuccess, setCreatedSuccess] = useState<Boolean>()
   const {
     register,
     handleSubmit,
@@ -150,16 +152,14 @@ export function NewServiceModal() {
                     <Input
                       w="100%"
                       placeholder="ID do paciente"
-                      isInvalid={errors.patient_id !== undefined}
-                      errorBorderColor="red.600"
+                      isInvalid={!!errors.patient_id}
                       marginBottom={2}
                       {...register('patient_id')}
                     />
                     <Input
                       w="100%"
                       placeholder="ID do veterinário"
-                      isInvalid={errors.staff_id !== undefined}
-                      errorBorderColor="red.600"
+                      isInvalid={!!errors.staff_id}
                       marginBottom={2}
                       {...register('staff_id')}
                     />
@@ -172,6 +172,7 @@ export function NewServiceModal() {
                       />
                       <Input
                         placeholder="Valor"
+                        isInvalid={!!errors.price}
                         type="number"
                         {...register('price')}
                       />
@@ -180,8 +181,7 @@ export function NewServiceModal() {
                   <GridItem>
                     <Select
                       placeholder="Tipo de atendimento"
-                      isInvalid={errors.type !== undefined}
-                      errorBorderColor="red.600"
+                      isInvalid={!!errors.type}
                       marginBottom={2}
                       {...register('type')}
                     >
@@ -193,8 +193,7 @@ export function NewServiceModal() {
                     </Select>
                     <Select
                       placeholder="Status"
-                      isInvalid={errors.status !== undefined}
-                      errorBorderColor="red.600"
+                      isInvalid={!!errors.status}
                       marginBottom={2}
                       {...register('status')}
                     >
@@ -221,14 +220,12 @@ export function NewServiceModal() {
                   <Input
                     w="100%"
                     placeholder="Motivo do Atendimento"
-                    isInvalid={errors.patient_id !== undefined}
-                    errorBorderColor="red.600"
+                    isInvalid={!!errors.patient_id}
                     {...register('reason')}
                   />
                   <Select
                     placeholder="Cidade de atendimento"
-                    isInvalid={errors.city !== undefined}
-                    errorBorderColor="red.600"
+                    isInvalid={!!errors.city}
                     {...register('city')}
                   >
                     <option value="TRINDADE_PE">Trindade-PE</option>
@@ -238,15 +235,21 @@ export function NewServiceModal() {
                 </HStack>
                 <Textarea
                   placeholder="Descrição"
-                  isInvalid={errors.description !== undefined}
-                  errorBorderColor="red.600"
+                  isInvalid={!!errors.description}
                   {...register('description')}
                 />
               </VStack>
             </ModalBody>
 
             <ModalFooter>
-              <Button variant="ghost" mr={3} onClick={onClose}>
+              <Button
+                variant="ghost"
+                mr={3}
+                onClick={() => {
+                  onClose()
+                  reset()
+                }}
+              >
                 Cancelar
               </Button>
               <Button

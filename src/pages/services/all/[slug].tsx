@@ -89,7 +89,12 @@ export default function ServicePerType({
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const slug = String(ctx.params!.slug)
   const api = setupAPIClient(ctx)
-  const { data } = await api.get('/api/services/v1')
+  const { data } = await api.get('/api/services/v1', {
+    params: {
+      sort_by: 'createdAt',
+      direction: 'DESC',
+    },
+  })
 
   const servicesSSR = data.map((service: Service) => {
     return {

@@ -42,7 +42,8 @@ const LoginSchema = z.object({
 type LoginData = z.infer<typeof LoginSchema>
 
 export default function Login() {
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState<boolean>(false)
+  const [isFocused, setIsFocused] = useState<boolean>(false)
   const handleClick = () => setShow(!show)
 
   const { user } = useContext(VetContext)
@@ -109,14 +110,19 @@ export default function Login() {
 
             <Box w="100%">
               <form onSubmit={handleSubmit(handleSignIn)}>
-                <FormControl isRequired w="100%">
+                <FormControl>
                   <FormLabel htmlFor="email-input">E-mail</FormLabel>
                   <Input
-                    // focusBorderColor="green.600"
                     id="email-input"
+                    transition="all 0.2s"
                     type="text"
+                    variant="flushed"
+                    px={2}
                     _focus={{
-                      'box-shadow': '0 0.2rem #dfd9d9',
+                      'box-shadow': '0px 5px 10px 0px rgba(0, 0, 0, 0.5)',
+                      borderRadius: 8,
+                      border: 'none',
+                      transform: 'translateY(-3px)',
                     }}
                     bg={['none', 'white']}
                     {...register('email')}
@@ -130,13 +136,34 @@ export default function Login() {
                   <FormLabel pt="0.75rem" htmlFor="password-input">
                     Senha
                   </FormLabel>
-                  <InputGroup w="100%">
+                  <InputGroup
+                    w="100%"
+                    transition="all 0.2s"
+                    sx={
+                      isFocused
+                        ? { transform: 'translateY(-2px)' }
+                        : { transform: '0' }
+                    }
+                  >
                     <Input
-                      focusBorderColor="green.600"
+                      {...register('password')}
                       id="password-input"
                       type={show ? 'text' : 'password'}
+                      px={2}
+                      variant="flushed"
+                      _focus={{
+                        'box-shadow': '0px 5px 10px 0px rgba(0, 0, 0, 0.5)',
+                        borderRadius: 8,
+                        border: 'none',
+                        transform: 'translateY(-2px)',
+                      }}
+                      onFocus={() => {
+                        setIsFocused(true)
+                      }}
+                      onBlur={() => {
+                        setIsFocused(false)
+                      }}
                       bg={['none', 'white']}
-                      {...register('password')}
                     />
                     <InputRightElement>
                       <Button
@@ -226,7 +253,13 @@ export default function Login() {
               como nossa própria família com o melhor serviço
             </Text>
           </VStack>
-          <ChakraImage as={Image} alt="" src={img.veterinaryImg} w="70%" />
+          <ChakraImage
+            sx={{ filter: 'drop-shadow(5px 5px 5px rgba(0,0,0,0.3))' }}
+            as={Image}
+            alt=""
+            src={img.veterinaryImg}
+            w="70%"
+          />
         </VStack>
       )}
     </Flex>

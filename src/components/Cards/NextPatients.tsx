@@ -1,4 +1,15 @@
-import { HStack, Stack, Text, VStack } from '@chakra-ui/react'
+import {
+  HStack,
+  Stack,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  VStack,
+} from '@chakra-ui/react'
 import { useContext } from 'react'
 import { useStaffDetails } from '../../hooks/useStaffDetails'
 import { VetContext } from '../../context/VetContext'
@@ -23,17 +34,31 @@ export function NextPatients() {
   )
 
   return (
-    <Stack bg="white" w="100%" h="100%" p="1.25rem" borderRadius={12}>
-      <Text>Próximos pacientes [{nextPatients?.length}]</Text>
-      <VStack w="100%" align="start" px="1.25rem">
-        {nextPatients?.map((service) => (
-          <ul key={service.id}>
-            <li>
-              <Link href={`/services/${service.id}`}>{service.name}</Link>
-            </li>
-          </ul>
-        ))}
-      </VStack>
+    <Stack bg="white" w="100%" p="1.25rem" borderRadius={12}>
+      <Text>
+        Próximos pacientes <strong>[{nextPatients?.length}]</strong>
+      </Text>
+
+      <Table>
+        <Thead>
+          <Tr>
+            <Th>Ordem</Th>
+            <Th>Paciente</Th>
+            <Th>ID</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {nextPatients?.map((service, index) => (
+            <Tr key={index}>
+              <Td>{index + 1}</Td>
+              <Td>{service.name}</Td>
+              <Td>
+                <Link href={`/services/${service.id}`}>{service.id}</Link>
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
     </Stack>
   )
 }

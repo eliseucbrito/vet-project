@@ -6,7 +6,12 @@ import { api } from '../services/apiClient'
 import { Service } from '../utils/@types/service'
 
 export async function getServices(): Promise<Service[]> {
-  const { data } = await api.get('/api/services/v1')
+  const { data } = await api.get('/api/services/v1', {
+    params: {
+      sort_by: 'createdAt',
+      direction: 'DESC',
+    },
+  })
 
   const services = data.map((service: Service) => {
     return {
