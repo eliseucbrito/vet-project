@@ -1,9 +1,11 @@
 import { Box, Divider, HStack, Text, VStack } from '@chakra-ui/react'
+import dayjs from 'dayjs'
 import { Service } from '../../utils/@types/service'
 import { kindFormatter } from '../../utils/kindFormatter'
 import { phoneFormatter } from '../../utils/phoneFormatter'
 import { serviceTypeFormatter } from '../../utils/serviceTypeFormatter'
 import { sityFormatter } from '../../utils/sityFormatter'
+import { statusFormatter } from '../../utils/statusFormatter'
 
 interface ServiceInformationsProps {
   service: Service
@@ -67,8 +69,18 @@ export function ServiceInformations({ service }: ServiceInformationsProps) {
         <HStack align="start">
           <Divider orientation="vertical" h="1rem" borderColor="black" />
           <Box>
-            <span>ID do Paciente</span>
-            <Text>{service.patient.id}</Text>
+            <span>Status</span>
+            <Text>{statusFormatter(service.status.toString())}</Text>
+          </Box>
+        </HStack>
+
+        <HStack align="start">
+          <Divider orientation="vertical" h="1rem" borderColor="black" />
+          <Box>
+            <span>Criado em</span>
+            <Text>
+              {dayjs(service.createdAt).format('DD[/]MM[/]YYYY HH:mm')}
+            </Text>
           </Box>
         </HStack>
       </HStack>

@@ -27,6 +27,7 @@ import { ServiceInformations } from '../../components/ServiceDetails/ServiceInfo
 import { setupAPIClient } from '../../services/api'
 import { Service } from '../../utils/@types/service'
 import { ErrorOrLoadingMessage } from '../../components/ErrorOrLoadingMessage'
+import { UpdateServiceStatusModal } from '../../components/Modals/UpdateServiceStatusModal'
 
 interface ServiceDetailsProps {
   id: string
@@ -69,15 +70,12 @@ export default function ServiceDetails({
         />
       ) : (
         <>
-          <Heading
-            fontWeight={600}
-            fontSize="1.5rem"
-            color="green.900"
-            lineHeight={1}
-            pb="2rem"
-          >
-            Atendimento N° {id}
-          </Heading>
+          <HStack w="100%" align="center" justify="space-between" pb={4}>
+            <Heading fontWeight={600} fontSize="1.5rem" color="green.900">
+              Atendimento N° {id}
+            </Heading>
+            <UpdateServiceStatusModal service={service} />
+          </HStack>
 
           <ServiceInformations service={service} />
 
