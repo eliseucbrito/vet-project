@@ -62,21 +62,25 @@ export function StaffDetailsCard({ staff }: StaffDetailsCardProps) {
         />
 
         {generalManagerAccessLevel && (
-          <LineInfo label="Bônus anual">
-            R${' '}
-            <FormattedNumber
-              value={staff.baseSalary / 10}
-              minimumFractionDigits={2}
-              maximumFractionDigits={2}
-              currency="BRL"
-            />
-          </LineInfo>
-        )}
+          <>
+            <LineInfo label="Bônus anual">
+              R${' '}
+              <FormattedNumber
+                value={staff.baseSalary / 10}
+                minimumFractionDigits={2}
+                maximumFractionDigits={2}
+                currency="BRL"
+              />
+            </LineInfo>
 
-        <LineInfo
-          label={'Horas Trabalhadas'}
-          data={`${hourFormatter(hoursWorked)}h / ${weeklyWorkLoadInHours}h`}
-        />
+            <LineInfo
+              label={'Horas Trabalhadas'}
+              data={`${hourFormatter(
+                hoursWorked,
+              )}h / ${weeklyWorkLoadInHours}h`}
+            />
+          </>
+        )}
       </HStack>
 
       <HStack w="100%" gap="2rem" justify="space-between">

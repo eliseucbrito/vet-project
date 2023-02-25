@@ -11,6 +11,7 @@ export enum ReportType {
 export type Report = {
   id: number
   approved: boolean | null
+  approvedBy: ReducedStaff
   createdAt: string
   description: string
   title: string

@@ -30,7 +30,6 @@ import {
   FiSearch,
   FiUsers,
 } from 'react-icons/fi'
-import { FaUserMd } from 'react-icons/fa'
 import { TbPaw } from 'react-icons/tb'
 import { CgLogOut } from 'react-icons/cg'
 import { MutableRefObject, useContext, useRef, useState } from 'react'
@@ -134,7 +133,7 @@ export function Sidebar() {
                 {nameFormatter(user!.fullName)}
               </Text>
               <Text fontSize="0.875rem">
-                {roleFormatter(user!.role.description).role}
+                {roleFormatter(user!.role.description)}
               </Text>
             </VStack>
           </Box>

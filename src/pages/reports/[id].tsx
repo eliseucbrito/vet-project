@@ -161,11 +161,9 @@ export default function ReportDetails({ id }: ReportDetailsProps) {
                 aria-label="Cargo na empresa"
               >
                 <Text fontWeight={600}>
-                  {
-                    roleFormatter(
-                      reportDetails.staff.role.description.toString(),
-                    ).role
-                  }
+                  {roleFormatter(
+                    reportDetails.staff.role.description.toString(),
+                  )}
                 </Text>
               </Tag>
               <Text
@@ -174,13 +172,15 @@ export default function ReportDetails({ id }: ReportDetailsProps) {
                 target="_blank"
                 whiteSpace="nowrap"
                 fontSize="1.125rem"
+                transition="color 0.2s"
+                _hover={{ color: 'green.600' }}
               >
                 {nameFormatter(reportDetails.staff.fullName)}
               </Text>
             </VStack>
             {reportDetails?.type.toString() !== 'REPORT' && (
               <VStack>
-                <Text>Relátorio</Text>
+                <Text>Relatório</Text>
                 <HStack fontSize="0.875rem" w="100%" justify="space-between">
                   <Text>Tipo</Text>
                   <Text fontWeight={600}>
@@ -228,6 +228,33 @@ export default function ReportDetails({ id }: ReportDetailsProps) {
                       </Button>
                     </HStack>
                   )}
+              </VStack>
+            )}
+            {reportDetails.approved !== null && (
+              <VStack w="100%">
+                <Text>
+                  {reportDetails.approved ? 'Aprovado por' : 'Negado por'}
+                </Text>
+                <HStack fontSize="0.875rem" w="100%" justify="space-between">
+                  <Text whiteSpace="nowrap">Nome</Text>
+                  <Text
+                    as={Link}
+                    href={`/staff/${reportDetails.approvedBy.id}`}
+                    fontWeight={600}
+                    transition="color 0.2s"
+                    _hover={{ color: 'green.600' }}
+                  >
+                    {nameFormatter(reportDetails.approvedBy.fullName)}
+                  </Text>
+                </HStack>
+                <HStack fontSize="0.875rem" w="100%" justify="space-between">
+                  <Text whiteSpace="nowrap">Cargo</Text>
+                  <Text fontWeight={600}>
+                    {roleFormatter(
+                      reportDetails.approvedBy.role.description.toString(),
+                    )}
+                  </Text>
+                </HStack>
               </VStack>
             )}
           </VStack>

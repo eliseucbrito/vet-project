@@ -69,7 +69,7 @@ export default function StaffDetails({ id }: StaffDetailsProps) {
               <FaUserMd />
               {nameFormatter(staff.fullName)}
             </Heading>
-            <UpdateRoleModal staff={staff} />
+            {generalManagerAccessLevel && <UpdateRoleModal staff={staff} />}
           </HStack>
           <Divider mt="1rem" orientation="horizontal" />
 
@@ -86,7 +86,6 @@ export default function StaffDetails({ id }: StaffDetailsProps) {
               />
 
               <StaffDetailsCard staff={staff} />
-              {/* <ActivityCard reports={staff.reports} services={staff.services} /> */}
             </HStack>
           </Flex>
           <Flex justify="space-between" w="100%" gap="1rem">
@@ -94,49 +93,6 @@ export default function StaffDetails({ id }: StaffDetailsProps) {
               services={staff.services}
               roleHistoric={staff.roleHistoric}
             />
-
-            {/* {generalManagerAccessLevel && (
-              <VStack
-                bg="white"
-                p="1rem"
-                borderRadius={12}
-                gap={1}
-                align="start"
-                w="max-content"
-              >
-                <Text fontSize="1rem" whiteSpace="normal">
-                  Documentos
-                </Text>
-                <Divider />
-                <Text
-                  as={Link}
-                  lineHeight={1}
-                  fontSize="1rem"
-                  color="black"
-                  p="0.25rem"
-                  href={'/exams'}
-                  _hover={{ color: 'gray.600' }}
-                  transition="color 0.2s"
-                  whiteSpace="normal"
-                >
-                  Identidade
-                </Text>
-
-                <Text
-                  as={Link}
-                  lineHeight={1}
-                  fontSize="1rem"
-                  color="black"
-                  p="0.25rem"
-                  href={'/exams'}
-                  _hover={{ color: 'gray.600' }}
-                  transition="color 0.2s"
-                  whiteSpace="nowrap"
-                >
-                  Carteira de Trabalho
-                </Text>
-              </VStack>
-            )} */}
           </Flex>
         </>
       )}

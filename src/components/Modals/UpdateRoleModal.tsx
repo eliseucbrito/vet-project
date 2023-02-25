@@ -140,7 +140,7 @@ export function UpdateRoleModal({ staff }: NewRoleModalProps) {
                   <Select placeholder="Cargo" {...register('role')}>
                     {RolesEnum.map((role, index) => (
                       <option key={index} value={role}>
-                        {roleFormatter(role).role}
+                        {roleFormatter(role)}
                       </option>
                     ))}
                   </Select>

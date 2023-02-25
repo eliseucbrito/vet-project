@@ -28,6 +28,8 @@ import { setupAPIClient } from '../../services/api'
 import { Service } from '../../utils/@types/service'
 import { ErrorOrLoadingMessage } from '../../components/ErrorOrLoadingMessage'
 import { UpdateServiceStatusModal } from '../../components/Modals/UpdateServiceStatusModal'
+import { useContext } from 'react'
+import { VetContext } from '../../context/VetContext'
 
 interface ServiceDetailsProps {
   id: string
@@ -38,6 +40,7 @@ export default function ServiceDetails({
   id,
   initialData,
 }: ServiceDetailsProps) {
+  const { user } = useContext(VetContext)
   const title = initialData.type.toString() === 'EXAM' ? 'Exame de' : 'Razão'
 
   const {
@@ -48,6 +51,8 @@ export default function ServiceDetails({
   } = useServiceDetails(id, {
     initialData,
   })
+
+  const userCanEdit = user?.id === service?.staff.id
 
   return (
     <VStack
@@ -74,7 +79,7 @@ export default function ServiceDetails({
             <Heading fontWeight={600} fontSize="1.5rem" color="green.900">
               Atendimento N° {id}
             </Heading>
-            <UpdateServiceStatusModal service={service} />
+            {userCanEdit && <UpdateServiceStatusModal service={service} />}
           </HStack>
 
           <ServiceInformations service={service} />

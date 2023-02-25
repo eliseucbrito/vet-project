@@ -33,8 +33,8 @@ export function StaffCard({
   id,
   onDuty,
 }: StaffCardProps) {
-  const roleFormatted = roleFormatter(role).role
-  const roleExplained = roleFormatter(role)?.explanation
+  const roleFormatted = roleFormatter(role)
+  const roleExplained = roleFormatter(role)
 
   return (
     <Box w="17rem" bg="white" p="1rem" borderRadius="2xl">

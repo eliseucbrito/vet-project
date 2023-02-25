@@ -21,15 +21,12 @@ import {
   InputLeftElement,
 } from '@chakra-ui/react'
 import { FiPlus } from 'react-icons/fi'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { api } from '../../services/apiClient'
-import { QueryClient, useMutation } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { queryClient } from '../../services/react-query'
-import { error } from 'console'
-import { useContext } from 'react'
-import { VetContext } from '../../context/VetContext'
 
 const newReportModalSchema = z.object({
   type: z.string({ required_error: 'Tipo é obrigatório' }),

@@ -1,10 +1,11 @@
 import { VStack, HStack, Divider, Box, Text, Flex } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { FilterButton } from '../defaults/FilterButton'
 import { RoleHistoricCard } from './RoleHistoricCard'
 import { StaffServicesHistoricCard } from './StaffServicesHistoricCard'
 import { ServiceReduced } from '../../utils/@types/service'
 import { RoleHistoric } from '../../utils/@types/roleHistoric'
+import { VetContext } from '../../context/VetContext'
 
 interface TrajectoryCardProps {
   services: ServiceReduced[]
@@ -17,7 +18,6 @@ export function StaffHistoricCard({
 }: TrajectoryCardProps) {
   const [displayedData, setDisplayedData] = useState(1)
 
-  const roleHistoricLastIndex = roleHistoric.length - 1
   const servicesIsEmpty = services.length === 0
   const roleHistoricIsEmpty = roleHistoric.length === 0
 

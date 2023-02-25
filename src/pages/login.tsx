@@ -22,12 +22,16 @@ import { MdOutlineLogin } from 'react-icons/md'
 import Link from 'next/link'
 import { Button as VETbutton } from '../components/defaults/Button'
 import { useContext, useState } from 'react'
-import { VetContext } from '../context/VetContext'
+import { User, VetContext } from '../context/VetContext'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai'
-import { withSSRGuest } from '../utils/auth/withSSRGuest'
+import { useMutation } from '@tanstack/react-query'
+import { api } from '../services/apiClient'
+import { setCookie } from 'nookies'
+import Router from 'next/router'
+import { AxiosError } from 'axios'
 
 const LoginSchema = z.object({
   email: z
@@ -41,18 +45,29 @@ const LoginSchema = z.object({
 
 type LoginData = z.infer<typeof LoginSchema>
 
+type SignInCredentials = {
+  email: string
+  password: string
+  remember: boolean
+}
+
+type customError = {
+  status: number
+  message: string
+}
+
 export default function Login() {
   const [show, setShow] = useState<boolean>(false)
   const [isFocused, setIsFocused] = useState<boolean>(false)
+  const [error, setError] = useState<customError>()
   const handleClick = () => setShow(!show)
 
-  const { user } = useContext(VetContext)
+  const { handleSetUser } = useContext(VetContext)
 
   const isWideVersion = useBreakpointValue({
     base: false,
     md: true,
   })
-  const { signIn } = useContext(VetContext)
   const {
     register,
     handleSubmit,
@@ -61,8 +76,83 @@ export default function Login() {
     resolver: zodResolver(LoginSchema),
   })
 
+  const signInMutate = useMutation(
+    async ({
+      email,
+      password,
+      remember,
+    }: SignInCredentials): Promise<unknown> => {
+      return api
+        .post(
+          '/auth/signin',
+          {
+            username: email,
+            password,
+          },
+          {
+            headers: {
+              Authorization: '',
+            },
+          },
+        )
+        .then(({ data }) => {
+          const { accessToken: token, refreshToken } = data
+          const { authenticated } = data
+
+          api.defaults.headers.Authorization = `Bearer ${token}`
+
+          if (authenticated) {
+            // 30 days : 24h
+            const maxAgeValue = remember ? 60 * 60 * 24 * 30 : 60 * 60 * 24
+            setCookie(undefined, 'vet.token', token, {
+              maxAge: maxAgeValue,
+              path: '/',
+            })
+
+            setCookie(undefined, 'vet.refreshToken', refreshToken, {
+              maxAge: maxAgeValue,
+              path: '/',
+            })
+
+            api
+              .get('/api/staff/v1/me', {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+              .then((response) => {
+                const data = response.data
+
+                const user: User = {
+                  ...data,
+                  role: {
+                    code: data.role.id,
+                    ...data.role,
+                  },
+                }
+
+                handleSetUser(user)
+                // setLoginError(undefined)
+              })
+          }
+        })
+    },
+    {
+      onSuccess: () => {
+        console.log('DEU BOM')
+        Router.push('/dashboard')
+      },
+      onError: (error: AxiosError<{ message: string }>) => {
+        setError({
+          status: error.response!.status,
+          message: error.response!.data.message,
+        })
+      },
+    },
+  )
+
   function handleSignIn(credentials: LoginData) {
-    signIn(credentials)
+    signInMutate.mutateAsync(credentials)
   }
 
   return (
@@ -110,6 +200,11 @@ export default function Login() {
 
             <Box w="100%">
               <form onSubmit={handleSubmit(handleSignIn)}>
+                {signInMutate.isError && (
+                  <Text fontSize="0.75rem" color="red">
+                    {error?.message}
+                  </Text>
+                )}
                 <FormControl>
                   <FormLabel htmlFor="email-input">E-mail</FormLabel>
                   <Input
@@ -208,7 +303,7 @@ export default function Login() {
                 </Stack>
 
                 <VETbutton
-                  isLoading={isSubmitting}
+                  isLoading={signInMutate.isLoading}
                   type="submit"
                   variant="DefaultButton"
                   bg="green.600"

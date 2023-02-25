@@ -40,7 +40,7 @@ interface VetContextProviderProps {
 export function signOut() {
   destroyCookie(undefined, 'vet.token')
   destroyCookie(undefined, 'vet.refreshToken')
-  Router.push('/login'
+  Router.push('/login')
 }
 
 export function VetContextProvider({ children }: VetContextProviderProps) {
