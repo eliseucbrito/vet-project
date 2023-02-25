@@ -4,6 +4,8 @@ import Router from 'next/router'
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import { api } from '../services/apiClient'
+import { AxiosError } from 'axios'
+import { useMutation } from '@tanstack/react-query'
 
 export interface User {
   id: number
@@ -25,8 +27,8 @@ type SignInCredentials = {
 type VetContextData = {
   user: User | undefined
   servicesCategorized: any
+  handleSetUser(user: User): void
   logout(): void
-  signIn(credentials: SignInCredentials): Promise<void>
 }
 
 export const VetContext = createContext({} as VetContextData)
@@ -38,7 +40,7 @@ interface VetContextProviderProps {
 export function signOut() {
   destroyCookie(undefined, 'vet.token')
   destroyCookie(undefined, 'vet.refreshToken')
-  Router.push('/login')
+  Router.push('/login'
 }
 
 export function VetContextProvider({ children }: VetContextProviderProps) {
@@ -51,62 +53,8 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
     medicalCare: [],
   }
 
-  async function signIn({ email, password, remember }: SignInCredentials) {
-    const { data } = await api.post(
-      '/auth/signin',
-      {
-        username: email,
-        password,
-      },
-      {
-        headers: {
-          Authorization: '',
-        },
-      },
-    )
-
-    const { accessToken: token, refreshToken } = data
-    const authenticated = data.authenticated
-
-    api.defaults.headers.Authorization = `Bearer ${token}`
-
-    if (authenticated) {
-      // 30 days : 24h
-      const maxAgeValue = remember ? 60 * 60 * 24 * 30 : 60 * 60 * 24
-      setCookie(undefined, 'vet.token', token, {
-        maxAge: maxAgeValue,
-        path: '/',
-      })
-
-      setCookie(undefined, 'vet.refreshToken', refreshToken, {
-        maxAge: maxAgeValue,
-        path: '/',
-      })
-
-      api
-        .get('/api/staff/v1/me', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          const data = response.data
-
-          const user: User = {
-            ...data,
-            role: {
-              code: data.role.id,
-              ...data.role,
-            },
-          }
-
-          setUser(user)
-          Router.push('/dashboard')
-        })
-        .catch(() => {
-          Router.push('/login')
-        })
-    }
+  function handleSetUser(user: User) {
+    setUser(user)
   }
 
   useEffect(() => {
@@ -144,7 +92,14 @@ export function VetContextProvider({ children }: VetContextProviderProps) {
   }
 
   return (
-    <VetContext.Provider value={{ user, signIn, servicesCategorized, logout }}>
+    <VetContext.Provider
+      value={{
+        user,
+        servicesCategorized,
+        logout,
+        handleSetUser,
+      }}
+    >
       {children}
     </VetContext.Provider>
   )
