@@ -144,7 +144,6 @@ export default {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: 'jsdom',
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -200,6 +199,10 @@ export default {
       },
     ],
   },
+  roots: ['<rootDir>/src'],
+  collectCoverageFrom: ['<rootDir>/src/**/*.{ts, tsx}'],
+  coverageDirectory: 'coverage',
+  testEnvironment: 'jsdom',
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
