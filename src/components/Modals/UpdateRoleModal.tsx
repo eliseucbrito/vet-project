@@ -68,8 +68,6 @@ export function UpdateRoleModal({ staff }: NewRoleModalProps) {
 
   const toast = useToast()
 
-  console.log(errors)
-
   const updateStaffRole = useMutation(
     async (newRole: updateRoleModalData) => {
       await api.put(`/api/staff/v1/${staff.id}`, {

@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/Modals/NewServiceModaltsx", "src/components/loadingAnimated.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/Modals/NewServiceModaltsx", "./jest-setup.ts"],
   "exclude": ["node_modules"]
 }

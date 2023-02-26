@@ -41,8 +41,6 @@ export async function getFinances(): Promise<FinancesProps> {
       return
     }
 
-    console.log(report)
-
     const reportDay = dayjs(report.createdAt)
     const oneWeekAgo = dayjs(new Date())
       .subtract(7, 'day')

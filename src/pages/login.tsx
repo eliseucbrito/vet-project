@@ -139,7 +139,6 @@ export default function Login() {
     },
     {
       onSuccess: () => {
-        console.log('DEU BOM')
         Router.push('/dashboard')
       },
       onError: (error: AxiosError<{ message: string }>) => {
