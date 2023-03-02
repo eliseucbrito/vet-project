@@ -16,9 +16,14 @@ import { sityFormatter } from '../../utils/sityFormatter'
 import { statusColor } from '../../utils/statusColor'
 import Link from 'next/link'
 import { ErrorOrLoadingMessage } from '../ErrorOrLoadingMessage'
+import { useState } from 'react'
+import { FiTrash } from 'react-icons/fi'
 
 export function LastPatients() {
+  const [check, setCheck] = useState(false)
   const skeletonArray = Array.from(Array(10))
+
+  console.log(check)
 
   const { data: services, isFetching, isError, isSuccess } = useServices()
 
@@ -40,45 +45,45 @@ export function LastPatients() {
         },
       }}
     >
-      <Table
-        sx={{
-          borderCollapse: 'separate',
-          borderSpacing: '0 0.5rem',
-        }}
-        scrollBehavior={'auto'}
-      >
-        <Thead>
-          <Tr>
-            <Th>
-              <Checkbox />
-            </Th>
-            <Th>
-              <Text>ID</Text>
-            </Th>
-            <Th>
-              <Text>Responsável</Text>
-            </Th>
-            <Th>
-              <Text>Data</Text>
-            </Th>
-            <Th>
-              <Text>Localização</Text>
-            </Th>
-            <Th>
-              <Text>Status</Text>
-            </Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {!isSuccess || isEmpty ? (
-            <ErrorOrLoadingMessage
-              isError={isError}
-              isEmpty={isEmpty}
-              isLoading={isFetching}
-              emptyMessage="Ainda não existem serviços registrados"
-            />
-          ) : (
-            services?.slice(0, 10).map((service) => {
+      {!isSuccess || isEmpty ? (
+        <ErrorOrLoadingMessage
+          isError={isError}
+          isEmpty={isEmpty}
+          isLoading={isFetching}
+          emptyMessage="Ainda não existem serviços registrados"
+        />
+      ) : (
+        <Table
+          sx={{
+            borderCollapse: 'separate',
+            borderSpacing: '0 0.5rem',
+          }}
+          scrollBehavior={'auto'}
+        >
+          <Thead>
+            <Tr>
+              <Th>
+                <Checkbox />
+              </Th>
+              <Th>
+                <Text>ID</Text>
+              </Th>
+              <Th>
+                <Text>Responsável</Text>
+              </Th>
+              <Th>
+                <Text>Data</Text>
+              </Th>
+              <Th>
+                <Text>Localização</Text>
+              </Th>
+              <Th>
+                <Text>Status</Text>
+              </Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {services?.slice(0, 10).map((service) => {
               return (
                 <Tr
                   key={service.id}
@@ -96,7 +101,11 @@ export function LastPatients() {
                   }}
                 >
                   <Td>
-                    <Checkbox />
+                    <Checkbox
+                      onChange={(e) => {
+                        setCheck(e.target.checked)
+                      }}
+                    />
                   </Td>
                   <Td>
                     <Link href={`/services/${service.id}`}>{service.id}</Link>
@@ -130,12 +139,17 @@ export function LastPatients() {
                       {statusFormatter(service.status.toString())}
                     </Text>
                   </Td>
+                  {check && (
+                    <Td>
+                      <FiTrash />
+                    </Td>
+                  )}
                 </Tr>
               )
-            })
-          )}
-        </Tbody>
-      </Table>
+            })}
+          </Tbody>
+        </Table>
+      )}
     </Box>
   )
 }

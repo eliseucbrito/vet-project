@@ -25,12 +25,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { api } from '../../services/apiClient'
 import { useMutation } from '@tanstack/react-query'
 import { queryClient } from '../../services/react-query'
-import { AxiosError } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { badGatewayFormatter } from '../../utils/errors/badGateway'
-import { useContext } from 'react'
-import { VetContext } from '../../context/VetContext'
 import { StaffDetails } from '../../utils/@types/staffDetails'
 import { roleFormatter } from '../../utils/roleFormatter'
+import Router from 'next/router'
 
 const RolesEnum = [
   'CEO',
@@ -80,10 +79,13 @@ export function UpdateRoleModal({ staff }: NewRoleModalProps) {
         reset()
         toast({
           title: 'Cargo atualizado!',
-          description: `O cargo foi atualizado!`,
+          description: `O cargo foi atualizado! A página será recarregada.`,
           status: 'success',
-          duration: 1500,
+          duration: 2000,
           isClosable: true,
+          onCloseComplete() {
+            Router.reload()
+          },
         })
       },
       onError: (error: AxiosError<{ message: string }>) => {

@@ -9,7 +9,6 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { GetServerSideProps } from 'next'
-import {} from 'next/router'
 import { FaUserMd } from 'react-icons/fa'
 import { useStaffDetails } from '../../hooks/useStaffDetails'
 import { nameFormatter } from '../../utils/nameFormatter'
